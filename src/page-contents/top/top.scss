@@ -1,4 +1,11 @@
-@use '../../resources/styles/scss/foundation' as *;
+@use 'resources/styles/scss/foundation' as *;
 
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 Hero
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 .p-top-hero {
+  height: 100svh;
+  background: #ddd;
 }
