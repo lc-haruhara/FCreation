@@ -1,0 +1,20 @@
+---
+type Props = {
+  name: string;
+  active?: boolean;
+};
+
+const { name, active = false } = Astro.props;
+---
+
+<section
+  class:list={['c-tab-panel-section', active && 'is-active']}
+  role="tabpanel"
+  id={`panel-${name}`}
+  aria-labelledby={`tab-${name}`}
+  tabindex="0"
+  hidden={!active}
+  data-tab-panel={name}
+>
+  <slot />
+</section>

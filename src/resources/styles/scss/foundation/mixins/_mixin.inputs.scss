@@ -1,0 +1,13 @@
+@use 'sass:map';
+@use '../variable' as *;
+@use '../color' as *;
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 InputStyle
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+@mixin InputStyle {
+  padding: 1em 1.5em;
+  border: 1px solid color(border);
+}

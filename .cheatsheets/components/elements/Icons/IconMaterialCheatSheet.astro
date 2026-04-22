@@ -1,0 +1,221 @@
+---
+import { IconMaterial } from "../../../../src/components/elements/index";
+---
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::
+
+IconMaterial の Props 一覧
+(app/src/components/elements/icons/IconMaterial/IconMaterial.astro)
+
+icon?: string
+Material Symbols のアイコン名です。
+svg が見つからなかったときのフォールバックとしても使われます。
+
+未指定時は "chevron_left" です。
+
+例:
+- icon="chevron_left"
+- icon="chevron_forward"
+- icon="menu"
+- icon="close"
+- icon="search"
+
+--------------------------------
+
+svg?: string
+src/assets/images/icon/*.svg のファイル名を指定します。
+拡張子 .svg は不要です。
+
+例:
+- svg="close"
+- svg="menu"
+- svg="logo-mark"
+
+指定すると、
+src/assets/images/icon/{svg}.svg
+を探して、見つかった場合はその SVG をインライン表示します。
+
+見つからなかった場合は
+Material Symbols 表示にフォールバックします
+（icon の値が使われます）。
+
+--------------------------------
+
+class?: string
+追加クラスです。
+c-icon に対してそのまま追加されます。
+
+例:
+- class="is-large"
+- class="u-color-accent"
+
+出力例:
+- SVG表示時: class="c-icon is-svg ..."
+- Font表示時: class="c-icon is-font _{icon} ..."
+
+--------------------------------
+
+alt?: string
+SVG表示時の代替テキストです。
+
+- alt が空文字 → 装飾用途
+- alt に文字列あり → 意味を持つ画像として扱う
+
+挙動:
+- alt="" のとき
+  - aria-hidden="true"
+  - focusable="false"
+- alt="閉じる" のとき
+  - role="img"
+  - aria-label="閉じる"
+
+※ alt は SVG表示時に使われます。
+※ Material Symbols 表示時は常に aria-hidden="true" です。
+
+--------------------------------
+
+表示ルール
+
+1. svg が指定されていて、対応するSVGファイルが見つかる
+   → SVGをインライン表示
+
+2. svg が未指定、またはSVGファイルが見つからない
+   → Material Symbols の文字アイコン表示
+
+--------------------------------
+
+SVG表示時の仕様
+
+- `import.meta.glob()` で
+  `src/assets/images/icon/*.svg`
+  を一括読み込み
+- `?raw` で SVG の中身を文字列として取得
+- 対応する SVG を `set:html` でインライン展開
+- c-icon の直下に SVG をそのまま出力
+
+出力イメージ:
+<span class="c-icon is-svg ...">
+  <svg ...>...</svg>
+</span>
+
+--------------------------------
+
+Material Symbols 表示時の仕様
+
+SVGが使われない場合は、
+以下のような文字アイコンとして描画されます。
+
+出力イメージ:
+<span class="c-icon is-font _chevron_left ..." aria-hidden="true">
+  chevron_left
+</span>
+
+`_${icon}` のクラスも自動付与されます。
+
+--------------------------------
+
+SVGが見つからない場合
+
+svg が指定されているのに
+対応するファイルが見つからない場合は、
+コンソールに warning を出します。
+
+例:
+[IconMaterial] "close.svg" が src/assets/images/icon に見つかりません。
+
+その場合でも描画は止まらず、
+Material Symbols 表示にフォールバックします。
+
+--------------------------------
+
+運用ルール（推奨）
+
+- Material Symbols を使いたい → icon を使う
+- プロジェクト独自SVGを使いたい → svg を使う
+- 装飾アイコン → alt は空文字のまま
+- 意味を持つSVGアイコン → alt を入れる
+- ボタンやリンクの操作名は IconMaterial 自体ではなく、
+  親要素の aria-label で与えるのを基本にする
+
+※ 特に button / a の中で使う場合、
+  IconMaterial 単体で意味付けするより
+  親側のアクセシブルネーム設計を優先するのが基本です。
+
+::::::::::::::::::::::::::::::::::::::::::::: -->
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  基本：Material Symbols を表示
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<IconMaterial />
+
+<IconMaterial icon="chevron_forward" />
+
+<IconMaterial icon="menu" />
+
+<IconMaterial
+  icon="search"
+  class="is-search-icon"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  SVG を表示
+  src/assets/images/icon/close.svg を読む
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<IconMaterial svg="close" />
+
+<IconMaterial
+  svg="menu"
+  class="is-menu-icon"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  SVG を装飾用途で使う
+  alt が空文字なので aria-hidden="true" になる
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<IconMaterial
+  svg="logo-mark"
+  alt=""
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  SVG に意味を持たせる
+  role="img" + aria-label が付く
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<IconMaterial
+  svg="warning"
+  alt="警告"
+ />
+
+<IconMaterial
+  svg="close"
+  alt="閉じる"
+  class="is-close-icon"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  svg が見つからない場合は icon にフォールバック
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<IconMaterial
+  svg="not-found-icon"
+  icon="help"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  追加クラスを付ける
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<IconMaterial
+  icon="favorite"
+  class="is-active"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  button / link の中で使う例
+  操作名は親側で与えるのが基本
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<button type="button" aria-label="メニューを開く">
+  <IconMaterial icon="menu" />
+</button>
+
+<a href="/search" aria-label="検索ページへ移動">
+  <IconMaterial icon="search" />
+</a>

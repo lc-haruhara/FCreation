@@ -1,0 +1,481 @@
+---
+import { ButtonIcon } from "../../../../src/components/elements/index";
+---
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::
+
+ButtonIcon の Props 一覧
+(app/src/components/elements/buttons/ButtonIcon/ButtonIcon.astro)
+
+icon?: string
+表示する Material Symbols のアイコン名です。
+未指定時は "chevron_forward" です。
+
+例:
+- icon="chevron_forward"
+- icon="menu"
+- icon="close"
+- icon="search"
+
+--------------------------------
+
+svg?: string
+src/assets/images/icon/*.svg のファイル名を指定します。
+拡張子 .svg は不要です。
+
+例:
+- svg="close"
+- svg="logo-mark"
+
+※ IconMaterial 側で svg が使われます。
+※ icon は svg が見つからないときのフォールバック用途も兼ねます。
+
+--------------------------------
+
+alt?: string
+SVG表示時の代替テキストです。
+装飾用途なら空文字のままで問題ありません。
+
+例:
+- alt=""
+- alt="閉じる"
+- alt="検索"
+
+※ 主に svg 利用時の説明用です。
+※ a / button として使う場合の操作名は aria-label で与えるのが基本です。
+
+--------------------------------
+
+url?: string
+リンク先URLを直接指定します。
+page が未指定のときに使われます。
+指定され、かつ button が false の場合は <a> として描画されます。
+
+主な用途:
+- 外部リンク
+- サイト内URLの直接指定
+- アンカーリンク
+- 電話リンク
+- メールリンク
+- ダウンロードリンク
+
+例:
+- url="/contact"
+- url="https://example.com"
+- url="#section"
+- url="090-1234-5678"
+- url="info@example.com"
+
+電話番号っぽい文字列は tel: に、
+メールアドレスっぽい文字列は mailto: に
+内部で自動正規化されます。
+
+--------------------------------
+
+page?: keyof typeof pages | PageDef
+サイト内ページへのリンクを指定します。
+指定すると pages 定義から path を解決します。
+
+button が false の場合は <a> として描画されます。
+
+■ 文字列キーの場合
+pages 定義のキーを指定します。
+
+例:
+- page="home"
+- page="about"
+- page="contact"
+
+■ PageDef の場合
+ページ定義オブジェクトをそのまま渡せます。
+
+例:
+- page={pages.home}
+- page={pages.about}
+
+※ page が指定されている場合は url より優先されます。
+
+--------------------------------
+
+button?: boolean
+true の場合は <button type="button"> として描画されます。
+
+描画優先順位:
+- button が true → <button type="button">
+- button が false で page または url がある → <a>
+- それ以外 → <span>
+
+JSイベント用の押下要素として使いたい場合に指定します。
+page / url があっても button が true なら button が優先されます。
+
+--------------------------------
+
+id?: string
+ルート要素の id 属性に入ります。
+
+--------------------------------
+
+class?: string | string[]
+追加クラスです。
+
+- string の場合はそのまま追加
+- string[] の場合は各要素を追加
+
+ベースクラスの `c-button-icon` に対して追加されます。
+
+--------------------------------
+
+data?: Record<string, string | number | boolean | null | undefined>
+data-* 属性のまとめ指定です。
+
+例:
+data={{
+  action: "open-menu",
+  state: "closed",
+  "drawer-open": true,
+}}
+
+上記は以下のように出力されます。
+
+- data-action="open-menu"
+- data-state="closed"
+- data-drawer-open
+
+付与ルール:
+- true → 属性名のみ付与
+- false / null / undefined / "" → 付与しない
+- それ以外 → 文字列化して付与
+
+--------------------------------
+
+aria?: Record<string, string | number | boolean | null | undefined>
+aria-* 属性のまとめ指定です。
+
+例:
+aria={{
+  label: "メニューを開く",
+  controls: "drawer-menu",
+  expanded: "false",
+}}
+
+上記は以下のように出力されます。
+
+- aria-label="メニューを開く"
+- aria-controls="drawer-menu"
+- aria-expanded="false"
+
+付与ルール:
+- true → 属性名のみ付与
+- false / null / undefined / "" → 付与しない
+- それ以外 → 文字列化して付与
+
+--------------------------------
+
+external?: boolean
+外部リンク扱いを明示するフラグです。
+
+外部リンク扱いになった場合、
+download 未指定なら以下が付きます。
+
+- target="_blank"
+- rel="noopener noreferrer external"
+
+判定ルール:
+- external が true / false ならその値を優先
+- 未指定時は URL を解決して外部リンクか自動判定
+- mailto: / tel: / #anchor は外部リンク扱いしません
+
+--------------------------------
+
+download?: boolean | string
+a タグ時の download 属性です。
+
+例:
+- download
+- download="document.pdf"
+
+download が指定されている場合は
+外部リンクでも自動で新規タブは開きません。
+
+--------------------------------
+
+描画タグの優先順位
+
+- button が true → <button type="button">
+- button が false で page または url がある → <a>
+- それ以外 → <span>
+
+--------------------------------
+
+page / url の優先順位
+
+- page が指定されている場合は page を優先
+- page が未指定の場合は url を使用
+
+--------------------------------
+
+href の自動正規化
+
+a タグとして描画される場合、
+page / url から解決した値は必要に応じて以下のように正規化されます。
+
+- 電話番号っぽい文字列 → tel:
+- メールアドレスっぽい文字列 → mailto:
+- それ以外 → 指定値をそのまま使用
+
+例:
+- "090-1234-5678" → "tel:090-1234-5678"
+- "info@example.com" → "mailto:info@example.com"
+
+--------------------------------
+
+aria-label の自動補足
+
+アイコン単体UIでは aria-label が操作名になるため、
+aria.label が指定されている場合は用途に応じて補足文が自動追加されます。
+
+追加される補足:
+- mailto: → メールを送る
+- tel: → 電話をかける
+- 外部リンクで新規タブ → 新しいタブで開く
+- download 指定あり → ダウンロード
+
+例:
+aria={{ label: "お問い合わせ" }}
++
+url="mailto:info@example.com"
+
+→ aria-label="お問い合わせ（メールを送る）"
+
+例:
+aria={{ label: "会社情報" }}
++
+url="https://example.com"
+
+→ aria-label="会社情報（新しいタブで開く）"
+
+※ aria.label が未指定なら自動補足は行われません。
+※ アイコンだけで意味を持つ a / button では aria.label 指定を基本推奨します。
+
+--------------------------------
+
+運用ルール（推奨）
+
+- サイト内リンク → page を使う
+- 外部リンク / mail / tel / download / anchor → url を使う
+- JSイベント用の押下要素 → button={true} を使う
+- 装飾だけでクリック不可 → 何も渡さず span として使う
+- アイコンだけの操作UI → aria={{ label: "..." }} を付ける
+
+:::::::::::::::::::::::::::::::::::::::::::: -->
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  基本：span として使う
+  クリック不可の装飾アイコン
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon />
+
+<ButtonIcon icon="chevron_forward" />
+
+<ButtonIcon
+  icon="search"
+  class="is-search-icon"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  SVGアイコンを使う例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon svg="close" alt="" />
+
+<ButtonIcon
+  svg="logo-mark"
+  alt="ロゴ"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  aタグとして使う
+  page または url があり、button=false なら <a>
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  page="contact"
+  icon="chevron_forward"
+  aria={{ label: "Contactページへ移動" }}
+/>
+
+<ButtonIcon
+  url="/contact"
+  icon="chevron_forward"
+  aria={{ label: "Contactページへ移動" }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  page が url より優先される
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  page="contact"
+  url="/will-be-ignored"
+  icon="chevron_forward"
+  aria={{ label: "Contactページへ移動" }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  外部リンク
+  未指定でも自動判定で external 扱い
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  url="https://example.com/"
+  icon="open_in_new"
+  aria={{ label: "外部サイトを開く" }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  external を明示
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  url="https://example.com/"
+  icon="open_in_new"
+  external={true}
+  aria={{ label: "外部サイトを開く" }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  外部URLでも同一タブで開きたい場合
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  url="https://example.com/"
+  icon="arrow_outward"
+  external={false}
+  aria={{ label: "同一タブで開く" }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  アンカーリンク
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  url="#section"
+  icon="expand_more"
+  aria={{ label: "Sectionへ移動" }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  mailto / tel
+  aria-label には補足文が自動追加される
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  url="mailto:info@example.com?subject=Hello"
+  icon="mail"
+  aria={{ label: "お問い合わせ" }}
+/>
+
+<ButtonIcon
+  url="info@example.com"
+  icon="mail"
+  aria={{ label: "お問い合わせ" }}
+/>
+
+<ButtonIcon
+  url="090-1234-5678"
+  icon="call"
+  aria={{ label: "お電話はこちら" }}
+/>
+
+<ButtonIcon
+  url="tel:03-1234-5678"
+  icon="call"
+  aria={{ label: "代表番号" }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  ダウンロードリンク
+  aria-label には補足文が自動追加される
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  url="/files/sample.pdf"
+  icon="download"
+  download
+  aria={{ label: "PDF" }}
+/>
+
+<ButtonIcon
+  url="/files/sample.pdf"
+  icon="download"
+  download="document.pdf"
+  aria={{ label: "会社案内PDF" }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  button=true で <button type="button"> になる
+  page/url があっても button が最優先
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  button
+  icon="menu"
+  aria={{ label: "メニューを開く" }}
+/>
+
+<ButtonIcon
+  button
+  icon="close"
+  data={{
+    action: "close-dialog",
+  }}
+  aria={{
+    label: "ダイアログを閉じる",
+  }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  ドロワー / モーダルを開くボタンとして使う例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  button
+  icon="menu"
+  data={{
+    "modal-open": "hogehoge",
+  }}
+  aria={{
+    controls: "modal-hogehoge",
+    expanded: "false",
+    label: "hogehogeモーダルを開く",
+  }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  data属性 / aria属性をまとめて付与できる
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  button
+  icon="search"
+  id="search-trigger"
+  class={["extra-class-1", "extra-class-2"]}
+  data={{
+    action: "open-search",
+    state: "closed",
+  }}
+  aria={{
+    label: "検索を開く",
+    expanded: "false",
+    controls: "search-panel",
+  }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  button が最優先なので page/url があっても button になる
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  button
+  page="contact"
+  icon="menu"
+  aria={{ label: "メニューを開く" }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  補足
+  - アイコンだけのUIはテキストがないため、
+    a / button として使う場合は aria-label 推奨
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonIcon
+  button
+  icon="favorite"
+  aria={{ label: "お気に入りに追加" }}
+/>

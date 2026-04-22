@@ -1,0 +1,67 @@
+---
+import './InputFieldText.scss';
+
+import { InputFieldError, InputFieldHelpText, InputFieldLabel } from '@/components/elements/index';
+
+type Props = {
+  name: string;
+  type?: 'text' | 'email' | 'tel';
+  label?: string;
+  required?: boolean;
+  placeholder?: string;
+  maxLength?: number;
+  autocomplete?: string;
+  helpText?: string;
+  error?: string;
+  value?: string;
+};
+
+const {
+  name,
+  type = 'text',
+  label,
+  required,
+  placeholder,
+  maxLength,
+  autocomplete,
+  helpText,
+  error,
+  value = '',
+}: Props = Astro.props;
+
+const inputId = name;
+const errorId = `error-${name}`;
+const helpTextId = `help-${name}`;
+const hasError = Boolean(error);
+
+const describedBy = [helpText ? helpTextId : null, hasError ? errorId : null]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<div class="c-input-field _type-text">
+  {label ? <InputFieldLabel as="label" for={inputId} text={label} required={required} /> : null}
+
+  <div class="c-input-field-input">
+    <span class="c-input-field-input-body">
+      <input
+        id={inputId}
+        name={name}
+        type={type}
+        value={value}
+        maxlength={maxLength}
+        autocomplete={autocomplete}
+        inputmode={type === 'email' ? 'email' : type === 'tel' ? 'tel' : undefined}
+        required={required}
+        aria-invalid={hasError ? 'true' : 'false'}
+        aria-describedby={describedBy || undefined}
+        data-input-required={required ? '' : undefined}
+        placeholder=" "
+      />
+    </span>
+
+    {helpText ? <InputFieldHelpText id={helpTextId} text={helpText} /> : null}
+  </div>
+
+  <InputFieldError id={errorId} error={error} />
+</div>

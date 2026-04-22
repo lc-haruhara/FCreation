@@ -1,0 +1,16 @@
+---
+import './InputFieldHelpText.scss';
+
+type Props = {
+  id: string;
+  text?: string;
+};
+
+const { id, text }: Props = Astro.props;
+
+if (!text) {
+  return null;
+}
+---
+
+<p id={id} class="c-input-field-help">{text}</p>

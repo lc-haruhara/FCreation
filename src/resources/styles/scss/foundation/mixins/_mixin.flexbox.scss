@@ -1,0 +1,103 @@
+@use 'sass:map';
+@use '../variable' as *;
+@use '../color' as *;
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 FlexBox
+//
+// 使い方:
+//
+// @include Flex;
+// → display: flex;
+// → flex-wrap: wrap;
+// → justify-content: space-between;
+//
+// @include Flex(left);
+// → justify-content: flex-start;
+//
+// @include Flex(center, center);
+// → justify-content: center;
+// → align-items: center;
+//
+// @include Flex(right, top);
+// → justify-content: flex-end;
+// → align-items: flex-start;
+//
+// @include Flex(left, none, 2rem);
+// → justify-content: flex-start;
+// → align-items は出力しない
+// → gap: 2rem;
+//
+// @include Flex(between, center, 24px);
+// → justify-content: space-between;
+// → align-items: center;
+// → gap: 24px;
+//
+// @include Flex(center, center, 1rem, nowrap);
+// → justify-content: center;
+// → align-items: center;
+// → gap: 1rem;
+// → flex-wrap: nowrap;
+//
+// @include FlexItem(2);
+// → 2カラム
+//
+// @include FlexItem(3, 1.5rem);
+// → gap を 1.5rem とした 3カラム
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+$flex-justify-aliases: (
+  left: flex-start,
+  start: flex-start,
+  center: center,
+  right: flex-end,
+  end: flex-end,
+  between: space-between,
+  around: space-around,
+  evenly: space-evenly,
+);
+$flex-align-aliases: (
+  top: flex-start,
+  start: flex-start,
+  center: center,
+  bottom: flex-end,
+  end: flex-end,
+  stretch: stretch,
+  baseline: baseline,
+  none: null,
+);
+
+@function flex-alias($value, $aliases) {
+  @if $value ==null {
+    @return null;
+  }
+
+  @if map.has-key($aliases, $value) {
+    @return map.get($aliases, $value);
+  }
+
+  @return $value;
+}
+
+@mixin Flex($x: between, $y: null, $gap: null, $wrap: wrap) {
+  $justify: flex-alias($x, $flex-justify-aliases);
+  $align: flex-alias($y, $flex-align-aliases);
+
+  display: flex;
+  flex-wrap: $wrap;
+  justify-content: $justify;
+
+  @if $align !=null {
+    align-items: $align;
+  }
+
+  @if $gap !=null {
+    gap: $gap;
+  }
+}
+
+@mixin FlexItem($col, $gap: 2rem) {
+  width: calc((100% - #{$gap} * (#{$col} - 1)) / #{$col});
+}

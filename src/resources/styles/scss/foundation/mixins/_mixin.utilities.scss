@@ -1,0 +1,14 @@
+@use 'sass:map';
+@use '../variable' as *;
+@use '../color' as *;
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 FocusStyle
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+@mixin FocusStyle {
+  outline: 2px solid color(link);
+  outline-offset: 2px;
+  // border-radius: 0.25rem;
+}

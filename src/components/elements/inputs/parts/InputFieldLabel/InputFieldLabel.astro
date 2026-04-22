@@ -1,0 +1,29 @@
+---
+import './InputFieldLabel.scss';
+
+type Props = {
+  as?: 'label' | 'legend';
+  for?: string;
+  text?: string;
+  required?: boolean;
+  class?: string;
+};
+
+const {
+  as = 'label',
+  for: htmlFor,
+  text = '',
+  required = false,
+  class: className = '',
+}: Props = Astro.props;
+
+const Tag = as;
+const attrs = as === 'label' ? { for: htmlFor } : {};
+---
+
+{
+  <Tag {...attrs} class={`c-input-field-label ${className}`.trim()}>
+    <span class="c-input-field-label-text">{text}</span>
+    {required ? <span class="c-input-field-label-required">必須</span> : null}
+  </Tag>
+}

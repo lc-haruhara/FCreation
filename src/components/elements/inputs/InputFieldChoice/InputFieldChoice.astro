@@ -1,0 +1,98 @@
+---
+import './InputFieldChoice.scss';
+
+import { InputFieldError, InputFieldHelpText, InputFieldLabel } from '@/components/elements/index';
+import type { InputOption } from '@/core/types/inputs/inputFields.type';
+
+type Props = {
+  name: string;
+  type: 'radio' | 'checkbox-group';
+  label?: string;
+  required?: boolean;
+  options: InputOption[];
+  helpText?: string;
+  error?: string;
+  value?: string | string[];
+  hideLegend?: boolean;
+};
+
+const {
+  name,
+  type,
+  label,
+  required,
+  options,
+  helpText,
+  error,
+  value,
+  hideLegend = false,
+} = Astro.props;
+
+const errorId = `error-${name}`;
+const helpTextId = `help-${name}`;
+const isRadio = type === 'radio';
+const hasError = Boolean(error);
+
+const describedBy = [helpText ? helpTextId : null, hasError ? errorId : null]
+  .filter(Boolean)
+  .join(' ');
+
+const values = Array.isArray(value) ? value : typeof value === 'string' ? [value] : [];
+---
+
+<fieldset
+  class:list={[
+    'c-input-field',
+    {
+      '_type-radio': type === 'radio',
+      '_type-checkbox-group': type === 'checkbox-group',
+    },
+  ]}
+  aria-describedby={describedBy || undefined}
+>
+  {
+    label ? (
+      <InputFieldLabel
+        as="legend"
+        text={label}
+        required={required}
+        class={hideLegend ? 'f-utility-sr-only' : ''}
+      />
+    ) : null
+  }
+
+  <div class="c-input-field-input">
+    <div class="c-input-field-choice">
+      {
+        options.map((option, index) => {
+          const checked = isRadio ? values[0] === option.value : values.includes(option.value);
+
+          return (
+            <label class="c-input-field-choice-item">
+              <span class="c-input-field-choice-item-body">
+                <input
+                  id={`${name}-${index}`}
+                  name={name}
+                  type={isRadio ? 'radio' : 'checkbox'}
+                  value={option.value}
+                  checked={checked}
+                  required={isRadio ? required : undefined}
+                  aria-invalid={hasError ? 'true' : 'false'}
+                  aria-describedby={describedBy || undefined}
+                  data-input-required={required ? '' : undefined}
+                />
+                <span class="c-input-field-choice-item-elm">
+                  <span />
+                </span>
+                <span class="c-input-field-choice-item-text">{option.label}</span>
+              </span>
+            </label>
+          );
+        })
+      }
+    </div>
+    {helpText ? <InputFieldHelpText id={helpTextId} text={helpText} /> : null}
+  </div>
+
+  <InputFieldError id={errorId} error={error} />
+</fieldset>

@@ -1,0 +1,47 @@
+---
+import { NavigationGlobal } from '@/components/parts/index.ts';
+const { bodyClass = '', showTopLoading = false } = Astro.props;
+import { Footer } from '@/layouts/assets/index.ts';
+---
+
+<body class={bodyClass} ontouchstart="">
+  <div id="home"></div>
+
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/*                                                    */}
+  {/* Main Wrap                                          */}
+  {/*                                                    */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <div class:list={['l-main-root-wrap', showTopLoading && '']}>
+    <NavigationGlobal showNav={true} />
+
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Page Contents                                     */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <main>
+      <slot />
+    </main>
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Page Extra                                       */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <slot name="page-extra" />
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Footer                                            */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <Footer />
+  </div>
+
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/*                                                    */}
+  {/* Main Modal Wrap                                    */}
+  {/*                                                    */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <div class="l-main-root-modal" aria-hidden="true" inert>
+    <slot name="modals" />
+  </div>
+
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/* Common Scripts                                   */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <slot name="scripts" />
+</body>

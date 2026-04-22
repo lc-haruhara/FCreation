@@ -1,0 +1,98 @@
+@use 'sass:map';
+@charset "utf-8";
+
+// 💬 Description.........................................
+//
+// Color設定をするscss
+//
+// ........................................................
+
+$colors: (
+  text: (
+    weak: #000,
+    light: #000,
+    base: #000,
+    strong: #000,
+    heavy: #000,
+  ),
+
+  main: (
+    weak: #000,
+    light: #000,
+    base: #000,
+    strong: #000,
+    heavy: #000,
+  ),
+
+  sub: (
+    weak: #000,
+    light: #000,
+    base: #000,
+    strong: #000,
+    heavy: #000,
+  ),
+
+  accent: (
+    weak: #000,
+    light: #000,
+    base: #000,
+    strong: #000,
+    heavy: #000,
+  ),
+
+  border: (
+    light: #000,
+    base: #000,
+    strong: #000,
+  ),
+
+  link: (
+    text: #000,
+    base: #006eff,
+    background: #000,
+  ),
+
+  link-hover: (
+    text: #000,
+    base: #006eff,
+    background: #000,
+  ),
+
+  status: (
+    submit: #000,
+    success: #18bcc2,
+    error: #f33065,
+  ),
+
+  sns: (
+    facebook: #1877f2,
+    twitter: #1da1f2,
+    line: #06c755,
+    hateb: #01a5df,
+    pocket: #ef4056,
+    youtube: #ff0000,
+    x: #000,
+    feedly: #6cc655,
+    note: #41c9b4,
+    rss: #f78422,
+  ),
+);
+
+// ========================================
+// Color Function
+// ========================================
+@function color($group, $tone: base) {
+  $group-map: map.get($colors, $group);
+
+  @if $group-map ==null {
+    @error "Undefined color group: #{$group}";
+  }
+
+  $value: map.get($group-map, $tone);
+
+  @if $value ==null {
+    @error "Undefined color tone: #{$group}.#{$tone}";
+  }
+
+  @return $value;
+}

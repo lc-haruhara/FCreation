@@ -1,0 +1,144 @@
+@use 'resources/styles/scss/foundation' as *;
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 Tab
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.c-tab {
+  width: 100%;
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 TabNav
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.c-tab-panel-section {
+  display: none;
+  margin-top: 2rem;
+  font-weight: 700;
+  opacity: 0;
+  /* TabCommon/assets/tabCommon.ts の activateDelay の半分の数値を合わせている */
+  transition:
+    opacity 0.25s ease,
+    display 0.25s ease;
+  transition-behavior: allow-discrete;
+  will-change: transform, opacity, display;
+}
+
+.c-tab-panel-section.is-active {
+  display: block;
+  opacity: 1;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 TabCommonButton
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.c-tab-nav {
+  position: relative;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  -webkit-overscroll-behavior: none;
+  overscroll-behavior: none;
+  scrollbar-width: none; // FireFox用
+  -ms-overflow-style: none; // IE,edge用
+
+  &::-webkit-scrollbar {
+    // Chrome,Safari用
+    display: none;
+  }
+
+  &-body {
+    @include Flex(flex-start);
+    position: relative;
+    flex-wrap: nowrap;
+    gap: 0;
+    //ボタンの数によって調整
+    width: 142%;
+  }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 TabCommonButton
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.c-tab-nav-button {
+  position: relative;
+  z-index: 1;
+  width: 20%;
+  padding: 0.75em 1em;
+  font-weight: 700;
+  cursor: grab;
+  transition: 0.25s ease;
+  @include FontStyle(s);
+
+  &:nth-child(1)::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0.25em;
+    content: '';
+    background: color(link);
+    transition: 0.25s ease;
+    will-change: transform;
+  }
+
+  &-text {
+    position: relative;
+    z-index: 10;
+  }
+
+  &.is-active {
+    color: #fff;
+  }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// 🍟 TabCommonButtonActive
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+.c-tab-nav:has(.c-tab-nav-button:nth-child(2).is-active) {
+  .c-tab-nav-button::after {
+    translate: 100% 0;
+  }
+}
+
+.c-tab-nav:has(.c-tab-nav-button:nth-child(3).is-active) {
+  .c-tab-nav-button::after {
+    translate: 200% 0;
+  }
+}
+
+.c-tab-nav:has(.c-tab-nav-button:nth-child(4).is-active) {
+  .c-tab-nav-button::after {
+    translate: 300% 0;
+  }
+}
+
+.c-tab-nav:has(.c-tab-nav-button:nth-child(5).is-active) {
+  .c-tab-nav-button::after {
+    translate: 400% 0;
+  }
+}
+
+.c-tab-nav:has(.c-tab-nav-button:nth-child(6).is-active) {
+  .c-tab-nav-button::after {
+    translate: 500% 0;
+  }
+}
+
+.c-tab-nav:has(.c-tab-nav-button:nth-child(7).is-active) {
+  .c-tab-nav-button::after {
+    translate: 600% 0;
+  }
+}

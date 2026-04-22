@@ -1,0 +1,32 @@
+---
+import './ListCommon.scss';
+
+type ListType = 'default' | 'dot' | 'ol' | 'dl';
+
+interface Props {
+  listType?: ListType;
+  class?: string;
+}
+
+const { listType = 'default', class: className = '' } = Astro.props as Props;
+---
+
+{
+  listType === 'ol' ? (
+    <ol class:list={['c-list-common-ol', className]}>
+      <slot />
+    </ol>
+  ) : listType === 'dl' ? (
+    <dl class:list={['c-list-common-dl', className]}>
+      <slot />
+    </dl>
+  ) : listType === 'dot' ? (
+    <ul class:list={['c-list-common-dot', className]}>
+      <slot />
+    </ul>
+  ) : (
+    <ul class:list={['c-list-common', className]}>
+      <slot />
+    </ul>
+  )
+}

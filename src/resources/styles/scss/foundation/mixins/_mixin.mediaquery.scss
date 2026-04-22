@@ -1,0 +1,31 @@
+@use 'sass:map';
+@use '../variable' as *;
+@use '../color' as *;
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 MediaQuery
+//
+//  @include Breakpoint(inch11) {
+//    ...
+//  }
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+$breakpoints: (
+  mobile: 580px,
+  inch7: 850px,
+  inch11: 1100px,
+  inch13: 1300px,
+  inch15: 1580px,
+) !default;
+
+@mixin Breakpoint($name) {
+  $breakpoint: map.get($breakpoints, $name);
+
+  @if not $breakpoint {
+    @error "Unknown breakpoint: #{$name}";
+  }
+
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}

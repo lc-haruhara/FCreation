@@ -1,0 +1,327 @@
+---
+import { InputFieldText } from "../../../../../src/components/elements/index";
+---
+<!-- ::::::::::::::::::::::::::::::::::::::::::::
+
+InputFieldText の Props 一覧
+(app/src/components/elements/inputs/InputFieldText/InputFieldText.astro)
+
+field: ContactField
+入力項目の定義オブジェクトです。
+このコンポーネントでは以下の type だけ描画できます。
+
+- text
+- email
+- tel
+
+それ以外の type が渡された場合は
+Error を throw します。
+
+主に使用するプロパティ:
+- field.name
+- field.type
+- field.label
+- field.required
+- field.maxLength
+- field.autocomplete
+- field.helpText
+
+--------------------------------
+
+error?: string
+エラーメッセージです。
+
+指定されている場合:
+- aria-invalid="true" になる
+- aria-describedby に error-{field.name} が含まれる
+- <InputFieldError> にエラーメッセージが渡される
+
+未指定または空文字の場合:
+- aria-invalid="false" になる
+- エラー文言は表示されない
+- helpText がなければ aria-describedby 自体も付かない
+
+--------------------------------
+
+value?: string
+input の value 属性に入る値です。
+未指定時は空文字 `''` になります。
+
+確認画面から戻した値の再表示や、
+初期値の受け渡しに使います。
+
+--------------------------------
+
+描画できる field.type
+
+- text
+- email
+- tel
+
+上記以外は描画不可です。
+
+例:
+- field.type = "text" → OK
+- field.type = "email" → OK
+- field.type = "tel" → OK
+- field.type = "textarea" → NG
+- field.type = "select" → NG
+
+--------------------------------
+
+id / name の付与ルール
+
+input の id と name は
+どちらも `field.name` から生成されます。
+
+- id={field.name}
+- name={field.name}
+
+また、関連IDは以下の命名で自動生成されます。
+
+- helpTextId = `help-${field.name}`
+- errorId = `error-${field.name}`
+
+--------------------------------
+
+label の付与
+
+ラベルは <InputFieldLabel> で描画されます。
+
+- as="label"
+- for={field.name}
+- text={field.label}
+- required={field.required}
+
+これにより input と label が関連付けられます。
+
+--------------------------------
+
+maxlength の付与
+
+`maxlength={field.maxLength}` がそのまま input に渡されます。
+
+例:
+- field.maxLength = 255 → maxlength="255"
+
+--------------------------------
+
+autocomplete の付与
+
+`autocomplete={field.autocomplete}` がそのまま input に渡されます。
+
+例:
+- autocomplete="name"
+- autocomplete="email"
+- autocomplete="tel"
+
+--------------------------------
+
+inputmode の付与ルール
+
+field.type に応じて inputmode が自動で切り替わります。
+
+- email → inputmode="email"
+- tel → inputmode="tel"
+- text → 付与しない
+
+--------------------------------
+
+required の付与
+
+field.required が true の場合:
+- required 属性が付く
+- data-input-required が付く
+- Label 側でも required 表示に使われる
+
+field.required が false の場合:
+- required 属性は付かない
+- data-input-required も付かない
+
+--------------------------------
+
+aria-invalid の付与ルール
+
+error の有無で自動切り替えされます。
+
+- error がある → aria-invalid="true"
+- error がない → aria-invalid="false"
+
+--------------------------------
+
+aria-describedby の付与ルール
+
+helpText と error の有無に応じて、
+必要な ID だけを連結して付与します。
+
+- helpText のみある → help-{field.name}
+- error のみある → error-{field.name}
+- 両方ある → "help-{field.name} error-{field.name}"
+- 両方ない → aria-describedby は付与しない
+
+--------------------------------
+
+helpText の描画
+
+`field.helpText` がある場合だけ
+<InputFieldHelpText> が描画されます。
+
+- id={help-{field.name}}
+- text={field.helpText}
+
+helpText がない場合は描画されません。
+
+--------------------------------
+
+error の描画
+
+<InputFieldError> は常に描画されますが、
+実際の表示内容は `error` の有無に依存します。
+
+- id={error-{field.name}}
+- error={error}
+
+--------------------------------
+
+placeholder の扱い
+
+input には固定で `placeholder=" "` が入ります。
+
+これは見た目やスタイル制御
+（たとえば floating label 系）を目的とした実装です。
+
+--------------------------------
+
+運用ルール（推奨）
+
+- 1行入力の通常テキスト → type="text"
+- メールアドレス入力 → type="email"
+- 電話番号入力 → type="tel"
+- 補足説明が必要な場合 → helpText を使う
+- バリデーションエラー表示 → error を渡す
+- 確認画面差し戻し時の再表示 → value を渡す
+
+:::::::::::::::::::::::::::::::::::::::::::: -->
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  基本：text 入力
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<InputFieldText
+  field={{
+    name: 'name',
+    type: 'text',
+    label: 'お名前',
+    required: true,
+    maxLength: 100,
+    autocomplete: 'name',
+  }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  value を渡す例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<InputFieldText
+  field={{
+    name: 'company',
+    type: 'text',
+    label: '会社名',
+    required: false,
+    maxLength: 100,
+    autocomplete: 'organization',
+  }}
+  value="株式会社サンプル"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  helpText を表示する例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<InputFieldText
+  field={{
+    name: 'email',
+    type: 'email',
+    label: 'メールアドレス',
+    required: true,
+    maxLength: 255,
+    autocomplete: 'email',
+    helpText: 'メールアドレスを入力してください',
+  }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  error を表示する例
+  aria-invalid="true" になる
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<InputFieldText
+  field={{
+    name: 'email',
+    type: 'email',
+    label: 'メールアドレス',
+    required: true,
+    maxLength: 255,
+    autocomplete: 'email',
+    helpText: 'メールアドレスを入力してください',
+  }}
+  error="メールアドレスの形式が正しくありません"
+  value="abc"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  tel 入力の例
+  inputmode="tel" が自動付与される
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<InputFieldText
+  field={{
+    name: 'tel',
+    type: 'tel',
+    label: '電話番号',
+    required: false,
+    maxLength: 20,
+    autocomplete: 'tel',
+    helpText: 'ハイフンありで入力してください',
+  }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  email 入力の例
+  inputmode="email" が自動付与される
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<InputFieldText
+  field={{
+    name: 'email',
+    type: 'email',
+    label: 'メールアドレス',
+    required: true,
+    maxLength: 255,
+    autocomplete: 'email',
+  }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  必須ではない text 入力
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<InputFieldText
+  field={{
+    name: 'department',
+    type: 'text',
+    label: '部署名',
+    required: false,
+    maxLength: 100,
+    autocomplete: 'organization-title',
+  }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  NG例
+  text / email / tel 以外は render 不可
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+{/*
+<InputFieldText
+  field={{
+    name: 'message',
+    type: 'textarea',
+    label: 'お問い合わせ内容',
+    required: true,
+    maxLength: 1000,
+  }}
+/>
+*/}

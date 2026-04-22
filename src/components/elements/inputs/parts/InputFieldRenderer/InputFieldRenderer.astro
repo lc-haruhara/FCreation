@@ -1,0 +1,72 @@
+---
+import '../InputFieldCommon/InputFieldCommon.scss';
+
+import {
+  InputFieldChoice,
+  InputFieldSelect,
+  InputFieldText,
+  InputFieldTextarea,
+} from '@/components/elements';
+import type { InputField } from '@/core/types/inputs/inputFields.type';
+
+type Props = {
+  field: InputField;
+  error?: string;
+  value?: string | string[];
+};
+
+const { field, error, value } = Astro.props;
+---
+
+<div class="c-input-field-renderer">
+  {
+    field.type === 'radio' || field.type === 'checkbox-group' ? (
+      <InputFieldChoice
+        name={field.name}
+        type={field.type}
+        label={field.label}
+        required={field.required}
+        helpText={field.helpText}
+        options={field.options}
+        error={error}
+        value={value}
+      />
+    ) : field.type === 'select' ? (
+      <InputFieldSelect
+        name={field.name}
+        label={field.label}
+        required={field.required}
+        helpText={field.helpText}
+        placeholder={field.placeholder}
+        options={field.options}
+        error={error}
+        value={typeof value === 'string' ? value : ''}
+      />
+    ) : field.type === 'textarea' ? (
+      <InputFieldTextarea
+        name={field.name}
+        label={field.label}
+        required={field.required}
+        helpText={field.helpText}
+        placeholder={field.placeholder}
+        maxLength={field.maxLength}
+        rows={field.rows}
+        error={error}
+        value={typeof value === 'string' ? value : ''}
+      />
+    ) : (
+      <InputFieldText
+        name={field.name}
+        type={field.type}
+        label={field.label}
+        required={field.required}
+        helpText={field.helpText}
+        placeholder={field.placeholder}
+        maxLength={field.maxLength}
+        autocomplete={field.autocomplete}
+        error={error}
+        value={typeof value === 'string' ? value : ''}
+      />
+    )
+  }
+</div>

@@ -1,0 +1,65 @@
+---
+import './AccordionCommon.scss';
+
+export type Props = {
+  as?: 'div' | 'section';
+  class?: string | string[];
+  id: string;
+  title: string;
+  open?: boolean;
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
+  useRegion?: boolean;
+};
+
+const {
+  as = 'div',
+  class: className = '',
+  id,
+  title,
+  open = false,
+  headingLevel = 3,
+  useRegion = false,
+} = Astro.props;
+
+const buttonId = `${id}-button`;
+const panelId = `${id}-panel`;
+const HeadingTag = `h${headingLevel}` as 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+const RootTag = as;
+---
+
+<RootTag
+  class:list={['c-accordion-item', { 'is-open': open }, className]}
+  data-accordion-item
+  data-open={open ? 'true' : 'false'}
+>
+  <HeadingTag class="c-accordion-item-heading">
+    <button
+      id={buttonId}
+      class="c-accordion-item-button"
+      type="button"
+      aria-expanded={open ? 'true' : 'false'}
+      aria-controls={panelId}
+      data-accordion-trigger
+    >
+      <span class="c-accordion-item-button-body">
+        <span class="c-accordion-item-button-label">{title}</span>
+        <span class="c-accordion-item-button-icon" aria-hidden="true"></span>
+      </span>
+    </button>
+  </HeadingTag>
+
+  <div
+    id={panelId}
+    class="c-accordion-item-panel"
+    role={useRegion ? 'region' : undefined}
+    aria-labelledby={buttonId}
+    data-accordion-panel
+    hidden={!open}
+  >
+    <div class="c-accordion-item-panel-body">
+      <div class="c-accordion-item-panel-body-inner">
+        <slot />
+      </div>
+    </div>
+  </div>
+</RootTag>

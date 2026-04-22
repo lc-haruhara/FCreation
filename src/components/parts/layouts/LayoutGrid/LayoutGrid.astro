@@ -1,0 +1,45 @@
+---
+import './LayoutGrid.scss';
+
+type RootTag = 'div' | 'ul';
+type Columns = 1 | 2 | 3 | 4 | 5 | 6;
+type Dict = Record<string, string | number | boolean | null | undefined>;
+
+type Props = {
+  // 親要素のタグ
+  // 省略時は div
+  as?: RootTag;
+
+  // 列数
+  columns?: Columns;
+
+  // 追加クラス
+  class?: string | string[];
+
+  // data-* / aria-* をまとめて渡す用
+  data?: Dict;
+  aria?: Dict;
+};
+
+const { as = 'div', columns = 2, class: className, data, aria } = Astro.props;
+
+const Tag = as;
+
+const classes = ['c-layout-grid', `_cols${columns}`, className].flat().filter(Boolean).join(' ');
+
+const dataAttrs = Object.fromEntries(
+  Object.entries(data ?? {}).flatMap(([key, value]) =>
+    value == null ? [] : [[`data-${key}`, String(value)]],
+  ),
+);
+
+const ariaAttrs = Object.fromEntries(
+  Object.entries(aria ?? {}).flatMap(([key, value]) =>
+    value == null ? [] : [[`aria-${key}`, String(value)]],
+  ),
+);
+---
+
+<Tag class={classes} {...dataAttrs} {...ariaAttrs}>
+  <slot />
+</Tag>

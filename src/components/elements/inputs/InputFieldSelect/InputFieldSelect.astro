@@ -1,0 +1,75 @@
+---
+import './InputFieldSelect.scss';
+
+import {
+  IconMaterial,
+  InputFieldError,
+  InputFieldHelpText,
+  InputFieldLabel,
+} from '@/components/elements/index';
+import type { InputOption } from '@/core/types/inputs/inputFields.type';
+
+type Props = {
+  name: string;
+  label?: string;
+  required?: boolean;
+  placeholder?: string;
+  options: InputOption[];
+  helpText?: string;
+  error?: string;
+  value?: string;
+};
+
+const {
+  name,
+  label,
+  required,
+  placeholder = '選択してください',
+  options,
+  helpText,
+  error,
+  value = '',
+}: Props = Astro.props;
+
+const selectId = name;
+const errorId = `error-${name}`;
+const helpTextId = `help-${name}`;
+const hasError = Boolean(error);
+
+const describedBy = [helpText ? helpTextId : null, hasError ? errorId : null]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<div class="c-input-field _type-select">
+  {label ? <InputFieldLabel as="label" for={selectId} text={label} required={required} /> : null}
+
+  <div class="c-input-field-input">
+    <select
+      id={selectId}
+      name={name}
+      class:list={['c-input-field-select', { 'is-error': hasError }]}
+      required={required}
+      aria-invalid={hasError ? 'true' : 'false'}
+      aria-describedby={describedBy || undefined}
+      data-input-required={required ? '' : undefined}
+    >
+      <option value="">{placeholder}</option>
+
+      {
+        options.map((option) => (
+          <option value={option.value} selected={value === option.value}>
+            {option.label}
+          </option>
+        ))
+      }
+    </select>
+    <span class="c-input-field-select-icon">
+      <IconMaterial icon="keyboard_arrow_down" />
+    </span>
+
+    {helpText ? <InputFieldHelpText id={helpTextId} text={helpText} /> : null}
+  </div>
+
+  <InputFieldError id={errorId} error={error} />
+</div>

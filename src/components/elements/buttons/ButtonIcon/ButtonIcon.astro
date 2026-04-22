@@ -1,0 +1,182 @@
+---
+import './ButtonIcon.scss';
+
+import { IconMaterial } from '@/components/elements/index';
+import { pages } from '@/core/config/pages.config';
+import { resolveControlIcon, resolveLink, resolvePageOrHref } from '@/core/lib/links/link.lib';
+import type { Dict, LinkIconType } from '@/core/types/links/link.types';
+import type { PageDef } from '@/core/types/pages/pages.types';
+
+type TagName = 'span' | 'a' | 'button';
+type PageKey = keyof typeof pages;
+
+export type Props = {
+  /**
+   * 明示指定時は自動判定より優先
+   * 例: 'download' | 'mail' | 'tel' | 'external' | 'default'
+   */
+  icon?: LinkIconType;
+
+  /**
+   * src/assets/images/icon/*.svg のファイル名（拡張子不要）
+   * 指定時は icon より優先
+   */
+  svg?: string;
+
+  /**
+   * SVG表示時の代替テキスト
+   * 装飾用途なら空文字でOK
+   */
+  alt?: string;
+
+  url?: string;
+  page?: PageKey | PageDef;
+  button?: boolean;
+  id?: string;
+  class?: string | string[];
+  data?: Dict;
+  aria?: Dict;
+
+  /**
+   * 外部リンク判定を明示したい時に指定
+   */
+  external?: boolean;
+
+  /**
+   * aタグ時の download 属性
+   */
+  download?: boolean | string;
+
+  /**
+   * アイコンを非表示にしたい時だけ false
+   * 未指定なら自動表示
+   */
+  showIcon?: boolean;
+};
+
+const {
+  icon = '',
+  svg,
+  alt = '',
+  url = '',
+  page,
+  button = false,
+  id = '',
+  class: classProp = '',
+  data = {},
+  aria = {},
+  external,
+  download,
+  showIcon,
+} = Astro.props as Props;
+
+// page 指定があれば設定値から path を使い、なければ url を使う
+const rawResolvedUrl = resolvePageOrHref({ url, page });
+
+// button 指定が最優先
+// URL があれば a、どちらもなければ非操作の span として描画
+const tag: TagName = button ? 'button' : rawResolvedUrl ? 'a' : 'span';
+const Tag = tag;
+
+// download 属性の有無
+const hasDownload = download !== undefined && download !== false;
+
+// a 要素の時だけリンク情報を解決
+const link =
+  tag === 'a'
+    ? resolveLink({
+        rawHref: rawResolvedUrl,
+        currentUrl: Astro.url,
+        external,
+        hasDownload,
+      })
+    : null;
+
+// 表示アイコンを共通 util で解決
+// showIcon=false の時だけ非表示にする
+const controlIcon =
+  showIcon === false
+    ? {
+        showIcon: false,
+        icon: undefined,
+        svg: undefined,
+      }
+    : resolveControlIcon({
+        icon,
+        svg,
+        data,
+        isMailLink: link?.isMailLink,
+        isTelLink: link?.isTelLink,
+        opensInNewTab: link?.opensInNewTab,
+        hasDownload: tag === 'a' ? hasDownload : undefined,
+      });
+
+// ベースクラス + 任意クラスを結合
+const classes: string[] = ['c-button-icon'];
+if (Array.isArray(classProp)) classes.push(...classProp.filter(Boolean));
+else if (classProp) classes.push(classProp);
+
+// data オブジェクトを data-* 属性へ展開
+const dataAttrs: Record<string, string | true> = {};
+for (const [k, v] of Object.entries(data ?? {})) {
+  if (v === true) dataAttrs[`data-${k}`] = true;
+  else if (v === '' || v == null) continue;
+  else dataAttrs[`data-${k}`] = String(v);
+}
+
+// aria オブジェクトを aria-* 属性へ展開
+const ariaAttrs: Record<string, string | true> = {};
+for (const [k, v] of Object.entries(aria ?? {})) {
+  if (v === true) ariaAttrs[`aria-${k}`] = true;
+  else if (v === '' || v == null) continue;
+  else ariaAttrs[`aria-${k}`] = String(v);
+}
+
+// アイコン単体UIでは aria-label がアクセシブルネームになる
+// mail / tel / 外部 / download の補足だけ自動で追加する
+const baseAriaLabel = typeof aria?.label === 'string' && aria.label.trim() ? aria.label.trim() : '';
+
+if (baseAriaLabel) {
+  const suffixes: string[] = [];
+
+  if (link?.isMailLink) suffixes.push('メールを送る');
+  if (link?.isTelLink) suffixes.push('電話をかける');
+  if (link?.opensInNewTab) suffixes.push('新しいタブで開く');
+  if (hasDownload) suffixes.push('ダウンロード');
+
+  ariaAttrs['aria-label'] =
+    suffixes.length > 0 ? `${baseAriaLabel}（${suffixes.join('／')}）` : baseAriaLabel;
+}
+
+// タグごとの属性をまとめて組み立て
+const attrs: Record<string, any> = {
+  ...(id ? { id } : {}),
+  class: classes.join(' '),
+  ...dataAttrs,
+  ...ariaAttrs,
+  ...(tag === 'a' && link
+    ? {
+        href: link.href,
+        download,
+        target: link.target,
+        rel: link.rel,
+      }
+    : {}),
+  ...(tag === 'button' ? { type: 'button' } : {}),
+};
+---
+
+<Tag {...attrs}>
+  <span class="c-button-icon-body">
+    {
+      controlIcon.showIcon ? (
+        <IconMaterial
+          icon={controlIcon.icon}
+          svg={controlIcon.svg}
+          alt={alt}
+          aria-hidden={alt ? undefined : 'true'}
+        />
+      ) : null
+    }
+  </span>
+</Tag>

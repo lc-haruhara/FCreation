@@ -1,0 +1,23 @@
+@use 'resources/styles/scss/foundation' as *;
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 Link
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:where(a[href]):not([class]) {
+  position: relative;
+  font-weight: 700;
+  color: color(link);
+
+  &:focus-visible {
+    @include FocusStyle;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Icon - Blank
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .c-icon._open_in_new {
+    translate: 0 -6%;
+  }
+}

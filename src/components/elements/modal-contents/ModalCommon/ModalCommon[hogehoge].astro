@@ -1,0 +1,14 @@
+---
+import './ModalCommon.scss';
+
+export interface Props {
+  id?: string;
+}
+const { id = '' } = Astro.props;
+---
+
+<h2 class="c-modal-heading" id={`modal-${id}-title`}>hogehoge モーダルのタイトル</h2>
+
+<p class="c-modal-contents-description" id={`modal-contents-${id}-description`}>
+  モーダルのセクション説明
+</p>

@@ -1,0 +1,20 @@
+diff --git a/node_modules/@storybook-astro/framework/dist/middleware.js b/node_modules/@storybook-astro/framework/dist/middleware.js
+index f8ea823..40b8fc5 100644
+--- a/node_modules/@storybook-astro/framework/dist/middleware.js
++++ b/node_modules/@storybook-astro/framework/dist/middleware.js
+@@ -22,9 +22,14 @@ async function handlerFactory(integrations) {
+   });
+   addRenderers(container);
+   return async function handler(data) {
++    let componentId = data.component;
++    // Windows の絶対パス (例: D:/... や D:\...) を Vite が読める /@fs/... 形式に補正
++    if (typeof componentId === "string" && /^[A-Za-z]:[\\/]/.test(componentId)) {
++      componentId = `/@fs/${componentId.replace(/\\/g, "/")}`;
++    }
+     const { default: Component } = await import(
+       /* @vite-ignore */
+-      data.component
++      componentId
+     );
+     const processedArgs = await processImageMetadata(data.args || {});
+     const patchedComponent = patchCreateAstroCompat(Component);

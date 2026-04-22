@@ -1,0 +1,27 @@
+---
+import './404.scss';
+
+import { ButtonLink } from '@/components/elements/index';
+---
+
+<p>This Page is 404</p>
+<ButtonLink
+  url="/"
+  text="Home"
+  id="btn-link-1"
+  class={['extra-class-1', 'extra-class-2']}
+  size="md"
+  color="primary"
+  icon="chevron_forward"
+  iconPosition="right"
+  label=""
+  data={{
+    tracking: 'cta',
+    index: 1,
+    enabled: true,
+  }}
+  aria={{
+    label: 'Homeへ戻る',
+  }}
+  external={false}
+/>

@@ -1,0 +1,19 @@
+<script>
+  import initCommon from '@/resources/js/common.js';
+
+  let cleanup = () => {};
+
+  const mount = () => {
+    cleanup();
+    cleanup = initCommon() ?? (() => {});
+  };
+
+  document.addEventListener('astro:before-swap', () => {
+    cleanup();
+    cleanup = () => {};
+  });
+
+  document.addEventListener('astro:page-load', mount);
+
+  mount();
+</script>

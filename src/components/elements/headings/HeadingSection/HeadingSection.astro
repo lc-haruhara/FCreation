@@ -1,0 +1,102 @@
+---
+import './HeadingSection.scss';
+
+/**
+ * 見出しコンポーネント
+ * - h1〜h6 を切り替える
+ * - english / japanese を props で受ける
+ * - level に応じた class 名を親子に付与する
+ * - color を指定すると _color-xxx を付与
+ * - data / aria をまとめて渡せる
+ * - english / japanese が未指定なら、その要素は出力しない
+ * - 両方未指定なら見出し自体を出力しない
+ */
+export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+type HeadingTag = `h${HeadingLevel}`;
+type Dict = Record<string, string | number | boolean | null | undefined>;
+
+export type Props = {
+  level?: HeadingLevel;
+  english?: string;
+  japanese?: string;
+  color?: string;
+  id?: string;
+  class?: string | string[];
+  data?: Dict;
+  aria?: Dict;
+};
+
+const {
+  level = 2,
+  english = '',
+  japanese = '',
+  color = '',
+  id = '',
+  class: classProp = '',
+  data = {},
+  aria = {},
+} = Astro.props as Props;
+
+// h1〜h6 を決定
+const Tag = `h${level}` as HeadingTag;
+
+// 前後の空白を除去して、未指定判定しやすくする
+const englishText = english.trim();
+const japaneseText = japanese.trim();
+
+const hasEnglish = !!englishText;
+const hasJapanese = !!japaneseText;
+
+// 親見出しの class
+const classes: string[] = [`c-heading-section-level${level}`];
+
+if (color) classes.push(`_color-${color}`);
+
+if (Array.isArray(classProp)) {
+  classes.push(...classProp.filter(Boolean));
+} else if (classProp) {
+  classes.push(classProp);
+}
+
+// data-* を展開
+const dataAttrs: Record<string, string | true> = {};
+for (const [k, v] of Object.entries(data ?? {})) {
+  if (v === true) {
+    dataAttrs[`data-${k}`] = true;
+  } else if (v === '' || v == null) {
+    continue;
+  } else {
+    dataAttrs[`data-${k}`] = String(v);
+  }
+}
+
+// aria-* を展開
+const ariaAttrs: Record<string, string | true> = {};
+for (const [k, v] of Object.entries(aria ?? {})) {
+  if (v === true) {
+    ariaAttrs[`aria-${k}`] = true;
+  } else if (v === '' || v == null) {
+    continue;
+  } else {
+    ariaAttrs[`aria-${k}`] = String(v);
+  }
+}
+
+// 子要素側の class 名を親 level から組み立て
+const englishClass = `c-heading-section-level${level}-english`;
+const japaneseClass = `c-heading-section-level${level}-japanese`;
+---
+
+{
+  (hasEnglish || hasJapanese) && (
+    <Tag {...(id ? { id } : {})} class={classes.join(' ')} {...dataAttrs} {...ariaAttrs}>
+      {hasEnglish && (
+        <span class={englishClass}>
+          <span lang="en">{englishText}</span>
+        </span>
+      )}
+
+      {hasJapanese && <span class={japaneseClass}>{japaneseText}</span>}
+    </Tag>
+  )
+}

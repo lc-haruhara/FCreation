@@ -1,0 +1,56 @@
+---
+import type { ImageMetadata } from 'astro';
+import type { HTMLAttributes } from 'astro/types';
+import { Image as AstroImage } from 'astro:assets';
+
+interface Props extends Omit<HTMLAttributes<'img'>, 'src' | 'alt'> {
+  imagePath: string;
+  altText: string;
+}
+
+const { imagePath, altText, ...rest } = Astro.props as Props;
+
+const BASE_PATH = '/src/assets/images';
+const fullPath = `${BASE_PATH}/${imagePath}`;
+const isSvg = imagePath.toLowerCase().endsWith('.svg');
+
+// ラスター画像用
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/**/*.{jpeg,jpg,png,gif,webp,avif}',
+);
+
+// SVG文字列用
+const svgFiles = import.meta.glob<string>('/src/assets/images/**/*.svg', {
+  query: '?raw',
+  import: 'default',
+});
+
+let image: ImageMetadata | null = null;
+let svgContent: string | null = null;
+
+if (isSvg) {
+  const svgLoader = svgFiles[fullPath];
+
+  if (!svgLoader) {
+    throw new Error(`[SVG] "${fullPath}" not found.`);
+  }
+
+  svgContent = await svgLoader();
+} else {
+  const imageLoader = images[fullPath];
+
+  if (!imageLoader) {
+    throw new Error(`[Image] "${fullPath}" not found.`);
+  }
+
+  image = (await imageLoader()).default;
+}
+---
+
+{
+  isSvg && svgContent ? (
+    <Fragment set:html={svgContent} />
+  ) : image ? (
+    <AstroImage src={image} alt={altText} {...(rest as any)} />
+  ) : null
+}

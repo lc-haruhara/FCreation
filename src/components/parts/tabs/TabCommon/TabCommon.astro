@@ -1,0 +1,24 @@
+---
+import './TabCommon.scss';
+type Props = {
+  ariaLabel?: string;
+};
+
+const { ariaLabel = 'Tabs' } = Astro.props;
+---
+
+<div class="c-tab" data-tabs>
+  <div class="c-tab-nav" role="tablist" aria-label={ariaLabel}>
+    <div class="c-tab-nav-body">
+      <slot name="nav" />
+    </div>
+  </div>
+
+  <div class="c-tab-panel">
+    <slot name="panels" />
+  </div>
+</div>
+
+<script>
+  import './assets/tabCommon';
+</script>

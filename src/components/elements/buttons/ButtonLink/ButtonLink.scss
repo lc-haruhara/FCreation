@@ -1,0 +1,35 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-button-link {
+  position: relative;
+  display: inline-block;
+  transition: 0.25s ease;
+
+  &-body {
+    @include Flex(center, center);
+    gap: 0.25rem;
+  }
+
+  .c-icon {
+    display: block;
+  }
+
+  &:focus-visible {
+    @include FocusStyle;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Submit
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &[type='submit'] {
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 disabled
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &:disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    filter: grayscale(100%);
+  }
+}

@@ -1,0 +1,25 @@
+---
+import './InputFieldError.scss';
+
+import { IconMaterial } from '@/components/elements/index';
+
+type Props = {
+  id: string;
+  error?: string;
+  showIcon?: boolean;
+};
+
+const { id, error, showIcon = true }: Props = Astro.props;
+const hasError = Boolean(error);
+---
+
+<p id={id} class:list={['c-input-field-error', { 'is-show': hasError }]} aria-live="polite">
+  {
+    showIcon ? (
+      <span class="c-input-field-error-icon">
+        <IconMaterial icon="error" />
+      </span>
+    ) : null
+  }
+  <span class="c-input-field-error-text">{hasError ? error : ''}</span>
+</p>

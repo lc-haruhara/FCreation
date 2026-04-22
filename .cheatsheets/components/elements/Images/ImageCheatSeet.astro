@@ -1,0 +1,129 @@
+---
+import { Image } from "../../../../src/components/elements/index";
+---
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::
+
+Image のProps一覧（app/src/components/elements/images/Image/Image.astro）
+
+imagePath: string
+表示したい画像ファイル名 or images配下の相対パスを指定します。
+`/src/assets/images` はコンポーネント側で自動補完されるため不要です。
+
+例:
+- "sample-hero.jpg"
+- "common/logo-main.svg"
+- "pages/top/mv/main-visual.webp"
+
+実際には `/src/assets/images/${imagePath}` として解決されます。
+
+altText: string
+画像の代替テキストです。
+装飾ではなく意味のある画像には、内容が伝わる alt を必ず指定します。
+
+例:
+- altText="Hero demo"
+- altText="サービス紹介のメインビジュアル"
+
+HTMLAttributes<'img'> 由来の属性も利用可能
+このコンポーネントは `astro:assets` の `<Image />` をラップしているため、
+通常の img 系属性をそのまま追加できます。
+
+主な指定例:
+- class
+- id
+- loading
+- decoding
+- sizes
+- widths
+- width / height
+- format
+- quality
+- fetchpriority
+- style
+- data-*
+- aria-*
+
+補足:
+`src` と `alt` は内部で使用するため、
+代わりに `imagePath` と `altText` を使います。
+
+画像最適化について
+このコンポーネントは内部で `astro:assets` の `<Image />` を使っているため、
+Astro の画像最適化の対象になります。
+ローカル画像を import.meta.glob で解決しているので、通常の運用で問題なく最適化されます。
+
+存在しない画像を指定した場合
+`imagePath` に対応する画像が見つからない場合は Error を throw します。
+開発中にパスミスへすぐ気づける設計です。
+
+::::::::::::::::::::::::::::::::::::::::::::: -->
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  基本：ファイル名だけ指定
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<Image imagePath="sample-hero.jpg" altText="Hero demo" />
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  ネストされた画像も指定可能
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<Image
+  imagePath="common/logo-main.svg"
+  altText="サイトロゴ"
+/>
+
+<Image
+  imagePath="pages/top/mv/main-visual.webp"
+  altText="トップページのメインビジュアル"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  class / id を追加
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<Image
+  imagePath="sample-hero.jpg"
+  altText="Hero demo"
+  class="p-demo-hero-image"
+  id="hero-image"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  読み込み制御を追加
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<Image
+  imagePath="sample-hero.jpg"
+  altText="Hero demo"
+  loading="eager"
+  decoding="async"
+  fetchpriority="high"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  data-* / aria-* 属性もそのまま渡せる
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<Image
+  imagePath="sample-hero.jpg"
+  altText="Hero demo"
+  data-scroll-trigger-hero
+  data-section="hero"
+  aria-hidden="true"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  レスポンシブ用の属性を追加したい場合
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<Image
+  imagePath="sample-hero.jpg"
+  altText="Hero demo"
+  sizes="(max-width: 768px) 100vw, 1200px"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  width / height を明示したい場合
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<Image
+  imagePath="sample-hero.jpg"
+  altText="Hero demo"
+  width={1200}
+  height={800}
+/>

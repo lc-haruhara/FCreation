@@ -1,0 +1,144 @@
+---
+import './Link.scss';
+
+import type { HTMLAttributes } from 'astro/types';
+
+import { IconMaterial } from '@/components/elements/index';
+import { pages } from '@/core/config/pages.config';
+import {
+  extractTextFromHtml,
+  getLinkAssistiveTexts,
+  resolveControlIcon,
+  resolveLink,
+  resolvePageOrHref,
+  resolveTextLang,
+} from '@/core/lib/links/link.lib';
+import type { Dict, LinkIconType } from '@/core/types/links/link.types';
+import type { PageDef } from '@/core/types/pages/pages.types';
+
+type PageKey = keyof typeof pages;
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'href'> {
+  href?: string;
+  page?: PageKey | PageDef;
+
+  /**
+   * リンク本文の言語を明示したい時だけ指定
+   * 未指定なら slot 内容から自動判定
+   */
+  contentLang?: string;
+
+  /**
+   * アイコンを非表示にしたい時だけ false
+   * 未指定なら自動表示
+   */
+  showIcon?: boolean;
+
+  /**
+   * 明示指定時は自動判定より優先
+   */
+  icon?: LinkIconType;
+
+  /**
+   * svg 明示指定時は最優先
+   */
+  svg?: string;
+
+  /**
+   * data-* 属性をまとめて渡す用
+   */
+  data?: Dict;
+}
+
+const {
+  href,
+  page,
+  contentLang,
+  showIcon,
+  icon,
+  svg,
+  data = {},
+  class: className = '',
+  ...rest
+} = Astro.props as Props;
+
+// page 指定も href 指定も同じ util で解決
+const rawHref = resolvePageOrHref({ href, page }) || '#';
+
+// download 属性の有無だけ先に判定
+const hasDownload = 'download' in Astro.props && Astro.props.download !== false;
+
+// href からリンク種別や target / rel を解決
+const link = resolveLink({
+  rawHref,
+  currentUrl: Astro.url,
+  hasDownload,
+});
+
+// 表示アイコンを共通 util で解決
+const controlIcon =
+  showIcon === false
+    ? {
+        showIcon: false,
+        icon: undefined,
+        svg: undefined,
+      }
+    : resolveControlIcon({
+        icon,
+        svg,
+        data,
+        isMailLink: link.isMailLink,
+        isTelLink: link.isTelLink,
+        opensInNewTab: link.opensInNewTab,
+        hasDownload,
+      });
+
+// slot の表示テキストから lang を自動判定
+const slotHtml = Astro.slots.has('default') ? await Astro.slots.render('default') : '';
+const slotText = extractTextFromHtml(slotHtml);
+const resolvedContentLang = resolveTextLang(slotText, contentLang);
+
+const classes = [className].filter(Boolean).join(' ') || undefined;
+const attrs: Record<string, any> = { ...rest };
+
+// data オブジェクトを data-* 属性へ展開
+for (const [k, v] of Object.entries(data ?? {})) {
+  if (v === true) attrs[`data-${k}`] = true;
+  else if (v === '' || v == null) continue;
+  else attrs[`data-${k}`] = String(v);
+}
+
+// 補助文を自前で足すケースでは aria-label の上書きを避ける
+if (link.isMailLink || link.isTelLink || link.opensInNewTab || hasDownload) {
+  delete attrs['aria-label'];
+}
+
+// sr-only で付与する補助説明を共通 util から取得
+const assistiveTexts = getLinkAssistiveTexts({
+  isMailLink: link.isMailLink,
+  isTelLink: link.isTelLink,
+  opensInNewTab: link.opensInNewTab,
+  hasDownload,
+});
+---
+
+<a
+  href={link.href}
+  target={link.target}
+  rel={link.rel}
+  class={classes}
+  aria-current={link.isCurrent ? 'page' : undefined}
+  {...attrs}
+>
+  <span lang={resolvedContentLang}>
+    <slot />
+  </span>
+
+  {
+    controlIcon.showIcon && (controlIcon.icon || controlIcon.svg) ? (
+      <IconMaterial icon={controlIcon.icon} svg={controlIcon.svg}/>
+    ) : null
+  }
+
+  {assistiveTexts.map((text) => <span class="f-utility-sr-only">{text}</span>)}
+</a>

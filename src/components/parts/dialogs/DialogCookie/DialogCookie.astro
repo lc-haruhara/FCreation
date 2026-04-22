@@ -1,0 +1,277 @@
+---
+import './DialogCookie.scss';
+
+import ButtonLink from '@/components/elements/buttons/ButtonLink/ButtonLink.astro';
+---
+
+<div
+  class="c-dialog-cookie"
+  id="cookie-dialog"
+  role="dialog"
+  aria-live="polite"
+  aria-labelledby="cookie-title"
+  aria-describedby="cookie-description"
+>
+  <div class="c-dialog-cookie-body">
+    <h2 id="cookie-title" class="visually-hidden">Cookieの利用について</h2>
+    <p class="c-dialog-cookie-description" id="cookie-description">
+      このウェブサイトでは、利用体験の向上と分析のためにCookieを使用しています。<br />
+      「同意する」をクリックすると、すべてのCookieの使用に同意したことになります。詳細については
+      <a href=""> Cookieポリシー </a>
+      <a href="/privacy-privacy"> プライバシーポリシー </a>
+      をご確認ください。
+    </p>
+
+    <div class="c-dialog-cookie-buttons">
+      <ButtonLink
+        id="cookie-deny-button"
+        text="拒否"
+        icon="close"
+        iconPosition="left"
+        aria={{
+          label: 'クッキーを拒否する',
+        }}
+      />
+      <ButtonLink
+        id="cookie-accept-button"
+        text="同意"
+        icon="check"
+        iconPosition="left"
+        aria={{
+          label: 'クッキーの使用に同意する',
+        }}
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+  type GtagFunction = (...args: unknown[]) => void;
+  type WindowWithGA = Window & {
+    __gaLoaded?: boolean;
+    dataLayer?: unknown[];
+    gtag?: GtagFunction;
+  };
+
+  const DEBUG_MODE = false; // デバッグモード
+  const COOKIE_KEY = 'cookie_consent';
+  const EXPIRATION_DAYS = DEBUG_MODE ? -1 : 180;
+  const GA_MEASUREMENT_ID = import.meta.env.PUBLIC_GOOGLE_TAG_MANAGER_ID;
+
+  /* ==================================================
+     GA4 Consent Mode v2
+  ================================================== */
+  function updateGtagConsent(consentGiven: boolean) {
+    const w = window as WindowWithGA;
+    if (typeof w.gtag !== 'function') return;
+
+    w.gtag('consent', 'update', {
+      analytics_storage: consentGiven ? 'granted' : 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    });
+  }
+
+  /* ==================================================
+     GAを同意後にのみロード
+  ================================================== */
+  function loadGA() {
+    const w = window as WindowWithGA;
+    if (w.__gaLoaded) return;
+    w.__gaLoaded = true;
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+    document.head.appendChild(script);
+
+    w.dataLayer = w.dataLayer || [];
+    const dataLayer = w.dataLayer as unknown[];
+
+    function gtag(...args: unknown[]) {
+      dataLayer.push(args);
+    }
+    w.gtag = gtag;
+
+    gtag('js', new Date());
+    gtag('config', GA_MEASUREMENT_ID, {
+      anonymize_ip: true,
+    });
+
+    if (DEBUG_MODE) {
+      console.log('[CookieDialog] GA loaded');
+    }
+  }
+
+  function handleCookieChoice(consentGiven: boolean) {
+    const expirationDate = new Date();
+
+    if (DEBUG_MODE) {
+      expirationDate.setMinutes(expirationDate.getMinutes() - 1);
+    } else {
+      expirationDate.setDate(expirationDate.getDate() + EXPIRATION_DAYS);
+    }
+
+    const consentData = {
+      granted: consentGiven,
+      expires: expirationDate.toISOString(),
+    };
+
+    localStorage.setItem(COOKIE_KEY, JSON.stringify(consentData));
+
+    hideCookieDialog();
+
+    updateGtagConsent(consentGiven);
+
+    if (consentGiven) {
+      loadGA();
+    }
+
+    const w = window as WindowWithGA;
+    w.dataLayer = w.dataLayer || [];
+    w.dataLayer.push({
+      event: consentGiven ? 'cookie_consent_granted' : 'cookie_consent_denied',
+    });
+
+    if (DEBUG_MODE) {
+      console.log('[CookieDialog] 同意処理:', consentData);
+
+      setTimeout(() => {
+        localStorage.removeItem(COOKIE_KEY);
+
+        const dialog = document.getElementById('cookie-dialog');
+        dialog?.classList.add('is-show');
+
+        console.log('[CookieDialog] DEBUG: consent reset');
+      }, 3000);
+    }
+  }
+
+  function getConsentData() {
+    const raw = localStorage.getItem(COOKIE_KEY);
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+
+  function isConsentExpired() {
+    const data = getConsentData();
+    if (!data || !data.expires) return true;
+    return new Date(data.expires) < new Date();
+  }
+
+  function updateConsentStatusOnLoad() {
+    const dialog = document.getElementById('cookie-dialog');
+    if (!dialog) return;
+
+    // DEBUG_MODE 時は必ず未同意扱い
+    if (DEBUG_MODE) {
+      localStorage.removeItem(COOKIE_KEY);
+      setTimeout(() => {
+        dialog.classList.add('is-show');
+      }, 300);
+      return;
+    }
+
+    const data = getConsentData();
+    const expired = isConsentExpired();
+
+    if (DEBUG_MODE) {
+      console.log('[CookieDialog] 状態:', {
+        consentData: data,
+        isExpired: expired,
+        willShowDialog: !data || expired,
+      });
+    }
+
+    if (!data || expired) {
+      // 次のレンダリングでバナー表示
+      setTimeout(() => {
+        const currentData = getConsentData();
+        if (!currentData || isConsentExpired()) {
+          dialog.classList.add('is-show');
+        }
+      }, 0);
+
+      if (data) {
+        localStorage.removeItem(COOKIE_KEY);
+      }
+    } else {
+      /* 保存済み同意を Consent Mode v2 に反映 */
+      updateGtagConsent(data.granted);
+
+      /* 同意済みならGAロード */
+      if (data.granted) {
+        loadGA();
+      }
+
+      const w = window as WindowWithGA;
+      w.dataLayer = w.dataLayer || [];
+      w.dataLayer.push({
+        event: data.granted ? 'cookie_consent_granted' : 'cookie_consent_denied',
+      });
+    }
+  }
+
+  updateConsentStatusOnLoad();
+
+  document
+    .getElementById('cookie-accept-button')
+    ?.addEventListener('click', () => handleCookieChoice(true));
+
+  document
+    .getElementById('cookie-deny-button')
+    ?.addEventListener('click', () => handleCookieChoice(false));
+
+  // ======================================
+  // 同意後の挙動
+  // ======================================
+  function hideCookieDialog() {
+    const dialog = document.getElementById('cookie-dialog');
+    if (!dialog) return;
+
+    // 視覚的には閉じる
+    dialog.classList.remove('is-show');
+
+    // フォーカス移動
+    document.querySelector('main')?.focus();
+
+    // DEBUG時はDOM消さない
+    if (DEBUG_MODE) return;
+
+    // 本番だけ完全非表示
+    setTimeout(() => {
+      dialog.hidden = true;
+    }, 2000);
+  }
+
+  // ======================================
+  // DEBUG_MODE 表示用UI（最小限）
+  // ======================================
+  if (DEBUG_MODE) {
+    const debugBadge = document.createElement('div');
+    debugBadge.textContent = 'DEBUG MODE';
+    debugBadge.setAttribute('aria-hidden', 'true');
+
+    Object.assign(debugBadge.style, {
+      position: 'fixed',
+      bottom: '8px',
+      right: '8px',
+      padding: '4px 8px',
+      fontSize: '12px',
+      fontWeight: 'bold',
+      background: '#d32f2f',
+      color: '#fff',
+      borderRadius: '4px',
+      zIndex: '999999',
+      opacity: '0.9',
+      pointerEvents: 'none',
+    });
+
+    document.body.appendChild(debugBadge);
+  }
+</script>

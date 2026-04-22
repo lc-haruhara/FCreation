@@ -1,0 +1,17 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-input-field:has(select) {
+  select option[value=''] {
+    color: #999;
+    pointer-events: none;
+  }
+}
+
+.c-input-field-select-icon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  margin: auto;
+  pointer-events: none;
+  translate: 0 -45%;
+}

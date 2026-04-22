@@ -1,0 +1,26 @@
+---
+import './AccordionCommon.scss';
+
+export type Props = {
+  class?: string | string[];
+  id?: string;
+  multiple?: boolean;
+  label?: string;
+};
+
+const { class: className = '', id, multiple = false, label } = Astro.props;
+---
+
+<div
+  id={id}
+  class:list={['c-accordion', className]}
+  data-accordion
+  data-accordion-multiple={multiple ? 'true' : 'false'}
+  aria-label={label}
+>
+  <slot />
+</div>
+
+<script>
+  import './assets/accordionCommon.ts';
+</script>

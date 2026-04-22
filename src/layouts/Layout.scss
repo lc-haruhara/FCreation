@@ -1,0 +1,48 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.l-main-root-wrap {
+  width: 100%;
+  overflow: clip;
+}
+
+.l-main-root-modal {
+  position: relative;
+  z-index: 999960;
+  width: 100%;
+  overflow: clip;
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 GridSystem
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+.l-grid-system {
+  @include GridSystem;
+  gap: 1rem;
+
+  &:has(:not(.l-grid-system-item:nth-child(2))) {
+    @include GridSystem(1);
+  }
+
+  &:has(.l-grid-system-item:nth-child(2)) {
+    @include GridSystem(2);
+  }
+
+  &:has(.l-grid-system-item:nth-child(3)) {
+    @include GridSystem(3);
+  }
+
+  &:has(.l-grid-system-item:nth-child(4)) {
+    @include GridSystem(4);
+  }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 Footer
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.l-footer {
+}

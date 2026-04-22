@@ -1,0 +1,66 @@
+---
+import './ModalCommon.scss';
+
+import { ButtonLink } from '@/components/elements/index';
+export interface Props {
+  id?: string;
+  closeButtons?: boolean;
+}
+
+const { id = '', closeButtons = true } = Astro.props;
+---
+
+<div
+  class="c-modal-wrap"
+  tabindex="-1"
+  id={`modal-${id}`}
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  aria-labelledby={`modal-${id}-title`}
+  aria-describedby={`modal-contents-${id}-description`}
+>
+  <div class="c-modal-wrap-inner">
+    <div class="c-modal-body">
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      {/* CloseButton */}
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      <button
+        class="c-modal-close-button"
+        aria-label={`${id} モーダルを閉じる`}
+        data-modal-close
+        type="button"
+      >
+      </button>
+
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      {/* Contents */}
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      <div class="c-modal-body-inner">
+        <slot />
+
+        {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+        {/* CloseButton */}
+        {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+        {
+          closeButtons && (
+            <div class="c-modal-contents-buttons">
+              <ButtonLink
+                text="閉じる"
+                icon="close"
+                iconPosition="left"
+                aria={{
+                  label: `${id} モーダルを閉じる`,
+                }}
+                data={{
+                  'modal-close': true,
+                }}
+              />
+            </div>
+          )
+        }
+      </div>
+    </div>
+    <div class="c-modal-close-ovl" data-modal-close></div>
+  </div>
+</div>

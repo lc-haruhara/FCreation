@@ -1,0 +1,20 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-input-field-textarea {
+  field-sizing: content;
+  min-height: 10rem;
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// 🍟 Count
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.c-input-field-count {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 1rem;
+  margin: auto;
+  @include FontStyle(s);
+  text-box: trim-both cap alphabetic;
+  font-weight: 700;
+  text-align: right;
+}

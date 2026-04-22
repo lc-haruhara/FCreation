@@ -1,0 +1,447 @@
+---
+import { AccordionCommon, AccordionCommonItem } from "../../../../../src/components/parts/index";
+---
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::
+
+AccordionCommon / AccordionCommonItem の Props 一覧
+(app/src/components/parts/Accordion/AccordionCommon.astro)
+(app/src/components/parts/Accordion/AccordionCommonItem.astro)
+(app/src/components/parts/Accordion/assets/accordionCommon.ts)
+
+【AccordionCommon】
+
+class?: string | string[]
+追加クラスです。
+
+ベースクラス:
+- c-accordion
+
+追加後の例:
+- c-accordion my-accordion
+- c-accordion my-accordion another-class
+
+--------------------------------
+
+id?: string
+ルート要素の id 属性に入ります。
+
+例:
+- id="faq-accordion"
+- id="notice-accordion"
+
+--------------------------------
+
+multiple?: boolean
+複数項目を同時に開けるかどうかです。
+未指定時は false です。
+
+- false → 1つ開くと他は閉じる
+- true → 複数同時に開ける
+
+例:
+- multiple={false}
+- multiple={true}
+
+--------------------------------
+
+label?: string
+Accordion 全体の aria-label です。
+
+見出しがなく、
+このアコーディオン全体に名前を付けたい時に使います。
+
+例:
+- label="よくある質問"
+- label="お知らせ一覧"
+
+--------------------------------
+
+【AccordionCommonItem】
+
+as?: 'div' | 'section'
+各項目のルート要素です。
+未指定時は 'div' です。
+
+例:
+- as="div"
+- as="section"
+
+※ 各項目を独立したセクションとして扱いたい時は
+  section も選べます。
+
+--------------------------------
+
+class?: string | string[]
+追加クラスです。
+
+ベースクラス:
+- c-accordion-item
+
+例:
+- class="custom-item"
+- class={["custom-item", "theme-dark"]}
+
+--------------------------------
+
+id: string
+必須です。
+button と panel を関連付けるための識別子です。
+
+以下のような id に使われます。
+- ${id}-button
+- ${id}-panel
+
+例:
+- id="accordion-notice"
+- id="faq-shipping"
+
+--------------------------------
+
+title: string
+見出しテキストです。
+button 内のラベルとして表示されます。
+
+例:
+- title="注意事項"
+- title="配送について"
+
+--------------------------------
+
+open?: boolean
+初期表示で開いているかどうかです。
+未指定時は false です。
+
+例:
+- open={true}
+- open={false}
+
+--------------------------------
+
+headingLevel?: 2 | 3 | 4 | 5 | 6
+見出しレベルです。
+未指定時は 3 です。
+
+例:
+- headingLevel={2}
+- headingLevel={3}
+- headingLevel={4}
+
+※ 見出しレベルは AccordionCommon ではなく
+  AccordionCommonItem 側に指定します。
+
+--------------------------------
+
+useRegion?: boolean
+true の場合、panel に role="region" を付与します。
+未指定時は false です。
+
+例:
+- useRegion={true}
+- useRegion={false}
+
+--------------------------------
+
+slot
+AccordionCommonItem の本文です。
+開閉される panel 内に描画されます。
+
+例:
+- <p>本文テキスト</p>
+- <ul>...</ul>
+- 他コンポーネント
+
+--------------------------------
+
+DOM / 属性の基本構造
+
+AccordionCommon:
+- [data-accordion]
+- data-accordion-multiple="true" | "false"
+- aria-label={label}
+
+AccordionCommonItem:
+- [data-accordion-item]
+- data-open="true" | "false"
+- .is-open
+
+button:
+- [data-accordion-trigger]
+- aria-expanded="true" | "false"
+- aria-controls={panelId}
+
+panel:
+- [data-accordion-panel]
+- aria-labelledby={buttonId}
+- hidden
+- role="region"（useRegion=true の時のみ）
+
+--------------------------------
+
+アクセシビリティ上の基本ルール
+
+- 見出し要素の中に button を入れる
+- button に aria-expanded を付ける
+- button に aria-controls を付ける
+- panel に aria-labelledby を付ける
+- 閉じている panel には hidden を付ける
+- 開閉時は aria-expanded / hidden / is-open / data-open を同期する
+
+--------------------------------
+
+キーボード操作
+
+実装済みのキーボード操作は以下です。
+
+- Enter / Space
+  → button の標準動作で開閉
+
+- ArrowDown
+  → 次の trigger にフォーカス移動
+
+- ArrowUp
+  → 前の trigger にフォーカス移動
+
+- Home
+  → 最初の trigger にフォーカス移動
+
+- End
+  → 最後の trigger にフォーカス移動
+
+--------------------------------
+
+開閉挙動の仕様
+
+開く時:
+- data-open="true" を付ける
+- .is-open を付ける
+- aria-expanded="true" を付ける
+- hidden を即時外す
+
+閉じる時:
+- data-open="false" を付ける
+- .is-open を即時外す
+- aria-expanded="false" を付ける
+- hidden を即時付けず、250ms 後に付ける
+
+※ 閉じる transition を効かせるため、
+  JS 側で hidden の付与を遅延させる実装になっています。
+※ 250ms の間に再度 open された場合は hidden を付けません。
+
+--------------------------------
+
+multiple の動作
+
+multiple={false}
+- 1つ開くと他は閉じる
+- 一般的なアコーディオン向け
+
+multiple={true}
+- 開いている他項目を閉じない
+- FAQ の比較閲覧向け
+
+--------------------------------
+
+headingLevel の運用ルール
+
+今の実装では headingLevel は AccordionCommon ではなく
+AccordionCommonItem に指定します。
+
+例:
+- 全 item を h3 にしたい → 各 item に headingLevel={3}
+- 全 item を h4 にしたい → 各 item に headingLevel={4}
+
+※ 同じ AccordionCommon の直下に並ぶ item は、
+  原則として同じ headingLevel に揃えるのを推奨
+
+--------------------------------
+
+useRegion の運用ルール
+
+useRegion={true}
+- FAQ
+- 重要なお知らせ
+- セクションごとの意味がはっきりしている少数項目
+
+useRegion={false}
+- 単純な開閉UI
+- 項目数が多い一覧
+- region が増えすぎるケース
+
+--------------------------------
+
+運用ルール（推奨）
+
+- Accordion 全体に見出しがない時は label を付ける
+- 同列の AccordionCommonItem は同じ headingLevel に揃える
+- 開閉制御は button に任せる
+- JS で aria-expanded / hidden / class / data-open を同期する
+- 項目が独立した話題なら as="section" も検討する
+- 閉じるアニメーションを前提にする場合は hidden の遅延付与仕様を崩さない
+
+:::::::::::::::::::::::::::::::::::::::::::: -->
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  基本：単一オープンのアコーディオン
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<AccordionCommon multiple={false} label="お知らせ一覧">
+  <AccordionCommonItem id="accordion-notice" title="注意事項" headingLevel={3}>
+    <p>ご利用前に必ず内容をご確認ください。</p>
+  </AccordionCommonItem>
+
+  <AccordionCommonItem id="accordion-policy" title="利用規約" open={true} headingLevel={3}>
+    <p>本サービスの利用条件を記載しています。</p>
+  </AccordionCommonItem>
+
+  <AccordionCommonItem id="accordion-support" title="サポートについて" headingLevel={3}>
+    <p>お問い合わせはフォームより受け付けています。</p>
+  </AccordionCommonItem>
+</AccordionCommon>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  複数同時に開ける FAQ 向け
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<AccordionCommon multiple={true} label="よくある質問">
+  <AccordionCommonItem
+    id="faq-payment"
+    title="支払い方法について"
+    headingLevel={3}
+    useRegion={true}
+  >
+    <p>クレジットカード、銀行振込、各種電子決済に対応しています。</p>
+  </AccordionCommonItem>
+
+  <AccordionCommonItem
+    id="faq-shipping"
+    title="配送について"
+    headingLevel={3}
+    useRegion={true}
+  >
+    <p>通常はご注文から3営業日以内に発送します。</p>
+  </AccordionCommonItem>
+
+  <AccordionCommonItem
+    id="faq-cancel"
+    title="キャンセルについて"
+    headingLevel={3}
+    useRegion={true}
+  >
+    <p>発送前であればマイページからキャンセル可能です。</p>
+  </AccordionCommonItem>
+</AccordionCommon>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  見出しレベルを指定する例
+  ※ AccordionCommon ではなく AccordionCommonItem に指定する
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<AccordionCommon label="会社情報">
+  <AccordionCommonItem id="accordion-company" title="会社情報" headingLevel={3}>
+    <p>会社概要を掲載しています。</p>
+  </AccordionCommonItem>
+
+  <AccordionCommonItem id="accordion-recruit" title="採用情報" headingLevel={3}>
+    <p>募集要項や応募方法をご案内しています。</p>
+  </AccordionCommonItem>
+</AccordionCommon>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  見出しレベルを h4 に揃える例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<AccordionCommon label="サポート情報">
+  <AccordionCommonItem id="accordion-help" title="ヘルプ" headingLevel={4}>
+    <p>基本的な使い方を案内しています。</p>
+  </AccordionCommonItem>
+
+  <AccordionCommonItem id="accordion-contact" title="お問い合わせ" headingLevel={4}>
+    <p>お問い合わせフォームをご利用ください。</p>
+  </AccordionCommonItem>
+</AccordionCommon>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  as="section" を使う例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<AccordionCommon label="採用情報">
+  <AccordionCommonItem
+    as="section"
+    id="accordion-position"
+    title="募集職種"
+    headingLevel={3}
+  >
+    <p>現在募集中の職種一覧です。</p>
+  </AccordionCommonItem>
+
+  <AccordionCommonItem
+    as="section"
+    id="accordion-flow"
+    title="選考フロー"
+    headingLevel={3}
+  >
+    <p>応募から内定までの流れを案内しています。</p>
+  </AccordionCommonItem>
+</AccordionCommon>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  class を追加する例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<AccordionCommon class={["faq-accordion", "is-compact"]} label="FAQ">
+  <AccordionCommonItem
+    id="accordion-class-sample"
+    title="クラス追加の例"
+    headingLevel={3}
+    class={["custom-item", "theme-dark"]}
+  >
+    <p>AccordionCommon / AccordionCommonItem ともに追加クラスを付けられます。</p>
+  </AccordionCommonItem>
+</AccordionCommon>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  すべて閉じた状態で開始
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<AccordionCommon multiple={false} label="閉じた状態の例">
+  <AccordionCommonItem id="accordion-1" title="項目1" headingLevel={3}>
+    <p>初期状態では閉じています。</p>
+  </AccordionCommonItem>
+
+  <AccordionCommonItem id="accordion-2" title="項目2" headingLevel={3}>
+    <p>これも閉じています。</p>
+  </AccordionCommonItem>
+</AccordionCommon>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  特定項目だけ初期表示で開く
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<AccordionCommon multiple={false} label="初期表示の例">
+  <AccordionCommonItem
+    id="accordion-default-open"
+    title="最初から開く項目"
+    open={true}
+    headingLevel={3}
+  >
+    <p>初期表示でこのパネルだけ開いています。</p>
+  </AccordionCommonItem>
+
+  <AccordionCommonItem
+    id="accordion-default-close"
+    title="閉じている項目"
+    headingLevel={3}
+  >
+    <p>こちらは閉じた状態です。</p>
+  </AccordionCommonItem>
+</AccordionCommon>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  本文にリストや他要素を入れる例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<AccordionCommon multiple={true} label="詳細情報">
+  <AccordionCommonItem
+    id="accordion-rich-content"
+    title="詳細情報"
+    headingLevel={3}
+  >
+    <ul>
+      <li>項目A</li>
+      <li>項目B</li>
+      <li>項目C</li>
+    </ul>
+  </AccordionCommonItem>
+</AccordionCommon>

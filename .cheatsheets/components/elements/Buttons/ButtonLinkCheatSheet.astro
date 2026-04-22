@@ -1,0 +1,470 @@
+---
+import { ButtonLink } from "../../../../src/components/elements/index";
+---
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::
+
+ButtonLink の Props 一覧
+(app/src/components/elements/buttons/ButtonLink/ButtonLink.astro)
+
+url?: string
+リンク先URLを直接指定します。
+page が未指定のときに使われます。
+
+主な用途:
+- 外部リンク
+- サイト内URLの直接指定
+- アンカーリンク
+- 電話リンク
+- メールリンク
+- ダウンロードリンク
+
+例:
+- url="/contact"
+- url="https://example.com"
+- url="#section"
+- url="090-1234-5678"
+- url="info@example.com"
+
+電話番号っぽい文字列は tel: に、
+メールアドレスっぽい文字列は mailto: に
+内部で自動正規化されます。
+
+--------------------------------
+
+page?: keyof typeof pages | PageDef
+サイト内ページへのリンクを指定します。
+指定すると pages 定義から path を解決し、
+<a> として描画されます。
+
+■ 文字列キーの場合
+pages 定義のキーを指定します。
+
+例:
+- page="home"
+- page="about"
+- page="contact"
+
+■ PageDef の場合
+ページ定義オブジェクトをそのまま渡せます。
+
+例:
+- page={pages.home}
+- page={pages.about}
+
+※ page が指定されている場合は url より優先されます。
+
+--------------------------------
+
+text?: string
+表示テキストです。
+未指定、または空白文字のみの場合は "more" になります。
+
+--------------------------------
+
+id?: string
+ルート要素の id 属性に入ります。
+
+--------------------------------
+
+class?: string | string[]
+追加クラスです。
+
+- string の場合はそのまま追加
+- string[] の場合は各要素を追加
+
+ベースクラスの `c-button-link` に対して追加されます。
+
+--------------------------------
+
+size?: string
+サイズ指定です。
+指定すると `_size-${size}` のクラスが追加されます。
+
+例:
+- size="sm"
+- size="md"
+- size="lg"
+
+--------------------------------
+
+color?: string
+色指定です。
+指定すると `_color-${color}` のクラスが追加されます。
+
+例:
+- color="primary"
+- color="secondary"
+
+--------------------------------
+
+icon?: string
+アイコン名です。
+指定すると `_icon-${iconPosition}` のクラスが追加され、
+内部に IconMaterial が描画されます。
+
+例:
+- icon="chevron_forward"
+- icon="open_in_new"
+
+--------------------------------
+
+iconPosition?: "left" | "right"
+アイコン位置です。
+デフォルトは "right" です。
+
+--------------------------------
+
+label?: string
+指定すると `<label>` として描画され、
+`for={label}` が付きます。
+
+この場合、page や url が指定されていても
+<label> 描画が優先されます。
+
+--------------------------------
+
+data?: Record<string, string | number | boolean | null | undefined>
+data-* 属性のまとめ指定です。
+
+例:
+data={{
+  "modal-open": "hogehoge",
+  active: true,
+  count: 3,
+}}
+
+上記は以下のように出力されます。
+
+- data-modal-open="hogehoge"
+- data-active
+- data-count="3"
+
+付与ルール:
+- true → 属性名のみ付与
+- false / null / undefined / "" → 付与しない
+- それ以外 → 文字列化して付与
+
+--------------------------------
+
+aria?: Record<string, string | number | boolean | null | undefined>
+aria-* 属性のまとめ指定です。
+
+例:
+aria={{
+  controls: "modal-hogehoge",
+  expanded: "false",
+  label: "モーダルを開く",
+}}
+
+上記は以下のように出力されます。
+
+- aria-controls="modal-hogehoge"
+- aria-expanded="false"
+- aria-label="モーダルを開く"
+
+付与ルール:
+- true → 属性名のみ付与
+- false / null / undefined / "" → 付与しない
+- それ以外 → 文字列化して付与
+
+--------------------------------
+
+external?: boolean
+外部リンク扱いを明示するフラグです。
+
+外部リンク扱いになった場合、
+download 未指定なら以下が付きます。
+
+- target="_blank"
+- rel="noopener noreferrer external"
+
+判定ルール:
+- external が true / false ならその値を優先
+- 未指定時は URL を解決して外部リンクか自動判定
+- mailto: / tel: / #anchor は外部リンク扱いしません
+
+--------------------------------
+
+download?: boolean | string
+a タグ時の download 属性です。
+
+例:
+- download
+- download="document.pdf"
+
+download が指定されている場合は
+外部リンクでも自動で新規タブは開きません。
+
+--------------------------------
+
+描画タグの優先順位
+
+- label がある → <label>
+- label がなく、page または url がある → <a>
+- それ以外 → <button type="button">
+
+--------------------------------
+
+page / url の優先順位
+
+- page が指定されている場合は page を優先
+- page が未指定の場合は url を使用
+
+--------------------------------
+
+href の自動正規化
+
+a タグとして描画される場合、
+url は必要に応じて以下のように正規化されます。
+
+- 電話番号っぽい文字列 → tel:
+- メールアドレスっぽい文字列 → mailto:
+- それ以外 → 指定値をそのまま使用
+
+例:
+- "090-1234-5678" → "tel:090-1234-5678"
+- "info@example.com" → "mailto:info@example.com"
+
+--------------------------------
+
+aria-current の自動付与
+
+以下の条件を満たす内部リンクでは、
+aria.current が未指定のときに
+`aria-current="page"` が自動付与されます。
+
+条件:
+- 外部リンクではない
+- mailto: ではない
+- tel: ではない
+- #anchor ではない
+- 現在ページとリンク先の pathname が一致する
+
+--------------------------------
+
+スクリーンリーダー向け補助文の自動付与
+
+リンクテキストの中に、必要に応じて
+sr-only テキストが自動で追加されます。
+
+- mailto: → （メールを送る）
+- tel: → （電話をかける）
+- 外部リンクで新規タブ → （新しいタブで開く）
+- download 指定あり → （ダウンロード）
+
+※ 可視テキストが前提のため、
+これらのケースでは aria-label は自動で上書きしません。
+※ `aria.label` を渡していても、
+mail / tel / 新規タブ / download のケースでは内部で削除されます。
+
+--------------------------------
+
+運用ルール（推奨）
+
+- サイト内リンク → page を使う
+- 外部リンク / mail / tel / download / anchor → url を使う
+- label として使いたい → label を使う
+- JSイベント用の押下要素 → page / url を省略して button として使う
+
+:::::::::::::::::::::::::::::::::::::::::::: -->
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  基本：サイト内リンク（推奨）
+  pages.ts に定義されたキーを使う
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  page="contact"
+  text="Contact"
+  id="btn-link-1"
+  class={["extra-class-1", "extra-class-2"]}
+  size="md"
+  color="primary"
+  icon="chevron_forward"
+  iconPosition="right"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  page に PageDef を渡す例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  page={{
+    path: "/contact",
+    title: "Contact",
+  }}
+  text="Contact"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  url を使った内部リンク（直接指定）
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  url="/contact"
+  text="Contact"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  page が url より優先される
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  page="contact"
+  url="/will-be-ignored"
+  text="Contact"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  モーダルを開くボタンとして使う例
+  page/url を省略すると <button type="button">
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  text="Open hogehoge modal"
+  data={{
+    "modal-open": "hogehoge",
+  }}
+  aria={{
+    controls: "modal-hogehoge",
+    expanded: "false",
+  }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  単純な button として使う例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  text="Just a button"
+  data={{
+    action: "do-something",
+  }}
+  aria={{
+    label: "なにかする",
+  }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  label として使う例
+  label が最優先で <label for="..."> になる
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  url="/will-be-ignored"
+  text="Open dialog"
+  label="dialog-trigger"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  外部リンク
+  未指定でも自動判定で新規タブになる
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  url="https://example.com/"
+  text="External link"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  external を明示
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  url="https://example.com/"
+  text="External link"
+  external={true}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  外部URLでも同一タブで開きたい場合
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  url="https://example.com/"
+  text="Open in same tab"
+  external={false}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  アンカーリンク
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  url="#section"
+  text="Sectionへ移動"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  ダウンロードリンク
+  download 指定時は新規タブ自動付与なし
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  url="/files/sample.pdf"
+  text="PDFをダウンロード"
+  download
+/>
+
+<ButtonLink
+  url="/files/sample.pdf"
+  text="ファイル名指定ダウンロード"
+  download="document.pdf"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  mailto リンク
+  sr-only で「（メールを送る）」が自動付与される
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  url="mailto:info@example.com?subject=Hello"
+  text="Mail with subject"
+/>
+
+<ButtonLink
+  url="info@example.com"
+  text="メールする"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  tel リンク
+  sr-only で「（電話をかける）」が自動付与される
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  url="090-1234-5678"
+  text="Call us"
+/>
+
+<ButtonLink
+  url="tel:03-1234-5678"
+  text="03-1234-5678"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  aria-current の自動付与
+  同一パスの内部リンクで aria.current 未指定なら
+  aria-current="page" が自動付与される
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  page="contact"
+  text="Contact (auto aria-current on current page)"
+/>
+
+{/* 手動で上書きしたい場合 */}
+<ButtonLink
+  page="contact"
+  text="Contact (override aria-current)"
+  aria={{ current: "false" }}
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  icon を左に出す例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  page="contact"
+  text="Back"
+  icon="chevron_left"
+  iconPosition="left"
+/>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  text 未指定時は "more"
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink page="contact" />
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  text が空白だけでも "more"
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<ButtonLink
+  page="contact"
+  text="   "
+/>

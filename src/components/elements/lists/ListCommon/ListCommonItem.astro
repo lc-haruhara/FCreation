@@ -1,0 +1,25 @@
+---
+import './ListCommon.scss';
+
+interface Props {
+  title?: string;
+  class?: string;
+}
+
+const { title, class: className = '' } = Astro.props as Props;
+---
+
+{
+  title ? (
+    <div class:list={['c-list-common-item', className]}>
+      <dt class="c-list-common-item-title">{title}</dt>
+      <dd class="c-list-common-item-detail">
+        <slot />
+      </dd>
+    </div>
+  ) : (
+    <li class:list={['c-list-common-item', className]}>
+      <slot />
+    </li>
+  )
+}

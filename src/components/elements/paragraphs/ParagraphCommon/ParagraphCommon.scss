@@ -1,0 +1,7 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-paragraph-common {
+  & + & {
+    margin-top: 1rem;
+  }
+}

@@ -1,0 +1,46 @@
+---
+import { HeadingSection } from "../../../../src/components/elements/index";
+---
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::
+
+HeadingSection のProps一覧（app/src/components/elements/heading/HeadingSection.astro）
+
+level?: 1 | 2 | 3 | 4 | 5 | 6
+見出しレベル。指定に応じて <h1>〜<h6> を切り替えます。
+未指定の場合は level=2（<h2>）になります。
+
+text?: string
+見出しに表示するテキスト。
+未指定/空白のみの場合は slot を描画します（子要素側の内容を使います）。
+
+color?: string
+カラー指定。指定すると "_color-${color}" がクラスに追加されます。
+例: color="white" -> class に "_color-white" が追加されます。
+
+id?: string
+ルート要素（hタグ）の id に入ります。
+
+class?: string | string[]
+追加クラス。配列なら複数付与、文字列ならそのまま付与します（ベースの c-heading-section-level{level} に追加されます）。
+
+data?: Record<string, string | number | boolean | null | undefined>
+data-* 属性のまとめ指定。
+true は data-xxx だけを付与、null/undefined/"" は付与しません。それ以外は文字列化して付与します。
+
+aria?: Record<string, string | number | boolean | null | undefined>
+aria-* 属性のまとめ指定（挙動は data と同様の付与ルール）。
+基本的に hタグは中身のテキストが読み上げられるため aria-label は不要ですが、
+アイコンのみ/省略表記など「読み上げ名を補いたい」ケースで使えます。
+
+::::::::::::::::::::::::::::::::::::::::::::: -->
+
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  slot を使う：text が空（未指定/空白のみ）なら slot 優先
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+<HeadingSection level={2} color="white">
+  <Fragment slot="english">ExampleText</Fragment>
+  <Fragment slot="japanese">日本語テキスト</Fragment>
+</HeadingSection>
+

@@ -1,0 +1,39 @@
+---
+type ItemTag = 'div' | 'li';
+type Dict = Record<string, string | number | boolean | null | undefined>;
+
+type Props = {
+  // 子要素のタグ
+  // 省略時は div
+  as?: ItemTag;
+
+  // 追加クラス
+  class?: string | string[];
+
+  // data-* / aria-* をまとめて渡す用
+  data?: Dict;
+  aria?: Dict;
+};
+
+const { as = 'div', class: className, data, aria } = Astro.props;
+
+const Tag = as;
+
+const classes = ['c-layout-grid-item', className].flat().filter(Boolean).join(' ');
+
+const dataAttrs = Object.fromEntries(
+  Object.entries(data ?? {}).flatMap(([key, value]) =>
+    value == null ? [] : [[`data-${key}`, String(value)]],
+  ),
+);
+
+const ariaAttrs = Object.fromEntries(
+  Object.entries(aria ?? {}).flatMap(([key, value]) =>
+    value == null ? [] : [[`aria-${key}`, String(value)]],
+  ),
+);
+---
+
+<Tag class={classes} {...dataAttrs} {...ariaAttrs}>
+  <slot />
+</Tag>

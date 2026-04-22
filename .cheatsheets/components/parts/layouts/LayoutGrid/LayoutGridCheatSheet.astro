@@ -1,0 +1,242 @@
+---
+import { LayoutGrid, LayoutGridItem } from "../../../../../src/components/parts/index";
+---
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::
+
+LayoutGrid / LayoutGridItem の使い方
+(app/src/components/elements/layouts/LayoutGrid/LayoutGrid.astro)
+(app/src/components/elements/layouts/LayoutGridItem/LayoutGridItem.astro)
+
+Gridレイアウト用の親子コンポーネントです。
+
+- 親: LayoutGrid
+- 子: LayoutGridItem
+
+基本的にはこの2つをセットで使います。
+
+--------------------------------
+
+LayoutGrid の Props 一覧
+
+as?: 'div' | 'ul'
+親要素のタグです。
+未指定時は 'div' です。
+
+例:
+- as="div"
+- as="ul"
+
+--------------------------------
+
+columns?: 1 | 2 | 3 | 4 | 5 | 6
+列数です。
+未指定時は 2 です。
+
+指定すると以下のクラスが付きます。
+- _cols1
+- _cols2
+- _cols3
+- _cols4
+- _cols5
+- _cols6
+
+--------------------------------
+
+class?: string | string[]
+追加クラスです。
+
+ベースクラス:
+- c-layout-grid
+
+追加後の例:
+- c-layout-grid _cols3
+- c-layout-grid _cols3 my-grid
+- c-layout-grid _cols3 class-a class-b
+
+--------------------------------
+
+data?: Record<string, string | number | boolean | null | undefined>
+data-* 属性をまとめて渡せます。
+
+例:
+data={{
+  layout: 'cards',
+  current: 2,
+  active: true,
+}}
+
+出力例:
+- data-layout="cards"
+- data-current="2"
+- data-active="true"
+
+※ この実装では boolean true も文字列化されます。
+
+--------------------------------
+
+aria?: Record<string, string | number | boolean | null | undefined>
+aria-* 属性をまとめて渡せます。
+
+例:
+aria={{
+  label: 'お知らせ一覧',
+  live: 'polite',
+}}
+
+出力例:
+- aria-label="お知らせ一覧"
+- aria-live="polite"
+
+--------------------------------
+
+LayoutGridItem の Props 一覧
+
+as?: 'div' | 'li'
+子要素のタグです。
+未指定時は 'div' です。
+
+例:
+- as="div"
+- as="li"
+
+--------------------------------
+
+class?: string | string[]
+追加クラスです。
+
+ベースクラス:
+- c-layout-grid-item
+
+--------------------------------
+
+data?: Record<string, string | number | boolean | null | undefined>
+data-* 属性をまとめて渡せます。
+
+例:
+data={{
+  category: 'news',
+  featured: true,
+}}
+
+出力例:
+- data-category="news"
+- data-featured="true"
+
+--------------------------------
+
+aria?: Record<string, string | number | boolean | null | undefined>
+aria-* 属性をまとめて渡せます。
+
+例:
+aria={{
+  label: 'おすすめ記事',
+}}
+
+出力例:
+- aria-label="おすすめ記事"
+
+--------------------------------
+
+出力タグ
+
+LayoutGrid:
+<Tag class={classes} {...dataAttrs} {...ariaAttrs}>
+  <slot />
+</Tag>
+
+LayoutGridItem:
+<Tag class={classes} {...dataAttrs} {...ariaAttrs}>
+  <slot />
+</Tag>
+
+--------------------------------
+
+運用ルール（推奨）
+
+- 単なるレイアウト用途なら
+  LayoutGrid は as="div"
+  LayoutGridItem も as="div"
+
+- リスト構造として意味を持たせたいなら
+  LayoutGrid は as="ul"
+  LayoutGridItem は as="li"
+
+- 親子セットで使う前提にすると運用しやすい
+
+--------------------------------
+:::::::::::::::::::::::::::::::::::::::::::: -->
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+基本例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<LayoutGrid>
+  <LayoutGridItem>Item 1</LayoutGridItem>
+  <LayoutGridItem>Item 2</LayoutGridItem>
+</LayoutGrid>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+2カラム
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<LayoutGrid columns={2}>
+  <LayoutGridItem>Item 1</LayoutGridItem>
+  <LayoutGridItem>Item 2</LayoutGridItem>
+</LayoutGrid>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+3カラム
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<LayoutGrid columns={3}>
+  <LayoutGridItem>Item 1</LayoutGridItem>
+  <LayoutGridItem>Item 2</LayoutGridItem>
+  <LayoutGridItem>Item 3</LayoutGridItem>
+</LayoutGrid>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+ul / li として使う例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<LayoutGrid as="ul" columns={3} aria={{ label: 'カード一覧' }}>
+  <LayoutGridItem as="li">Item 1</LayoutGridItem>
+  <LayoutGridItem as="li">Item 2</LayoutGridItem>
+  <LayoutGridItem as="li">Item 3</LayoutGridItem>
+</LayoutGrid>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+追加クラス付き
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<LayoutGrid columns={4} class={['my-grid', 'is-tight']}>
+  <LayoutGridItem>Item 1</LayoutGridItem>
+  <LayoutGridItem>Item 2</LayoutGridItem>
+</LayoutGrid>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+data / aria を渡す例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<LayoutGrid
+  columns={3}
+  data={{ layout: 'cards' }}
+  aria={{ label: 'おすすめ記事一覧' }}
+>
+  <LayoutGridItem>Item 1</LayoutGridItem>
+  <LayoutGridItem>Item 2</LayoutGridItem>
+  <LayoutGridItem>Item 3</LayoutGridItem>
+</LayoutGrid>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+LayoutGridItem に個別クラスや属性を付ける例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<LayoutGrid columns={2}>
+  <LayoutGridItem class="is-featured" data={{ category: 'news' }}>
+    Item 1
+  </LayoutGridItem>
+  <LayoutGridItem aria={{ label: 'おすすめ項目' }}>
+    Item 2
+  </LayoutGridItem>
+</LayoutGrid>

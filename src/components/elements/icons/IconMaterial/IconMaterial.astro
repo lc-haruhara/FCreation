@@ -1,0 +1,81 @@
+---
+import './IconMaterial.scss';
+
+interface Props {
+  // Material Symbols のアイコン名
+  // svg が見つからなかった時のフォールバックとしても使う
+  icon?: string;
+
+  // src/assets/images/icon/*.svg のファイル名
+  // 拡張子 .svg は不要
+  // 例: svg="close" → src/assets/images/icon/close.svg
+  svg?: string;
+
+  // 追加クラス
+  class?: string;
+
+  // 装飾用途なら空文字のままでOK
+  // 意味を持たせたい場合に使う
+  alt?: string;
+}
+
+const { icon = 'chevron_left', svg, class: className, alt = '' } = Astro.props;
+
+// icon ディレクトリ直下の svg を一括取得
+// query: '?raw' にすると SVG の中身を文字列として受け取れる
+const iconModules = import.meta.glob('@/assets/images/icon/*.svg', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+}) as Record<string, string>;
+
+// {
+//   'close': '<svg ...>...</svg>',
+//   'menu': '<svg ...>...</svg>'
+// }
+// のような形に変換する
+const svgMap = Object.fromEntries(
+  Object.entries(iconModules).map(([path, value]) => {
+    const fileName = path.split('/').pop()?.replace('.svg', '') ?? '';
+    return [fileName, value];
+  }),
+);
+
+// svg prop が渡されていれば、その名前で対応するSVG文字列を探す
+const svgMarkup = svg ? svgMap[svg] : undefined;
+
+// SVGが見つかった時だけSVG表示に切り替える
+const isSvg = Boolean(svgMarkup);
+
+// Material Symbols 表示時だけ付ける装飾用クラス
+const iconClass = isSvg ? '' : `_${icon}`;
+
+// SVG をインライン展開する前にアクセシビリティ属性を差し込む
+// 装飾なら aria-hidden="true"
+// 意味を持つなら role="img" + aria-label="..."
+const normalizedSvgMarkup = svgMarkup
+  ? svgMarkup.replace(
+      /<svg\b([^>]*)>/,
+      alt
+        ? `<svg$1 role="img" aria-label="${alt.replace(/"/g, '&quot;')}">`
+        : '<svg$1 aria-hidden="true" focusable="false">',
+    )
+  : undefined;
+
+// svg が指定されているのにファイルが見つからない場合は警告
+if (svg && !svgMarkup) {
+  console.warn(`[IconMaterial] "${svg}.svg" が src/assets/images/icon に見つかりません。`);
+}
+---
+
+{
+  isSvg ? (
+    // c-icon の直下に svg を出す
+    <span class={`c-icon is-svg ${className ?? ''}`} set:html={normalizedSvgMarkup} />
+  ) : (
+    // 従来通り Material Symbols
+    <span class={`c-icon is-font ${iconClass} ${className ?? ''}`} aria-hidden="true">
+      {icon}
+    </span>
+  )
+}

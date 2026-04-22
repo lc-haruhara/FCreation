@@ -1,0 +1,88 @@
+---
+import './NavigationDrawer.scss';
+
+import { getNavPages } from '@/core/lib/pages';
+
+const drawerPages = getNavPages('drawer');
+
+// 英語だけのテキストか判定
+function isEnglishOnlyText(s: string) {
+  const v = s.trim();
+  if (!v) return false;
+
+  const hasLatinLetter = /[A-Za-z]/u.test(v);
+  const englishLike = /^[A-Za-z0-9\s.,!?&/()'"’:;-]+$/u.test(v);
+
+  return hasLatinLetter && englishLike;
+}
+---
+
+<button
+  class="c-drawer-button"
+  type="button"
+  aria-label="メインメニューを開く"
+  aria-controls="drawer-menu"
+  aria-expanded="false"
+  data-js-drawer-open
+>
+</button>
+
+<div class="c-drawer" id="drawer-menu" aria-hidden="true" data-js-drawer inert>
+  <div
+    class="c-drawer-body"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="drawer-title"
+    tabindex="-1"
+    data-js-drawer-panel
+  >
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* CloseButton                                        */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <button
+      type="button"
+      class="c-drawer-close-button"
+      aria-label="メインメニューを閉じる"
+      data-js-drawer-close
+    >
+    </button>
+
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Heading                                            */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <div class="c-drawer-header">
+      <h2 id="drawer-title" class="c-drawer-title">メインメニュー</h2>
+    </div>
+
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/*   Navigation                                      */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <nav class="c-drawer-nav" aria-label="ドロワーメインメニューナビゲーション">
+      <ul class="c-drawer-nav-list">
+        {
+          drawerPages.map((page) => (
+            <li class="c-drawer-nav-list-item">
+              <a
+                href={page.href}
+                class="c-drawer-list-item-body"
+                data-js-drawer-link
+                data-js-scroll-top={page.href === '/' ? '' : undefined}
+              >
+                <span lang={isEnglishOnlyText(page.label) ? 'en' : undefined}>{page.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/*   CloseOverlay                                      */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <div class="c-drawer-background-overlay" aria-hidden="true" data-js-drawer-close></div>
+</div>
+
+<script>
+  import './assets/navigationDrawer';
+</script>

@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+// 💬 Description.........................................
+//
+// キーフレーム設定用のscss 主にコピペ用に用意しています。
+// 特に使用せずともOK
+// ............................................................
+.example {
+  animation-name: kfHogeHoge;
+  // プロパティコピペ用
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes kfHogeHoge {
+  0% {
+  }
+
+  100% {
+  }
+}

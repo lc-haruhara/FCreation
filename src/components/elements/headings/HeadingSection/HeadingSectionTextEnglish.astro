@@ -1,0 +1,27 @@
+---
+import './HeadingSection.scss';
+
+/**
+ * 見出し内の英語テキスト用
+ * - lang="en" を付与
+ * - class の追加指定も可能
+ */
+export type Props = {
+  class?: string | string[];
+};
+
+const { class: classProp = '' } = Astro.props as Props;
+
+// 英語部分は固定クラスで運用
+const classes: string[] = ['c-heading-section-text-english'];
+
+if (Array.isArray(classProp)) {
+  classes.push(...classProp.filter(Boolean));
+} else if (classProp) {
+  classes.push(classProp);
+}
+---
+
+<span class={classes.join(' ')} lang="en">
+  <slot />
+</span>

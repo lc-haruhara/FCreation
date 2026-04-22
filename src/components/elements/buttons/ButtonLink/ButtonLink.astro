@@ -1,0 +1,207 @@
+---
+import './ButtonLink.scss';
+
+import { IconMaterial } from '@/components/elements/index';
+import { pages } from '@/core/config/pages.config';
+import {
+  getLinkAssistiveTexts,
+  resolveControlIcon,
+  resolveLink,
+  resolvePageOrHref,
+  resolveTextLang,
+} from '@/core/lib/links/link.lib';
+import type { Dict, LinkIconType } from '@/core/types/links/link.types';
+import type { PageDef } from '@/core/types/pages/pages.types';
+
+type TagName = 'a' | 'button' | 'label';
+type PageKey = keyof typeof pages;
+type ButtonType = 'button' | 'submit' | 'reset';
+
+export type Props = {
+  url?: string;
+  page?: PageKey | PageDef;
+  text?: string;
+  id?: string;
+  class?: string | string[];
+  size?: string;
+  color?: string;
+
+  /**
+   * button 要素の type
+   * tag が button の時だけ有効
+   */
+  type?: ButtonType;
+
+  /**
+   * 明示指定時は自動判定より優先
+   */
+  icon?: LinkIconType;
+
+  /**
+   * src/assets/images/icon/*.svg のファイル名（拡張子不要）
+   * 指定時は icon より優先
+   */
+  svg?: string;
+
+  iconPosition?: 'left' | 'right';
+  label?: string;
+  data?: Dict;
+  aria?: Dict;
+  external?: boolean;
+  download?: boolean | string;
+
+  /**
+   * アイコンを非表示にしたい時だけ false
+   * 未指定なら自動表示
+   */
+  showIcon?: boolean;
+};
+
+const {
+  url = '',
+  page,
+  text: rawText = '',
+  id = '',
+  class: classProp = '',
+  size = '',
+  color = '',
+  type = 'button',
+  icon = '',
+  svg,
+  iconPosition = 'right',
+  label = '',
+  data = {},
+  aria = {},
+  external,
+  download,
+  showIcon,
+} = Astro.props as Props;
+
+const text = rawText.trim() || 'more';
+const textLang = resolveTextLang(text);
+
+// page 指定も url 指定も同じ util で解決
+const rawResolvedUrl = resolvePageOrHref({ url, page });
+
+// label があれば label、URL があれば a、どちらもなければ button
+const tag: TagName = label ? 'label' : rawResolvedUrl ? 'a' : 'button';
+const Tag = tag;
+
+const hasDownload = download !== undefined && download !== false;
+
+// a 要素の時だけリンク情報を解決
+const link =
+  tag === 'a'
+    ? resolveLink({
+        rawHref: rawResolvedUrl,
+        currentUrl: Astro.url,
+        external,
+        hasDownload,
+      })
+    : null;
+
+// 表示アイコンを共通 util で解決
+const controlIcon =
+  showIcon === false
+    ? {
+        showIcon: false,
+        icon: undefined,
+        svg: undefined,
+      }
+    : resolveControlIcon({
+        icon,
+        svg,
+        data,
+        isMailLink: link?.isMailLink,
+        isTelLink: link?.isTelLink,
+        opensInNewTab: link?.opensInNewTab,
+        hasDownload: tag === 'a' ? hasDownload : undefined,
+      });
+
+// 見た目用クラスを組み立て
+const classes: string[] = ['c-button-link'];
+if (size) classes.push(`_size-${size}`);
+if (color) classes.push(`_color-${color}`);
+if (controlIcon.showIcon) classes.push(`_icon-${iconPosition}`);
+if (Array.isArray(classProp)) classes.push(...classProp.filter(Boolean));
+else if (classProp) classes.push(classProp);
+
+// data オブジェクトを data-* 属性へ展開
+const dataAttrs: Record<string, string | true> = {};
+for (const [k, v] of Object.entries(data ?? {})) {
+  if (v === true) dataAttrs[`data-${k}`] = true;
+  else if (v === '' || v == null) continue;
+  else dataAttrs[`data-${k}`] = String(v);
+}
+
+// aria オブジェクトを aria-* 属性へ展開
+const ariaAttrs: Record<string, string | true> = {};
+for (const [k, v] of Object.entries(aria ?? {})) {
+  if (v === true) ariaAttrs[`aria-${k}`] = true;
+  else if (v === '' || v == null) continue;
+  else ariaAttrs[`aria-${k}`] = String(v);
+}
+
+// 同一ページリンクなら aria-current を自動付与
+if (link?.isCurrent && aria?.current == null) {
+  ariaAttrs['aria-current'] = 'page';
+}
+
+// 補助文を自前で足すケースでは aria-label の上書きを避ける
+if (link && (link.isMailLink || link.isTelLink || link.opensInNewTab || hasDownload)) {
+  delete ariaAttrs['aria-label'];
+}
+
+// sr-only で付与する補助説明を共通 util から取得
+const assistiveTexts = link
+  ? getLinkAssistiveTexts({
+      isMailLink: link.isMailLink,
+      isTelLink: link.isTelLink,
+      opensInNewTab: link.opensInNewTab,
+      hasDownload,
+    })
+  : [];
+
+const attrs: Record<string, any> = {
+  ...(id ? { id } : {}),
+  class: classes.join(' '),
+  ...dataAttrs,
+  ...ariaAttrs,
+  ...(tag === 'a' && link
+    ? {
+        href: link.href,
+        download,
+        target: link.target,
+        rel: link.rel,
+      }
+    : {}),
+  ...(tag === 'button' ? { type } : {}),
+  ...(tag === 'label' ? { for: label } : {}),
+};
+---
+
+<Tag {...attrs}>
+  <span class="c-button-link-body">
+    {
+      controlIcon.showIcon && iconPosition === 'left' ? (
+        <span class="c-button-link-icon">
+          <IconMaterial icon={controlIcon.icon} svg={controlIcon.svg} aria-hidden="true" />
+        </span>
+      ) : null
+    }
+
+    <span class="c-button-link-text" lang={textLang}>
+      {text}
+    </span>
+
+    {assistiveTexts.map((text) => <span class="f-utility-sr-only">{text}</span>)}
+
+    {
+      controlIcon.showIcon && iconPosition === 'right' ? (
+        <span class="c-button-link-icon">
+          <IconMaterial icon={controlIcon.icon} svg={controlIcon.svg} aria-hidden="true" />
+        </span>
+      ) : null
+    }
+  </span>
+</Tag>

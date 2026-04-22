@@ -1,0 +1,13 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-button-icon {
+  display: inline-block;
+
+  &-body {
+    @include Flex(center, center);
+    width: 3rem;
+    aspect-ratio: 10/10;
+    background: #fff;
+    border-radius: 100%;
+  }
+}

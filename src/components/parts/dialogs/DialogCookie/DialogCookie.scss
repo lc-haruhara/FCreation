@@ -1,0 +1,20 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-dialog-cookie {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 999950;
+  width: 70%;
+  padding: 2rem;
+  color: #fff;
+  pointer-events: none;
+  background: #000;
+  opacity: 0;
+  transition: 0.25s;
+
+  &.is-show {
+    pointer-events: auto;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,197 @@
+@use 'sass:map';
+@use '../variable' as *;
+@use '../color' as *;
+@use '../mixins/mixin.mediaquery' as *;
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 Grid
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+@mixin GridSystem($col: 4) {
+  display: grid;
+  grid-template-rows: repeat(1, 1fr);
+  grid-template-columns: repeat(#{$col}, 1fr);
+
+  @include Breakpoint(inch11) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 Padding
+//
+// 使い方:
+// @include ContentsPadding(m);                  // 左右 m
+// @include ContentsPadding(m, xl);              // 左右 m / 上下 xl
+// @include ContentsPadding($bottom: section);   // 下だけ上書き
+// @include ContentsPadding($top: none);         // 上だけ打ち消し
+//
+// 例:
+// @include ContentsPadding(m, xl);
+// @include ContentsPadding($bottom: section);
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+$contents-padding-horizontal: (
+  none: (
+    default: 0,
+    inch13: 0,
+    mobile: 0,
+  ),
+  s: (
+    default: 1rem,
+    inch13: 0.75rem,
+    mobile: 0.5rem,
+  ),
+  m: (
+    default: 2rem,
+    inch13: 1.5rem,
+    mobile: 1rem,
+  ),
+  l: (
+    default: 3rem,
+    inch13: 2rem,
+    mobile: 1.5rem,
+  ),
+  xl: (
+    default: 4rem,
+    inch13: 3rem,
+    mobile: 2rem,
+  ),
+);
+$contents-padding-vertical: (
+  none: (
+    default: 0,
+    inch13: 0,
+    mobile: 0,
+  ),
+  s: (
+    default: 1rem,
+    inch13: 0.75rem,
+    mobile: 0.5rem,
+  ),
+  m: (
+    default: 2rem,
+    inch13: 1.5rem,
+    mobile: 1rem,
+  ),
+  l: (
+    default: 4rem,
+    inch13: 3rem,
+    mobile: 2rem,
+  ),
+  xl: (
+    default: 8rem,
+    inch13: 6rem,
+    mobile: 4rem,
+  ),
+  section: (
+    default: 12rem,
+    inch13: 8rem,
+    mobile: 6rem,
+  ),
+);
+
+@function get-contents-padding-size($tokens, $size, $point: default) {
+  $size-map: map.get($tokens, $size);
+
+  @if $size-map ==null {
+    @error 'Unknown size: #{$size}';
+  }
+
+  $value: map.get($size-map, $point);
+
+  @if $value ==null {
+    @error 'Unknown breakpoint "#{$point}" in size "#{$size}"';
+  }
+
+  @return $value;
+}
+
+@mixin ContentsPadding($x: null, $y: null, $top: null, $bottom: null, $left: null, $right: null) {
+  // 基本指定
+  @if $x !=null {
+    padding-right: get-contents-padding-size($contents-padding-horizontal, $x);
+    padding-left: get-contents-padding-size($contents-padding-horizontal, $x);
+  }
+
+  @if $y !=null {
+    padding-top: get-contents-padding-size($contents-padding-vertical, $y);
+    padding-bottom: get-contents-padding-size($contents-padding-vertical, $y);
+  }
+
+  // 個別上書き
+  @if $top !=null {
+    padding-top: get-contents-padding-size($contents-padding-vertical, $top);
+  }
+
+  @if $bottom !=null {
+    padding-bottom: get-contents-padding-size($contents-padding-vertical, $bottom);
+  }
+
+  @if $left !=null {
+    padding-left: get-contents-padding-size($contents-padding-horizontal, $left);
+  }
+
+  @if $right !=null {
+    padding-right: get-contents-padding-size($contents-padding-horizontal, $right);
+  }
+
+  @include Breakpoint(inch13) {
+    @if $x !=null {
+      padding-right: get-contents-padding-size($contents-padding-horizontal, $x, inch13);
+      padding-left: get-contents-padding-size($contents-padding-horizontal, $x, inch13);
+    }
+
+    @if $y !=null {
+      padding-top: get-contents-padding-size($contents-padding-vertical, $y, inch13);
+      padding-bottom: get-contents-padding-size($contents-padding-vertical, $y, inch13);
+    }
+
+    @if $top !=null {
+      padding-top: get-contents-padding-size($contents-padding-vertical, $top, inch13);
+    }
+
+    @if $bottom !=null {
+      padding-bottom: get-contents-padding-size($contents-padding-vertical, $bottom, inch13);
+    }
+
+    @if $left !=null {
+      padding-left: get-contents-padding-size($contents-padding-horizontal, $left, inch13);
+    }
+
+    @if $right !=null {
+      padding-right: get-contents-padding-size($contents-padding-horizontal, $right, inch13);
+    }
+  }
+
+  @include Breakpoint(mobile) {
+    @if $x !=null {
+      padding-right: get-contents-padding-size($contents-padding-horizontal, $x, mobile);
+      padding-left: get-contents-padding-size($contents-padding-horizontal, $x, mobile);
+    }
+
+    @if $y !=null {
+      padding-top: get-contents-padding-size($contents-padding-vertical, $y, mobile);
+      padding-bottom: get-contents-padding-size($contents-padding-vertical, $y, mobile);
+    }
+
+    @if $top !=null {
+      padding-top: get-contents-padding-size($contents-padding-vertical, $top, mobile);
+    }
+
+    @if $bottom !=null {
+      padding-bottom: get-contents-padding-size($contents-padding-vertical, $bottom, mobile);
+    }
+
+    @if $left !=null {
+      padding-left: get-contents-padding-size($contents-padding-horizontal, $left, mobile);
+    }
+
+    @if $right !=null {
+      padding-right: get-contents-padding-size($contents-padding-horizontal, $right, mobile);
+    }
+  }
+}

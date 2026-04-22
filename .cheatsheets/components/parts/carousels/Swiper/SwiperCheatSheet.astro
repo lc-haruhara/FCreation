@@ -1,0 +1,494 @@
+---
+import { Swiper, SwiperItem } from "../../../../../src/components/parts/index";
+---
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::
+
+Swiper / SwiperItem の使い方
+(app/src/components/elements/carousels/Swiper/Swiper.astro)
+(app/src/components/elements/carousels/Swiper/SwiperItem.astro)
+
+スライダー表示用の親子コンポーネントです。
+
+- 親: Swiper
+- 子: SwiperItem
+
+基本的にはこの2つをセットで使います。
+
+--------------------------------
+
+Swiper の Props 一覧
+
+class?: string
+追加クラスです。
+
+ベースクラス:
+- c-swiper
+
+--------------------------------
+
+slidesPerView?: string | number
+1画面に表示するスライド数です。
+未指定時は 1 です。
+
+例:
+- slidesPerView={1}
+- slidesPerView={1.2}
+- slidesPerView="auto"
+
+--------------------------------
+
+spaceBetween?: string | number
+スライド間の余白です。
+未指定時は 16 です。
+
+例:
+- spaceBetween={16}
+- spaceBetween={24}
+
+--------------------------------
+
+speed?: string | number
+スライド移動速度です。
+未指定時は 600 です。
+
+--------------------------------
+
+grabCursor?: boolean
+grab cursor を有効にするかどうかです。
+未指定時は false です。
+
+--------------------------------
+
+navigation?: boolean
+ナビゲーション矢印を使うかどうかです。
+未指定時は true です。
+
+--------------------------------
+
+pagination?: boolean
+ページネーションを使うかどうかです。
+未指定時は true です。
+
+--------------------------------
+
+paginationType?: 'bullets' | 'fraction' | 'progressbar'
+ページネーションの種類です。
+未指定時は 'bullets' です。
+
+--------------------------------
+
+loop?: boolean
+ループ再生するかどうかです。
+未指定時は false です。
+
+--------------------------------
+
+a11y?: boolean
+Swiper の a11y 機能を有効にするかどうかです。
+未指定時は true です。
+
+--------------------------------
+
+centeredSlides?: boolean
+スライドを中央寄せにするかどうかです。
+未指定時は false です。
+
+--------------------------------
+
+centerInsufficientSlides?: boolean
+スライド数が少ない場合も中央寄せしたい時に使います。
+未指定時は false です。
+
+--------------------------------
+
+navigationKey?: string
+外部ナビゲーションと紐付ける識別子です。
+
+以下と対応します。
+- data-swiper-prev="..."
+- data-swiper-next="..."
+- data-swiper-pagination="..."
+
+--------------------------------
+
+SwiperItem の Props 一覧
+
+href?: string
+リンク先URLです。
+
+例:
+- href="/news/1"
+- href="https://example.com"
+
+--------------------------------
+
+page?: keyof typeof pages | PageDef
+サイト内ページ定義です。
+href の代わりに使えます。
+
+--------------------------------
+
+imagePath: string
+表示する画像パスです。
+必須です。
+
+--------------------------------
+
+altText: string
+画像の alt テキストです。
+必須です。
+
+--------------------------------
+
+class?: string
+swiper-slide ルートへの追加クラスです。
+
+ベースクラス:
+- c-swiper-slide-item
+
+--------------------------------
+
+linkClass?: string
+内部 Link 要素へのクラスです。
+未指定時は:
+- c-swiper-slide-item-link
+
+--------------------------------
+
+imageClass?: string
+内部 Image 要素への追加クラスです。
+
+--------------------------------
+
+contentLang?: string
+リンク本文の言語指定です。
+
+--------------------------------
+
+showIcon?: boolean
+リンクアイコンを表示するかどうかです。
+未指定時は false です。
+
+--------------------------------
+
+icon?: LinkIconType
+表示するアイコン名です。
+
+--------------------------------
+
+svg?: string
+独自SVG名です。
+指定時は icon より優先される前提です。
+
+--------------------------------
+
+data?: Dict
+内部 Link に渡す data-* 属性です。
+
+--------------------------------
+
+出力構造
+
+Swiper:
+<swiper-container ...>
+  <slot />
+</swiper-container>
+
+SwiperItem:
+<swiper-slide class="c-swiper-slide-item ...">
+  <Link ...>
+    <Image ... />
+    <slot />
+  </Link>
+</swiper-slide>
+
+--------------------------------
+
+内部挙動
+
+Swiper は init="false" で描画され、
+script 側で register() と initSwipers() により初期化されます。
+
+また内部の swiper.ts により:
+- focusin で現在フォーカス中のスライドへ同期
+- Tab / Shift+Tab の移動を補助
+- 最後のスライドから外へ抜けられるよう制御
+- ループ複製スライドを考慮して実スライド基準で扱う
+
+--------------------------------
+
+運用ルール（推奨）
+
+- 基本は Swiper の中に SwiperItem を並べて使う
+- 単純なテキストだけのスライドなら swiper-slide を直接書いてもよい
+- 画像付きリンクスライドを簡単に作りたい時は SwiperItem を使う
+- 外部ナビを使う時だけ navigationKey を指定する
+- ナビやページネーションが不要なら false にする
+
+--------------------------------
+:::::::::::::::::::::::::::::::::::::::::::: -->
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+基本例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<Swiper>
+  <SwiperItem
+    page="about"
+    imagePath="sample-hero.jpg"
+    altText="News 1"
+  >
+    <span>News 1</span>
+  </SwiperItem>
+
+  <SwiperItem
+    page="about"
+    imagePath="sample-hero.jpg"
+    altText="News 2"
+  >
+    <span>News 2</span>
+  </SwiperItem>
+
+  <SwiperItem
+    page="about"
+    imagePath="sample-hero.jpg"
+    altText="News 3"
+  >
+    <span>News 3</span>
+  </SwiperItem>
+</Swiper>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+2枚見せ
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<Swiper slidesPerView={2} spaceBetween={24}>
+  <SwiperItem
+    href="/news/1"
+    page="about"
+    imagePath="sample-hero.jpg"
+    altText="News 1"
+  >
+    <span>News 1</span>
+  </SwiperItem>
+
+  <SwiperItem
+    page="about"
+    imagePath="sample-hero.jpg"
+    altText="News 2"
+  >
+    <span>News 2</span>
+  </SwiperItem>
+
+  <SwiperItem
+    href="/news/3"
+    imagePath="sample-hero.jpg"
+    altText="News 3"
+  >
+    <span>News 3</span>
+  </SwiperItem>
+</Swiper>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+ループあり
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<Swiper loop={true}>
+  <SwiperItem
+    href="/pickup/1"
+    imagePath="sample-hero.jpg"
+    altText="Pickup 1"
+  >
+    <span>Pickup 1</span>
+  </SwiperItem>
+
+  <SwiperItem
+    href="/pickup/2"
+    imagePath="sample-hero.jpg"
+    altText="Pickup 2"
+  >
+    <span>Pickup 2</span>
+  </SwiperItem>
+</Swiper>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+ページネーションを fraction にする例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<Swiper pagination={true} paginationType="fraction">
+  <SwiperItem
+    href="/works/1"
+    imagePath="sample-hero.jpg"
+    altText="Works 1"
+  >
+    <span>Works 1</span>
+  </SwiperItem>
+
+  <SwiperItem
+    href="/works/2"
+    imagePath="sample-hero.jpg"
+    altText="Works 2"
+  >
+    <span>Works 2</span>
+  </SwiperItem>
+</Swiper>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+ナビとページネーションを消す例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<Swiper navigation={false} pagination={false}>
+  <SwiperItem
+    href="/about"
+    imagePath="sample-hero.jpg"
+    altText="About"
+  >
+    <span>About</span>
+  </SwiperItem>
+
+  <SwiperItem
+    href="/service"
+    imagePath="sample-hero.jpg"
+    altText="Service"
+  >
+    <span>Service</span>
+  </SwiperItem>
+</Swiper>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+中央寄せの例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<Swiper
+  slidesPerView={1.2}
+  centeredSlides={true}
+  centerInsufficientSlides={true}
+>
+  <SwiperItem
+    href="/feature/1"
+    imagePath="sample-hero.jpg"
+    altText="Feature 1"
+  >
+    <span>Feature 1</span>
+  </SwiperItem>
+
+  <SwiperItem
+    href="/feature/2"
+    imagePath="sample-hero.jpg"
+    altText="Feature 2"
+  >
+    <span>Feature 2</span>
+  </SwiperItem>
+</Swiper>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+page を使う例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<Swiper>
+  <SwiperItem
+    page="contact"
+    imagePath="sample-hero.jpg"
+    altText="Contact"
+  >
+    <span>Contact</span>
+  </SwiperItem>
+</Swiper>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+アイコン付き
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<Swiper>
+  <SwiperItem
+    href="/about"
+    imagePath="sample-hero.jpg"
+    altText="About us"
+    showIcon={true}
+    icon="chevron_forward"
+  >
+    <span>About us</span>
+  </SwiperItem>
+</Swiper>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+追加クラス付き
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<Swiper class="top-swiper" slidesPerView={1.5}>
+  <SwiperItem
+    href="/campaign"
+    imagePath="sample-hero.jpg"
+    altText="Campaign"
+    class="is-featured"
+    linkClass="my-slide-link"
+    imageClass="my-slide-image"
+  >
+    <span>Campaign</span>
+  </SwiperItem>
+</Swiper>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+data 属性付き
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<Swiper>
+  <SwiperItem
+    href="/campaign"
+    imagePath="sample-hero.jpg"
+    altText="キャンペーン"
+    data={{ tracking: 'top-campaign' }}
+  >
+    <span>Campaign</span>
+  </SwiperItem>
+</Swiper>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+外部ナビゲーションを使う例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<div class="swiper-nav">
+  <button type="button" data-swiper-prev="pickup">Prev</button>
+  <button type="button" data-swiper-next="pickup">Next</button>
+  <div data-swiper-pagination="pickup"></div>
+</div>
+
+<Swiper navigationKey="pickup">
+  <SwiperItem
+    href="/pickup/1"
+    imagePath="sample-hero.jpg"
+    altText="Pickup 1"
+  >
+    <span>Pickup 1</span>
+  </SwiperItem>
+
+  <SwiperItem
+    href="/pickup/2"
+    imagePath="sample-hero.jpg"
+    altText="Pickup 2"
+  >
+    <span>Pickup 2</span>
+  </SwiperItem>
+
+  <SwiperItem
+    href="/pickup/3"
+    imagePath="sample-hero.jpg"
+    altText="Pickup 3"
+  >
+    <span>Pickup 3</span>
+  </SwiperItem>
+</Swiper>
+
+{/* ::::::::::::::::::::::::::::::::::::::::::::::::::::::
+swiper-slide を直接書く例
+::::::::::::::::::::::::::::::::::::::::::::::::::::::: */}
+
+<Swiper slidesPerView={1.2}>
+  <swiper-slide>
+    <article>Custom Slide 1</article>
+  </swiper-slide>
+  <swiper-slide>
+    <article>Custom Slide 2</article>
+  </swiper-slide>
+</Swiper>

@@ -1,0 +1,113 @@
+---
+import './Swiper.scss';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+export type Props = {
+  class?: string;
+  slidesPerView?: string | number;
+  spaceBetween?: string | number;
+  speed?: string | number;
+  grabCursor?: boolean;
+  navigation?: boolean;
+  pagination?: boolean;
+  paginationType?: 'bullets' | 'fraction' | 'progressbar';
+  loop?: boolean;
+  a11y?: boolean;
+  centeredSlides?: boolean;
+  centerInsufficientSlides?: boolean;
+  navigationKey?: string;
+  prevLabel?: string;
+  nextLabel?: string;
+};
+
+const {
+  class: className = '',
+  slidesPerView = 1,
+  spaceBetween = 16,
+  speed = 600,
+  grabCursor = false,
+  navigation = true,
+  pagination = true,
+  paginationType = 'bullets',
+  loop = false,
+  a11y = true,
+  centeredSlides = false,
+  centerInsufficientSlides = false,
+  navigationKey = '',
+  prevLabel = '前へ',
+  nextLabel = '次へ',
+} = Astro.props;
+---
+
+<div class:list={['c-swiper-wrap']} data-swiper-scope>
+  <swiper-container
+    class:list={['c-swiper', className]}
+    data-swiper-root
+    data-swiper-navigation={navigation ? 'true' : 'false'}
+    data-swiper-pagination={pagination ? 'true' : 'false'}
+    data-swiper-pagination-type={paginationType}
+    data-swiper-navigation-key={navigationKey}
+    init="false"
+    slides-per-view={String(slidesPerView)}
+    space-between={String(spaceBetween)}
+    speed={String(speed)}
+    grab-cursor={grabCursor ? 'true' : 'false'}
+    loop={loop ? 'true' : 'false'}
+    a11y={a11y ? 'true' : 'false'}
+    centered-slides={centeredSlides ? 'true' : 'false'}
+    center-insufficient-slides={centerInsufficientSlides ? 'true' : 'false'}
+  >
+    <slot />
+  </swiper-container>
+
+  {
+    pagination && navigationKey && (
+      <div class="c-swiper-pagination" data-swiper-pagination={navigationKey} />
+    )
+  }
+
+  {
+    navigation && navigationKey && (
+      <div class="c-swiper-nav">
+        <button
+          type="button"
+          class="c-swiper-button-prev"
+          data-swiper-prev={navigationKey}
+          aria-label={prevLabel}
+        >
+          Prev
+        </button>
+
+        <button
+          type="button"
+          class="c-swiper-button-next"
+          data-swiper-next={navigationKey}
+          aria-label={nextLabel}
+        >
+          Next
+        </button>
+      </div>
+    )
+  }
+</div>
+
+<script>
+  import { register } from 'swiper/element/bundle';
+
+  import { initSwipers, resetSwipers } from './assets/swiper';
+
+  register();
+
+  const mount = () => {
+    initSwipers();
+    requestAnimationFrame(() => initSwipers());
+  };
+
+  document.addEventListener('astro:before-swap', () => resetSwipers());
+  document.addEventListener('astro:after-swap', mount);
+  document.addEventListener('astro:page-load', mount);
+
+  mount();
+</script>

@@ -1,0 +1,57 @@
+---
+import './Swiper.scss';
+
+import { Image, Link } from '@/components/elements/index';
+import { pages } from '@/core/config/pages.config';
+import type { Dict, LinkIconType } from '@/core/types/links/link.types';
+import type { PageDef } from '@/core/types/pages/pages.types';
+
+type PageKey = keyof typeof pages;
+
+interface Props {
+  href?: string;
+  page?: PageKey | PageDef;
+  imagePath: string;
+  altText: string;
+  class?: string;
+  linkClass?: string;
+  imageClass?: string;
+
+  contentLang?: string;
+  showIcon?: boolean;
+  icon?: LinkIconType;
+  svg?: string;
+  data?: Dict;
+}
+
+const {
+  href,
+  page,
+  imagePath,
+  altText,
+  class: className = '',
+  linkClass = 'c-swiper-slide-item-link',
+  imageClass = '',
+  contentLang,
+  showIcon = false,
+  icon,
+  svg,
+  data,
+} = Astro.props as Props;
+---
+
+<swiper-slide class:list={['c-swiper-slide-item', className]}>
+  <Link
+    href={href}
+    page={page}
+    class={linkClass}
+    contentLang={contentLang}
+    showIcon={showIcon}
+    icon={icon}
+    svg={svg}
+    data={data}
+  >
+    <Image imagePath={imagePath} altText={altText} class={imageClass} />
+    <slot />
+  </Link>
+</swiper-slide>

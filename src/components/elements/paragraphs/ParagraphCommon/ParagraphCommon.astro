@@ -1,0 +1,13 @@
+---
+import './ParagraphCommon.scss';
+
+type Props = {
+  class?: string;
+};
+
+const { class: className = '' } = Astro.props as Props;
+---
+
+<p class:list={['c-paragraph-common', className]}>
+  <slot />
+</p>

@@ -1,0 +1,37 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-global-navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 900000;
+  width: 100%;
+  padding: 2rem;
+  pointer-events: none;
+
+  &-body {
+    @include Flex;
+  }
+
+  &-logo {
+    width: min(180px, 100%);
+    pointer-events: auto;
+  }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// 🍟 Navigation Group
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.c-global-navigation-group {
+  @include Flex(flex-start, center);
+  gap: 2rem;
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// 🍟 List
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.c-global-navigation-list {
+  gap: 2rem;
+  pointer-events: auto;
+  @include Flex(flex-start, center);
+}

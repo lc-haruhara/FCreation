@@ -1,0 +1,71 @@
+---
+import './NavigationGlobal.scss';
+
+import { Image } from '@/components/elements/index';
+import { NavigationDrawer } from '@/components/parts/index.ts';
+import { getNavPages } from '@/core/lib/pages';
+
+interface Props {
+  showNav?: boolean;
+}
+
+const { showNav = true } = Astro.props;
+
+const globalPages = getNavPages('global');
+const currentPath = Astro.url.pathname;
+
+// 英語だけのテキストか判定
+function isEnglishOnlyText(s: string) {
+  const v = s.trim();
+  if (!v) return false;
+
+  const hasLatinLetter = /[A-Za-z]/u.test(v);
+  const englishLike = /^[A-Za-z0-9\s.,!?&/()'"’:;-]+$/u.test(v);
+
+  return hasLatinLetter && englishLike;
+}
+---
+
+<div class="c-global-navigation">
+  <div class="c-global-navigation-body">
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Logo                                               */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <a href="/" class="c-global-navigation-logo" data-js-scroll-top>
+      <Image imagePath="logo/logo-main.svg" altText="Logo" />
+    </a>
+
+    <div class="c-global-navigation-group">
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      {/* Navigation Global                                  */}
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      {
+        showNav && (
+          <nav class="c-global-navigation-nav" aria-label="グローバルナビゲーション">
+            <ul class="c-global-navigation-list">
+              {globalPages.map((page) => (
+                <li class="c-global-navigation-list-item">
+                  <a
+                    href={page.href}
+                    class="c-global-navigation-list-item-body"
+                    aria-current={page.href === currentPath ? 'page' : undefined}
+                    data-js-scroll-top={page.href === '/' ? '' : undefined}
+                  >
+                    <span lang={isEnglishOnlyText(page.label) ? 'en' : undefined}>
+                      {page.label}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )
+      }
+
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      {/* Navigation Drawer                                   */}
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      <NavigationDrawer />
+    </div>
+  </div>
+</div>

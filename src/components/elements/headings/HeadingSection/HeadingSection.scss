@@ -1,0 +1,8 @@
+@use 'resources/styles/scss/foundation' as *;
+
+[class*='c-heading-section-level'] {
+  [class*='-english'],
+  [class*='-japanese'] {
+    display: block;
+  }
+}

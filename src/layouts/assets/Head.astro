@@ -1,0 +1,111 @@
+---
+import { resolveMeta } from '@/core/lib/seo';
+
+const { title, description, canonicalUrl, robotsContent, og, twitter, meta, url } = resolveMeta(
+  Astro.url,
+);
+
+// =========================
+// OGP
+// =========================
+const ogTitle = og.title ?? title;
+const ogDescription = og.description ?? description;
+const ogUrl = og.url ?? canonicalUrl ?? url.href;
+const ogSiteName = og.siteName;
+const ogImageAlt = `${ogSiteName ?? title}のイメージ画像`;
+
+// =========================
+// Client Router
+// =========================
+import { ClientRouter } from 'astro:transitions';
+//Client Router を無効化するパスを設定
+function normalizePath(pathname: string) {
+  if (!pathname || pathname === '/') return '/';
+  return pathname.replace(/\/+$/, '');
+}
+const disableClientRouterPaths = new Set(
+  ['/contact', '/contact/confirm', '/contact/complete'].map(normalizePath),
+);
+const shouldUseClientRouter = !disableClientRouterPaths.has(normalizePath(Astro.url.pathname));
+---
+
+<head prefix="og: https://ogp.me/ns# fb: https://ogp.me/ns/fb# article: https://ogp.me/ns/article#">
+  <meta charset="utf-8" />
+
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <!--   GA4 Consent Mode                                 -->
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <script is:inline>
+    if (typeof window !== 'undefined') {
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag(...args) {
+        window.dataLayer.push(args);
+      }
+
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        wait_for_update: 500,
+      });
+    }
+  </script>
+
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <!--   Basic                                         -->
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  {robotsContent && <meta name="robots" content={robotsContent} />}
+  {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <!--   OGP                                         -->
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  {og.locale && <meta property="og:locale" content={og.locale} />}
+  {og.type && <meta property="og:type" content={og.type} />}
+  <meta property="og:title" content={ogTitle} />
+  <meta property="og:description" content={ogDescription} />
+  <meta property="og:url" content={ogUrl} />
+  {ogSiteName && <meta property="og:site_name" content={ogSiteName} />}
+  {og.image && <meta property="og:image" content={og.image} />}
+  {og.image && <meta property="og:image:alt" content={ogImageAlt} />}
+  {og.imageWidth && <meta property="og:image:width" content={String(og.imageWidth)} />}
+  {og.imageHeight && <meta property="og:image:height" content={String(og.imageHeight)} />}
+
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <!--   Twitter                                         -->
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  {twitter.card && <meta name="twitter:card" content={twitter.card} />}
+  <meta name="twitter:title" content={twitter.title ?? ogTitle} />
+  <meta name="twitter:description" content={twitter.description ?? ogDescription} />
+  {(twitter.image ?? og.image) && <meta name="twitter:image" content={twitter.image ?? og.image} />}
+
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <!--   JSON-LD                                         -->
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  {
+    (meta?.jsonLd ?? []).map((node) => (
+      <script type="application/ld+json" set:html={JSON.stringify(node)} />
+    ))
+  }
+
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <!--   Fonts                                         -->
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <!--   Viewport                                         -->
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  <!--   Client Router                                     -->
+  <!-- :::::::::::::::::::::::::::::::::::::::::::::::::: -->
+  {shouldUseClientRouter && <ClientRouter />}
+</head>

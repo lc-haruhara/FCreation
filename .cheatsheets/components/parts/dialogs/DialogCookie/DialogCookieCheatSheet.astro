@@ -1,0 +1,171 @@
+---
+import { DialogCookie } from "../../../../../src/components/parts/index";
+---
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::
+
+DialogCookie の概要
+(app/src/components/elements/dialogs/DialogCookie/DialogCookie.astro)
+
+Cookie利用同意ダイアログです。
+
+主な役割:
+- Cookie利用について説明を表示
+- 「拒否」「同意」を選ばせる
+- 選択結果を localStorage に保存
+- 同意時のみ GA を読み込む
+- 保存済み状態を見て再表示有無を切り替える
+
+--------------------------------
+
+このコンポーネントに Props はありません。
+
+呼び出しはそのまま置くだけです。
+
+例:
+<DialogCookie />
+
+--------------------------------
+
+出力される主な要素
+
+- ルート要素: div.c-dialog-cookie
+- id="cookie-dialog"
+- role="dialog"
+- aria-live="polite"
+- aria-labelledby="cookie-title"
+- aria-describedby="cookie-description"
+
+内部には以下が含まれます。
+
+- タイトル
+- 説明文
+- 「拒否」ボタン
+- 「同意」ボタン
+
+--------------------------------
+
+アクセシビリティ関連
+
+ルート:
+- role="dialog"
+- aria-labelledby="cookie-title"
+- aria-describedby="cookie-description"
+
+タイトル:
+- id="cookie-title"
+- visually-hidden で視覚非表示
+
+説明文:
+- id="cookie-description"
+
+ボタン:
+- ButtonLink を使用
+- aria-label を個別指定
+
+--------------------------------
+
+内部で使っている保存キー
+
+localStorage には以下のキーで保存されます。
+
+- cookie_consent
+
+保存データの形:
+{
+  granted: boolean,
+  expires: string
+}
+
+--------------------------------
+
+保存期限
+
+通常時:
+- 180日
+
+DEBUG_MODE = true の場合:
+- 強制的に期限切れ扱いに近い挙動
+
+--------------------------------
+
+同意時の挙動
+
+「同意」を押すと:
+
+- localStorage に保存
+- ダイアログを閉じる
+- Consent Mode を update
+- GA をロード
+- dataLayer に event を push
+
+push される event:
+- cookie_consent_granted
+
+--------------------------------
+
+拒否時の挙動
+
+「拒否」を押すと:
+
+- localStorage に保存
+- ダイアログを閉じる
+- Consent Mode を update
+- GA はロードしない
+- dataLayer に event を push
+
+push される event:
+- cookie_consent_denied
+
+--------------------------------
+
+初回表示時の挙動
+
+保存データがない場合:
+- ダイアログを表示
+
+保存データが期限切れの場合:
+- ダイアログを表示
+- 古い保存データは削除
+
+保存データが有効な場合:
+- ダイアログは表示しない
+- 保存済みの同意状態を反映
+- granted=true なら GA をロード
+
+--------------------------------
+
+GA 関連
+
+環境変数:
+- PUBLIC_GOOGLE_TAG_MANAGER_ID
+
+同意後にのみ以下を読み込みます。
+- https://www.googletagmanager.com/gtag/js?id=...
+
+Consent Mode v2 で更新する値:
+- analytics_storage
+- ad_storage
+- ad_user_data
+- ad_personalization
+
+※ analytics_storage だけが同意可否で切り替わり、
+  広告系は denied 固定です。
+
+--------------------------------
+
+運用ルール（推奨）
+
+- レイアウトの共通領域に1回だけ置く
+- 二重配置しない
+- PUBLIC_GOOGLE_TAG_MANAGER_ID を設定して使う
+- Cookieポリシー / プライバシーポリシーのURLは実運用用に修正する
+
+--------------------------------
+
+基本例
+
+<DialogCookie />
+
+:::::::::::::::::::::::::::::::::::::::::::: -->
+<DialogCookie />

@@ -1,0 +1,23 @@
+---
+type Props = {
+  name: string;
+  selected?: boolean;
+};
+
+const { name, selected = false } = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={['c-tab-nav-button', selected && 'is-active']}
+  role="tab"
+  id={`tab-${name}`}
+  aria-controls={`panel-${name}`}
+  aria-selected={selected ? 'true' : 'false'}
+  tabindex={selected ? '0' : '-1'}
+  data-tab-trigger={name}
+>
+  <span class="c-tab-nav-button-text">
+    <slot />
+  </span>
+</button>

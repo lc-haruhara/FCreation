@@ -1,0 +1,42 @@
+---
+import '@/resources/styles/scss/main.scss';
+import './Layout.scss';
+
+import { MountModals } from '@/components/parts/index.ts';
+import { Head, Root, Scripts } from '@/layouts/assets/index.ts';
+---
+
+<!doctype html>
+<html lang="ja" class="no-js">
+  <Head />
+  <Root {...Astro.props}>
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Page Contents                                     */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <slot />
+
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Page Extra                                       */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <Fragment slot="page-extra">
+      <slot name="page-extra" />
+    </Fragment>
+
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Root Modals                                       */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <Fragment slot="modals">
+      <MountModals />
+    </Fragment>
+  </Root>
+
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/* Dialog Cookie                                      */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <!-- <DialogCookie /> -->
+
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/* Common Scripts                                   */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <Scripts slot="scripts" />
+</html>
