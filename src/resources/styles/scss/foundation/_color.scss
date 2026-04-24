@@ -11,7 +11,15 @@ $colors: (
   text: (
     weak: #000,
     light: #000,
-    base: #000,
+    base: #392e6b,
+    strong: #000,
+    heavy: #000,
+  ),
+
+  background: (
+    weak: #000,
+    light: #000,
+    base: hsl(45, 70%, 96%),
     strong: #000,
     heavy: #000,
   ),
@@ -19,7 +27,7 @@ $colors: (
   main: (
     weak: #000,
     light: #000,
-    base: #000,
+    base: #250d8f,
     strong: #000,
     heavy: #000,
   ),
@@ -28,6 +36,22 @@ $colors: (
     weak: #000,
     light: #000,
     base: #000,
+    strong: #000,
+    heavy: #000,
+  ),
+
+  yellow: (
+    weak: #000,
+    light: #000,
+    base: #ffce3b,
+    strong: #000,
+    heavy: #000,
+  ),
+
+  pink: (
+    weak: #000,
+    light: #000,
+    base: #ff8ea1,
     strong: #000,
     heavy: #000,
   ),

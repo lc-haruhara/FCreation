@@ -1,0 +1,36 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-button-cta {
+  @include ButtonStyle;
+
+  &-body {
+    @include Flex(center, center, 1rem);
+    font-weight: 900;
+    color: #fff;
+    background: color(sns, line);
+    @include ContentsPadding(s, m);
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Icon
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Text
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-detail {
+    @include Flex(left, none);
+    flex-direction: column;
+  }
+  &-text-sub {
+    @include FontStyle(xs);
+  }
+  &-text-main {
+    margin-top: -0.25rem;
+    @include FontStyle(l);
+  }
+}

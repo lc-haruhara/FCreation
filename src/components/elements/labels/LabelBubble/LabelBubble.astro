@@ -1,0 +1,19 @@
+---
+import './LabelBubble.scss';
+
+type Props = {
+  text: string;
+  color?: string;
+};
+
+const { text, color = '' } = Astro.props as Props;
+const isEnOnly = /^[A-Za-z0-9\s\-_.,!?'"]+$/.test(text);
+---
+
+<span class:list={['c-label-bubble', color && `_${color}`]} lang={isEnOnly ? 'en' : undefined}>
+  <span class="c-label-bubble-body" data-text={text}>
+    <span class="c-label-bubble-text">
+      {text}
+    </span>
+  </span>
+</span>

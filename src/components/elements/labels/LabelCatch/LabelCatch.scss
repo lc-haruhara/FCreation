@@ -1,0 +1,105 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-label-catch {
+  position: relative;
+  display: inline-block;
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Text
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-text {
+    position: relative;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    text-box: trim-both cap alphabetic;
+    @include FontStyle(x3l);
+    @include FontFamily(sub);
+
+    &-body {
+      position: relative;
+      z-index: 10;
+      display: inline-block;
+    }
+
+    &::after {
+      position: absolute;
+      left: 0;
+      z-index: 1;
+      font-weight: 900;
+      color: rgba($color: #fff, $alpha: 1);
+      content: attr(data-text);
+      -webkit-text-stroke: 0.3rem color(text, base);
+    }
+
+    &::before {
+      position: absolute;
+      left: 0;
+      z-index: 1;
+      font-weight: 900;
+      color: color(text, base);
+      content: attr(data-text);
+      translate: 0.15em 0.15em;
+    }
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 English Only
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &[lang='en'] &-text {
+    font-weight: 400;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Kana
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-kana {
+    position: absolute;
+    inset: 0 0 auto 0;
+    margin: auto;
+    font-weight: 900;
+    text-align: center;
+    translate: 0 0%;
+    text-box: trim-both cap alphabetic;
+    @include FontStyle(xs);
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Align
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &._left {
+    text-align: left;
+  }
+  &._center {
+    text-align: center;
+  }
+  &._right {
+    text-align: right;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Color
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &._yellow &-text {
+    color: color(yellow);
+  }
+  &._pink &-text {
+    color: color(pink);
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Size
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &._x2s &-text {
+    @include FontStyle(xl);
+  }
+  &._xs &-text {
+    @include FontStyle(l);
+  }
+  &._m &-text {
+    @include FontStyle(x3l);
+  }
+  &._l &-text {
+    @include FontStyle(l);
+  }
+}

@@ -1,6 +1,7 @@
 @use 'sass:map';
 @use '../variable' as *;
 @use '../color' as *;
+@use 'mixin.layouts' as *;
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
@@ -11,4 +12,74 @@
   outline: 2px solid color(link);
   outline-offset: 2px;
   // border-radius: 0.25rem;
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 CardStyle
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+@mixin CardStyle($shadow: true) {
+  border: $BorderWidth solid color(text);
+  border-radius: 0.5rem;
+
+  @if $shadow {
+    box-shadow: 0.25rem 0.25rem 0 0 color(text);
+  }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 ButtonStyle
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+@mixin ButtonStyle {
+  position: relative;
+  &::after {
+    position: absolute;
+    inset: 0 0 0 0;
+    z-index: 0;
+    content: '';
+    background: color(text);
+    border-radius: 0.5rem;
+    translate: 0.25rem 0.25rem;
+  }
+  &-body {
+    position: relative;
+    z-index: 10;
+    @include CardStyle(false);
+    transition: 0.25s ease-in-out;
+    will-change: transform;
+  }
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Hover
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &:hover &-body {
+    translate: 0.25rem 0.25rem;
+  }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 YoYo
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+@mixin kfYoYo($delay: 0s) {
+  animation-name: kfYoYo;
+  animation-duration: 4s;
+  animation-timing-function: ease;
+  animation-delay: $delay;
+  animation-iteration-count: infinite;
+}
+
+@keyframes kfYoYo {
+  0% {
+    translate: 0 -10%;
+  }
+  50% {
+    translate: 0 10%;
+  }
+  100% {
+    translate: 0 -10%;
+  }
 }

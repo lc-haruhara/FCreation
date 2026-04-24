@@ -1,3 +1,66 @@
+---
+import { ButtonCTA, Image, LabelBubble, LabelCatch } from '@/components/elements/index';
+---
+
 <section class="p-top-hero">
-  <div class="p-top-hero-body">TEST</div>
+  <div class="p-top-hero-body">
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Detail                                             */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <div class="p-top-hero-detail">
+      {/* Catch :::::::::::::::::::::::::::::::::::: */}
+      <div class="p-top-hero-detail-catch">
+        <LabelCatch text="Sports" color="yellow" kana="スポーツ" size="m" />
+        <LabelCatch text="x" />
+        <LabelCatch text="Apparel" color="pink" kana="アパレル" size="m" />
+        <p class="p-top-hero-detail-text">カスタムオーダーブランド</p>
+      </div>
+
+      {/* Description :::::::::::::::::::::::::::::::::::: */}
+      <div class="p-top-hero-detail-description">
+        <LabelCatch text="スポーツもアパレルも、完全オーダーメイド" color="" size="x2s" />
+      </div>
+
+      {/* Card :::::::::::::::::::::::::::::::::::: */}
+      <div class="p-top-hero-detail-card">
+        <div class="p-top-hero-detail-card-item">
+          <div class="p-top-hero-detail-card-item-icon"></div>
+          <p class="p-top-hero-detail-card-item-text">
+            耐久性に<br />優れた高品質
+          </p>
+        </div>
+        <div class="p-top-hero-detail-card-item">
+          <div class="p-top-hero-detail-card-item-icon"></div>
+          <p class="p-top-hero-detail-card-item-text">
+            専任デザイナーに<br />丸投げOK
+          </p>
+        </div>
+        <div class="p-top-hero-detail-card-item">
+          <div class="p-top-hero-detail-card-item-icon"></div>
+          <p class="p-top-hero-detail-card-item-text">
+            LINEに<br />丸投げで完結
+          </p>
+        </div>
+      </div>
+
+      {/* Bubble :::::::::::::::::::::::::::::::::::: */}
+      <div class="p-top-hero-detail-bubble">
+        <LabelBubble text="大会用に" color="pink" />
+        <LabelBubble text="卒団記念で" color="pink" />
+        <LabelBubble text="ノベルティに" color="pink" />
+      </div>
+
+      {/* Button :::::::::::::::::::::::::::::::::::: */}
+      <ButtonCTA textSub="専門スタッフが完全サポート" textMain="まずは公式LINEで相談する" />
+    </div>
+
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Image                                             */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <div class="p-top-hero-image">
+      <div class="p-top-hero-image-logo">
+        <Image imagePath="logo/logo-main.svg" altText="Hero Detail" />
+      </div>
+    </div>
+  </div>
 </section>

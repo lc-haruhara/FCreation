@@ -1,0 +1,29 @@
+---
+import './ButtonCTA.scss';
+import { Image } from '@/components/elements/index';
+type Props = {
+  textSub?: string | null;
+  textMain: string | null;
+  href?: string;
+};
+
+const { textSub = null, textMain = null, href = '#' } = Astro.props as Props;
+const textSubTrim = textSub?.trim() || '';
+const textMainTrim = textMain?.trim() || '';
+---
+
+<span class="c-button-cta">
+  <a href={href} class="c-button-cta-body">
+    <span class="c-button-cta-icon">
+      <Image imagePath="icon/sns-line-white.svg" altText="" />
+    </span>
+    <span class="c-button-cta-detail">
+      <span class="c-button-cta-text-sub">
+        {textSub?.trim()}
+      </span>
+      <span class="c-button-cta-text-main">
+        {textMain?.trim()}
+      </span>
+    </span>
+  </a>
+</span>

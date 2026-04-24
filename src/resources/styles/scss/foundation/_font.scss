@@ -14,9 +14,9 @@
 // 🍔 Import
 //
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Titan+One&display=swap"');
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
@@ -24,12 +24,14 @@
 //
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 @mixin BaseFontSize {
-  font-size: 16px;
+  font-size: 22px;
 
   @include Breakpoint(inch15) {
+    font-size: 20px;
   }
 
   @include Breakpoint(inch13) {
+    font-size: 18px;
   }
 
   @include Breakpoint(inch11) {
@@ -48,15 +50,15 @@
 //
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 $font-fallback-ja:
-  'Noto Sans JP', 'dashicons', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ',
-  Meiryo, 'ＭＳ Ｐゴシック', sans-serif;
+  'M PLUS 1', 'dashicons', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo,
+  'ＭＳ Ｐゴシック', sans-serif;
 $font-family-map: (
   base: (
     'Poppins',
     $font-fallback-ja,
   ),
   sub: (
-    'Oswald',
+    'Titan One',
     $font-fallback-ja,
   ),
 );
@@ -68,6 +70,10 @@ $font-family-map: (
     font-family: $font-family;
   } @else {
     @warn 'Unknown font type: #{$type}';
+  }
+
+  @if $type == sub {
+    letter-spacing: -0.05em;
   }
 }
 
@@ -90,11 +96,11 @@ $font-styles: (
     line-height: 1.5,
   ),
   x4l: (
-    font-size: 4rem,
+    font-size: 3rem,
     line-height: 1.5,
   ),
   x3l: (
-    font-size: 3rem,
+    font-size: 2.75rem,
     line-height: 1.5,
   ),
   x2l: (
@@ -111,15 +117,15 @@ $font-styles: (
   ),
   m: (
     font-size: 1rem,
-    line-height: 1.75,
+    line-height: 1.5,
   ),
   s: (
     font-size: 0.9rem,
-    line-height: 1.75,
+    line-height: 1.5,
   ),
   xs: (
     font-size: 0.8rem,
-    line-height: 1.75,
+    line-height: 1.5,
   ),
 );
 

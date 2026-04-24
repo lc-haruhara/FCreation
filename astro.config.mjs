@@ -5,6 +5,7 @@ import { defineConfig, envField } from 'astro/config';
 
 export default defineConfig({
   output: 'static',
+  compressHTML: false,
 
   env: {
     schema: {
@@ -32,6 +33,7 @@ export default defineConfig({
     },
     build: {
       sourcemap: false,
+      minify: false,
     },
   },
 });

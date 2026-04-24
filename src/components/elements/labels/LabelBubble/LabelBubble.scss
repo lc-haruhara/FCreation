@@ -1,0 +1,33 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-label-bubble {
+  position: relative;
+  display: inline-block;
+  &-body {
+    @include CardStyle(false);
+    @include kfYoYo;
+    position: relative;
+    display: inline-block;
+    padding: 0.25em 1em;
+    background: #fff;
+    will-change: transform;
+    &::after {
+      position: absolute;
+      inset: auto 0 0 0;
+      width: 0.75rem;
+      aspect-ratio: 10/10;
+      margin: auto;
+      content: '';
+      background: #fff;
+      border-right: $BorderWidth solid color(text);
+      border-bottom: $BorderWidth solid color(text);
+      border-bottom-right-radius: 0.25rem;
+      rotate: 45deg;
+      translate: 0 63%;
+    }
+  }
+  &-text {
+    font-weight: 900;
+    @include FontStyle(xs);
+  }
+}

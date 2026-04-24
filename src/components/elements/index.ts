@@ -1,6 +1,7 @@
 //Buttons
 export { default as ButtonIcon } from './buttons/ButtonIcon/ButtonIcon.astro';
 export { default as ButtonLink } from './buttons/ButtonLink/ButtonLink.astro';
+export { default as ButtonCTA } from './buttons/ButtonCTA/ButtonCTA.astro';
 
 //Headings
 export { default as HeadingSection } from './headings/HeadingSection/HeadingSection.astro';
@@ -10,6 +11,10 @@ export { default as IconMaterial } from './icons/IconMaterial/IconMaterial.astro
 
 //Images
 export { default as Image } from './images/Image/Image.astro';
+
+//Labels
+export { default as LabelCatch } from './labels/LabelCatch/LabelCatch.astro';
+export { default as LabelBubble } from './labels/LabelBubble/LabelBubble.astro';
 
 // Inputs - Assets
 export { default as InputFieldError } from './inputs/parts/InputFieldError/InputFieldError.astro';
