@@ -44,7 +44,7 @@ const Tag = `h${level}` as HeadingTag;
 const englishText = english.trim();
 const japaneseText = japanese.trim();
 
-const hasEnglish = !!englishText;
+const hasEnglish = !!englishText || Astro.slots.has('english');
 const hasJapanese = !!japaneseText;
 
 // 親見出しの class
@@ -92,7 +92,11 @@ const japaneseClass = `c-heading-section-level${level}-japanese`;
     <Tag {...(id ? { id } : {})} class={classes.join(' ')} {...dataAttrs} {...ariaAttrs}>
       {hasEnglish && (
         <span class={englishClass}>
-          <span lang="en">{englishText}</span>
+          {Astro.slots.has('english') ? (
+            <slot name="english" />
+          ) : (
+            <span lang="en">{englishText}</span>
+          )}
         </span>
       )}
 

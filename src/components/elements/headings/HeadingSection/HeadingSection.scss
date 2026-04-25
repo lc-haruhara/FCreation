@@ -5,4 +5,13 @@
   [class*='-japanese'] {
     display: block;
   }
+  [class*='-japanese'] {
+    display: block;
+    margin-top: 1em;
+    font-weight: 900;
+  }
+}
+
+.c-heading-section-level2 {
+  margin-bottom: 4rem;
 }

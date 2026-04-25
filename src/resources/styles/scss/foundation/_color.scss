@@ -16,10 +16,10 @@ $colors: (
     heavy: #000,
   ),
 
-  background: (
+  canvas: (
     weak: #000,
     light: #000,
-    base: hsl(45, 70%, 96%),
+    base: #fcf8ee,
     strong: #000,
     heavy: #000,
   ),
@@ -42,7 +42,7 @@ $colors: (
 
   yellow: (
     weak: #000,
-    light: #000,
+    light: #ffe084,
     base: #ffce3b,
     strong: #000,
     heavy: #000,

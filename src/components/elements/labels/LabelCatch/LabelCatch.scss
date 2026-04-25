@@ -2,7 +2,7 @@
 
 .c-label-catch {
   position: relative;
-  display: inline-block;
+  display: grid;
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   // 🍟 Text
@@ -39,7 +39,7 @@
       font-weight: 900;
       color: color(text, base);
       content: attr(data-text);
-      translate: 0.15em 0.15em;
+      translate: 0.5% 12%;
     }
   }
 
@@ -48,6 +48,14 @@
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   &[lang='en'] &-text {
     font-weight: 400;
+    &::before,
+    &::after,
+    .c-label-catch-text-body {
+      letter-spacing: -0.015em;
+    }
+    &::before {
+      translate: 3% 5%;
+    }
   }
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -59,7 +67,7 @@
     margin: auto;
     font-weight: 900;
     text-align: center;
-    translate: 0 0%;
+    translate: 0 -200%;
     text-box: trim-both cap alphabetic;
     @include FontStyle(xs);
   }
@@ -83,8 +91,14 @@
   &._yellow &-text {
     color: color(yellow);
   }
+  &._yellow-light &-text {
+    color: color(yellow, light);
+  }
   &._pink &-text {
     color: color(pink);
+  }
+  &._canvas &-text {
+    color: color(canvas, base);
   }
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -101,5 +115,8 @@
   }
   &._l &-text {
     @include FontStyle(l);
+  }
+  &._copy &-text {
+    @include FontStyle(x5l);
   }
 }

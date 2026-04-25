@@ -1,0 +1,58 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-decoration-text-loop {
+  position: relative;
+  z-index: 3;
+
+  & + & {
+    margin-top: 1rem;
+  }
+
+  &-row {
+    @include Flex(left, none, 0.5rem 0rem);
+    flex-wrap: nowrap;
+  }
+
+  &-body {
+    padding-left: 2rem;
+    animation-name: kfTextLoop;
+    animation-duration: 60s;
+    animation-timing-function: linear;
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    will-change: translate;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Reverse
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &._reverse &-body {
+    animation-direction: reverse;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Reset
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .c-label-catch-text {
+    z-index: 1;
+    display: block;
+    &::after {
+    }
+  }
+  .c-label-catch-text-body {
+    white-space: nowrap;
+  }
+  .c-label-catch-text::before {
+    display: none;
+  }
+}
+
+@keyframes kfTextLoop {
+  0% {
+    translate: 0 0;
+  }
+
+  100% {
+    translate: -100% 0;
+  }
+}
