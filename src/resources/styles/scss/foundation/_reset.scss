@@ -56,8 +56,9 @@
   color: color(text, base);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  @include FontStyle(m);
+  background: color(canvas);
   @include FontFamily(base);
+  @include FontStyle(m);
 }
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::
