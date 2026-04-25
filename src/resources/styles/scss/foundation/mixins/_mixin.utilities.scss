@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:math';
 @use '../variable' as *;
 @use '../color' as *;
 @use 'mixin.layouts' as *;
@@ -64,22 +65,18 @@
 // 🍔 YoYo
 //
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-@mixin kfYoYo($delay: 0s) {
-  animation-name: kfYoYo;
-  animation-duration: 4s;
+@mixin kfYoYo($delay: 0s, $duration: 4s, $amount: 10%) {
+  $name: kfYoYo-#{math.div($amount, 1%)};
+
+  animation-name: $name;
+  animation-duration: $duration;
   animation-timing-function: ease;
   animation-delay: $delay;
   animation-iteration-count: infinite;
-}
 
-@keyframes kfYoYo {
-  0% {
-    translate: 0 -10%;
-  }
-  50% {
-    translate: 0 10%;
-  }
-  100% {
-    translate: 0 -10%;
+  @keyframes #{$name} {
+    0%   { translate: 0 #{"-" + $amount}; }
+    50%  { translate: 0 $amount; }
+    100% { translate: 0 #{"-" + $amount}; }
   }
 }
