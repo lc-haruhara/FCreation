@@ -42,3 +42,6 @@ Thumbs.db
 # jetbrains setting folder
 .idea/
 .claude/settings.local.json
+
+sftp.json
+sftpignore

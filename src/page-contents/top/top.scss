@@ -16,7 +16,7 @@
   background-size: 120px 120px;
 
   &-body {
-    @include ContentsPadding(xl, m);
+    @include ContentsPadding(section, m);
     @include Flex(left, top, 4rem);
     position: relative;
     z-index: 10;
@@ -40,7 +40,7 @@
     height: calc(100vh - 4rem);
     background: #fff;
     @include CardStyle;
-    @include ContentsPadding(s, s);
+    @include ContentsPadding(xs, xs);
     img {
       width: 100%;
       height: 100%;

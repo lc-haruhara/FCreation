@@ -23,6 +23,7 @@
 @mixin CardStyle($shadow: true) {
   border: $BorderWidth solid color(text);
   border-radius: 0.5rem;
+  @include ContentsPadding(xs, xs);
 
   @if $shadow {
     box-shadow: 0.25rem 0.25rem 0 0 color(text);
@@ -75,8 +76,14 @@
   animation-iteration-count: infinite;
 
   @keyframes #{$name} {
-    0%   { translate: 0 #{"-" + $amount}; }
-    50%  { translate: 0 $amount; }
-    100% { translate: 0 #{"-" + $amount}; }
+    0% {
+      translate: 0 #{'-' + $amount};
+    }
+    50% {
+      translate: 0 $amount;
+    }
+    100% {
+      translate: 0 #{'-' + $amount};
+    }
   }
 }
