@@ -18,7 +18,7 @@
     width: min(1000px, 100%);
     margin: auto;
   } @else if $size == l {
-    width: min(1500px, 100%);
+    width: min(1600px, 100%);
     margin: auto;
   } @else {
     @warn 'ContentsSize() の引数は s / m / l のいずれかを指定してください。';

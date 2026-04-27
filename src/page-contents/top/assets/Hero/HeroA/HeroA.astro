@@ -1,5 +1,8 @@
 ---
+import './HeroA.scss';
+
 import { ButtonCTA, Image, LabelBubble, LabelCatch } from '@/components/elements/index';
+import ElementsItemImage from '../../ElementsItemImage.astro';
 ---
 
 <section class="p-top-hero">
@@ -71,26 +74,5 @@ import { ButtonCTA, Image, LabelBubble, LabelCatch } from '@/components/elements
   {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
   {/* ItemImage                                         */}
   {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
-  <div class="p-top-hero-item-image">
-    <div class="p-top-hero-item-image-elm">
-      <div class="p-top-hero-item-image-elm-body">
-        <img src="images/model/img-051.jpg" alt="" />
-      </div>
-    </div>
-    <div class="p-top-hero-item-image-elm">
-      <div class="p-top-hero-item-image-elm-body">
-        <img src="images/model/img-027.jpg" alt="" />
-      </div>
-    </div>
-    <div class="p-top-hero-item-image-elm">
-      <div class="p-top-hero-item-image-elm-body">
-        <img src="images/model/img-011.jpg" alt="" />
-      </div>
-    </div>
-    <div class="p-top-hero-item-image-elm">
-      <div class="p-top-hero-item-image-elm-body">
-        <img src="images/model/img-017.jpg" alt="" />
-      </div>
-    </div>
-  </div>
+  <ElementsItemImage />
 </section>

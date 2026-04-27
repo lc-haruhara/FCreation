@@ -1,0 +1,139 @@
+@use 'resources/styles/scss/foundation' as *;
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 Hero
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.p-top-hero-b {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100svh;
+  @include ContentsPadding(m, m);
+  &-body {
+    position: relative;
+    z-index: 20;
+    height: 100%;
+    @include Flex(left, center, 2rem);
+    @include ContentsSize(l);
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Detail
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-detail {
+    position: relative;
+    z-index: 120;
+  }
+
+  &-detail-copy {
+    display: inline-block;
+    &-body {
+      @include Flex(left, none, 1rem);
+    }
+    &-logo {
+      width: 6rem;
+    }
+    &-text {
+    }
+    &-row {
+      @include Flex(left, none, 1rem);
+      position: relative;
+      &:nth-child(2) {
+        z-index: 10;
+      }
+      & + & {
+        margin-top: 1rem;
+      }
+    }
+    .c-label-catch-text {
+      font-size: 4rem;
+      text-transform: capitalize;
+    }
+  }
+
+  &-detail-description {
+    margin-top: 1rem;
+    font-weight: 900;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Card
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .p-top-hero-detail-card {
+    @include Flex(left, none, 1rem);
+  }
+
+  .p-top-hero-detail-card-item-text {
+    @include FontStyle(xs);
+  }
+
+  .p-top-hero-detail-bubble {
+    position: relative;
+    z-index: 100;
+  }
+
+  &-button {
+    display: inline-block;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Image
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-image {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    flex: 1;
+    width: 70%;
+    height: 100%;
+    margin: auto;
+    &-item {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      margin: auto;
+      background: #fff;
+      @include CardStyle;
+      @include ContentsPadding(s, s);
+      &:nth-child(1) {
+        right: -3%;
+        z-index: 20;
+        width: 41%;
+        aspect-ratio: 10/14;
+        rotate: 6deg;
+        translate: 0% -55%;
+      }
+      &:nth-child(2) {
+        right: 25%;
+        width: 32%;
+        aspect-ratio: 10/14;
+        rotate: -12deg;
+        translate: 0% -27%;
+      }
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0.25rem;
+    }
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 HeadingLarge
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .p-top-hero-item-image-elm:nth-of-type(3) {
+    right: 0;
+    left: 0;
+    translate: 0 50%;
+  }
+  .p-top-hero-item-image-elm:nth-of-type(4) {
+    right: auto;
+    left: -6rem;
+    translate: 0 20%;
+  }
+}

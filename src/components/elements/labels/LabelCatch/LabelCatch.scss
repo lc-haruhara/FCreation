@@ -54,7 +54,7 @@
       letter-spacing: -0.015em;
     }
     &::before {
-      translate: 3% 5%;
+      translate: 0.075em 0.075em;
     }
   }
 
@@ -114,7 +114,7 @@
     @include FontStyle(x3l);
   }
   &._l &-text {
-    @include FontStyle(l);
+    @include FontStyle(x4l);
   }
   &._copy &-text {
     @include FontStyle(x5l);

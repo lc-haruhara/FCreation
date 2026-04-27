@@ -1,0 +1,90 @@
+---
+import { ButtonCTA, Image, LabelBubble, LabelCatch } from '@/components/elements/index';
+import ElementsItemImage from '../../ElementsItemImage.astro';
+import '../HeroA/HeroA.scss';
+import './HeroB.scss';
+---
+
+<section class="p-top-hero-b">
+  <div class="p-top-hero-b-body">
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Detail                                             */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <div class="p-top-hero-b-detail">
+      <span class="p-top-hero-b-detail-copy">
+        <span class="p-top-hero-b-detail-copy-body">
+          <span class="p-top-hero-b-detail-copy-text">
+            <span class="p-top-hero-b-detail-copy-row">
+              <LabelCatch text="Keep It" />
+              <LabelCatch text="Original." color="yellow" />
+            </span>
+            <span class="p-top-hero-b-detail-copy-row">
+              <LabelCatch text="Order" color="pink" />
+              <LabelCatch text=" It Custom." />
+            </span>
+          </span>
+          <span class="p-top-hero-b-detail-copy-logo">
+            <Image imagePath="logo/logo-main.svg" altText="Hero Detail" />
+          </span>
+        </span>
+      </span>
+      <p class="p-top-hero-b-detail-description">スポーツもアパレルも、完全オーダーメイド</p>
+
+      {/* Card :::::::::::::::::::::::::::::::::::: */}
+      <div class="p-top-hero-detail-card">
+        <div class="p-top-hero-detail-card-item">
+          <div class="p-top-hero-detail-card-item-icon">
+            <Image imagePath="icon/hero-points1.svg" altText="耐久性に優れた高品質" />
+          </div>
+          <p class="p-top-hero-detail-card-item-text">
+            耐久性に<br />優れた高品質
+          </p>
+        </div>
+        <div class="p-top-hero-detail-card-item">
+          <div class="p-top-hero-detail-card-item-icon">
+            <Image imagePath="icon/hero-points2.svg" altText="専任デザイナーに丸投げOK" />
+          </div>
+          <p class="p-top-hero-detail-card-item-text">
+            専任デザイナーに<br />丸投げOK
+          </p>
+        </div>
+        <div class="p-top-hero-detail-card-item">
+          <div class="p-top-hero-detail-card-item-icon">
+            <Image imagePath="icon/hero-points3.svg" altText="LINEに丸投げで完結" />
+          </div>
+          <p class="p-top-hero-detail-card-item-text">
+            LINEに<br />丸投げで完結
+          </p>
+        </div>
+      </div>
+
+      {/* Button :::::::::::::::::::::::::::::::::::: */}
+      <span class="p-top-hero-b-button">
+        {/* Bubble :::::::::::::::::::::::::::::::::::: */}
+        <div class="p-top-hero-detail-bubble">
+          <LabelBubble text="大会用に" color="pink" />
+          <LabelBubble text="卒団記念で" color="pink" />
+          <LabelBubble text="ノベルティに" color="pink" />
+        </div>
+        <ButtonCTA textSub="専門スタッフが完全サポート" textMain="まずは公式LINEで相談する" />
+      </span>
+    </div>
+
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Image                                             */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <div class="p-top-hero-b-image">
+      <div class="p-top-hero-b-image-item">
+        <img src="/images/model/img-010.jpg" alt="Hero Detail" />
+      </div>
+      <div class="p-top-hero-b-image-item">
+        <img src="/images/model/img-744.jpg" alt="Hero Detail" />
+      </div>
+    </div>
+  </div>
+
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/* ItemImage                                         */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <ElementsItemImage />
+</section>
