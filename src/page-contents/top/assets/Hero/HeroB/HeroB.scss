@@ -5,7 +5,7 @@
 // 🍔 Hero
 //
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-.p-top-hero-b {
+.p-top-hero {
   position: relative;
   z-index: 10;
   width: 100%;
@@ -53,6 +53,36 @@
     }
   }
 
+  &-detail-card {
+    width: 100%;
+    margin-top: 1rem;
+    @include Flex(center, none, 1rem);
+    &-item {
+      @include Flex(center, center, 0.5rem);
+      @include CardStyle;
+      font-weight: 900;
+      text-align: center;
+      background: #fff;
+      border: none;
+      @include ContentsPadding(s, s);
+      box-shadow: none;
+      &-icon {
+        width: 3rem;
+        height: 3rem;
+        margin: auto;
+        svg path {
+          stroke-width: $BorderWidth;
+        }
+      }
+      &-text {
+        flex: 1;
+        @include FontStyle(m);
+        line-height: 1.5;
+        text-align: left;
+      }
+    }
+  }
+
   &-detail-description {
     margin-top: 1rem;
     font-weight: 900;
@@ -76,6 +106,34 @@
 
   &-button {
     display: inline-block;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Bubble
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-detail-bubble {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    margin-top: 2rem;
+    pointer-events: none;
+    translate: 0 7%;
+    @include Flex(center, none, 0.5rem);
+    .c-label-bubble {
+      &:nth-child(1) .c-label-bubble-body {
+        animation-delay: 0s;
+      }
+      &:nth-child(2) .c-label-bubble-body {
+        animation-delay: 0.5s;
+      }
+      &:nth-child(3) .c-label-bubble-body {
+        animation-delay: -0.2s;
+      }
+    }
+  }
+
+  .c-button-cta {
+    z-index: 1;
   }
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -120,6 +178,82 @@
       height: 100%;
       object-fit: cover;
       border-radius: 0.25rem;
+    }
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 HeadingMedium
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-item-image {
+    position: absolute;
+    inset: 0 0 0 0;
+    width: 100%;
+    height: 100vh;
+    margin: auto;
+    pointer-events: none;
+
+    &-elm {
+      position: absolute;
+      width: 15%;
+      aspect-ratio: 10/10;
+      margin: auto;
+
+      &-body {
+        width: 100%;
+        height: 100%;
+        overflow: clip;
+        background: #fff;
+        border: $BorderWidth solid #000;
+        border-radius: 100%;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      &:nth-of-type(1) {
+        top: 0;
+        left: 0;
+        translate: 20% -20%;
+        .p-top-hero-item-image-elm-body {
+          @include kfYoYo(0s, 8s, 4%);
+          border-color: color(yellow);
+        }
+      }
+
+      &:nth-of-type(2) {
+        top: 1%;
+        right: -2rem;
+        .p-top-hero-item-image-elm-body {
+          @include kfYoYo(-0.9s, 10s, 4%);
+          border-color: color(yellow);
+        }
+      }
+
+      &:nth-of-type(3) {
+        right: 0;
+        bottom: 10%;
+        left: 0;
+        width: 16%;
+        translate: 0 50%;
+        .p-top-hero-item-image-elm-body {
+          @include kfYoYo(0s, 12s, 6%);
+          border-color: color(pink);
+        }
+      }
+
+      &:nth-of-type(4) {
+        bottom: 15%;
+        left: 0;
+        width: 18%;
+        translate: -27% 0;
+        .p-top-hero-item-image-elm-body {
+          @include kfYoYo(-0.2s, 6s, 8%);
+          border-color: color(blue);
+        }
+      }
     }
   }
 

@@ -78,34 +78,6 @@
   }
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  // 🍟 Bubble
-  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  &-detail-bubble {
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    margin-top: 2rem;
-    pointer-events: none;
-    translate: 0 7%;
-    @include Flex(center, none, 0.5rem);
-    .c-label-bubble {
-      &:nth-child(1) .c-label-bubble-body {
-        animation-delay: 0s;
-      }
-      &:nth-child(2) .c-label-bubble-body {
-        animation-delay: 0.5s;
-      }
-      &:nth-child(3) .c-label-bubble-body {
-        animation-delay: -0.2s;
-      }
-    }
-  }
-
-  .c-button-cta {
-    z-index: 1;
-  }
-
-  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   // 🍟 Image
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   &-image {

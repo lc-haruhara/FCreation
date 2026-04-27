@@ -1,34 +1,33 @@
 ---
 import { ButtonCTA, Image, LabelBubble, LabelCatch } from '@/components/elements/index';
 import ElementsItemImage from '../../ElementsItemImage.astro';
-import '../HeroA/HeroA.scss';
 import './HeroB.scss';
 ---
 
-<section class="p-top-hero-b">
-  <div class="p-top-hero-b-body">
+<section class="p-top-hero">
+  <div class="p-top-hero-body">
     {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
     {/* Detail                                             */}
     {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
-    <div class="p-top-hero-b-detail">
-      <span class="p-top-hero-b-detail-copy">
-        <span class="p-top-hero-b-detail-copy-body">
-          <span class="p-top-hero-b-detail-copy-text">
-            <span class="p-top-hero-b-detail-copy-row">
+    <div class="p-top-hero-detail">
+      <span class="p-top-hero-detail-copy">
+        <span class="p-top-hero-detail-copy-body">
+          <span class="p-top-hero-detail-copy-text">
+            <span class="p-top-hero-detail-copy-row">
               <LabelCatch text="Keep It" />
               <LabelCatch text="Original." color="yellow" />
             </span>
-            <span class="p-top-hero-b-detail-copy-row">
+            <span class="p-top-hero-detail-copy-row">
               <LabelCatch text="Order" color="pink" />
               <LabelCatch text=" It Custom." />
             </span>
           </span>
-          <span class="p-top-hero-b-detail-copy-logo">
+          <span class="p-top-hero-detail-copy-logo">
             <Image imagePath="logo/logo-main.svg" altText="Hero Detail" />
           </span>
         </span>
       </span>
-      <p class="p-top-hero-b-detail-description">スポーツもアパレルも、完全オーダーメイド</p>
+      <p class="p-top-hero-detail-description">スポーツもアパレルも、完全オーダーメイド</p>
 
       {/* Card :::::::::::::::::::::::::::::::::::: */}
       <div class="p-top-hero-detail-card">
@@ -59,7 +58,7 @@ import './HeroB.scss';
       </div>
 
       {/* Button :::::::::::::::::::::::::::::::::::: */}
-      <span class="p-top-hero-b-button">
+      <span class="p-top-hero-button">
         {/* Bubble :::::::::::::::::::::::::::::::::::: */}
         <div class="p-top-hero-detail-bubble">
           <LabelBubble text="大会用に" color="pink" />
@@ -73,11 +72,11 @@ import './HeroB.scss';
     {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
     {/* Image                                             */}
     {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
-    <div class="p-top-hero-b-image">
-      <div class="p-top-hero-b-image-item">
+    <div class="p-top-hero-image">
+      <div class="p-top-hero-image-item">
         <img src="/images/model/img-010.jpg" alt="Hero Detail" />
       </div>
-      <div class="p-top-hero-b-image-item">
+      <div class="p-top-hero-image-item">
         <img src="/images/model/img-744.jpg" alt="Hero Detail" />
       </div>
     </div>
