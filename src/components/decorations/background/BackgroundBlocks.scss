@@ -1,0 +1,33 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-background-blocks {
+  @include Flex(left, top);
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 0;
+  align-content: flex-end;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  &-item {
+    width: calc(100% / 12);
+    aspect-ratio: 10/10;
+    border-right: $BorderWidth solid #fff;
+    border-bottom: $BorderWidth solid #fff;
+  }
+
+  &-row {
+    width: 100%;
+    @include Flex(left, top);
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Bottom
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &._bottom {
+    top: 0;
+    left: 0;
+    height: auto;
+  }
+}

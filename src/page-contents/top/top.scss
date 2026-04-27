@@ -9,14 +9,9 @@
   position: relative;
   z-index: 1;
   overflow: clip;
-  background-color: rgba(0, 0, 0, 0);
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.8) 3px, rgba(0, 0, 0, 0) 3px),
-    linear-gradient(to right, rgba(255, 255, 255, 0.8) 3px, rgba(0, 0, 0, 0) 3px);
-  background-size: 120px 120px;
 
   &-body {
-    @include ContentsPadding(section, m);
+    @include ContentsPadding(section, m, xl);
     @include Flex(left, top, 4rem);
     position: relative;
     z-index: 10;
