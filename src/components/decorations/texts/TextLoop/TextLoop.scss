@@ -14,15 +14,16 @@
   }
 
   &-body {
+    @include Flex(left, center, 2rem);
+    flex-wrap: nowrap;
     padding-left: 2rem;
     animation-name: kfTextLoop;
-    animation-duration: 60s;
+    animation-duration: 30s;
     animation-timing-function: linear;
     animation-delay: 0s;
     animation-iteration-count: infinite;
     will-change: translate;
   }
-
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   // 🍟 Reverse
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

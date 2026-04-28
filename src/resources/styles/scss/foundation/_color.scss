@@ -41,7 +41,7 @@ $colors: (
   ),
 
   yellow: (
-    weak: #000,
+    weak: hsl(45, 80%, 90%),
     light: #ffe084,
     base: #ffce3b,
     strong: #000,
@@ -49,8 +49,8 @@ $colors: (
   ),
 
   pink: (
-    weak: #000,
-    light: #000,
+    weak: hsl(350, 83%, 95%),
+    light: hsl(350, 93%, 85%),
     base: #ff8ea1,
     strong: #000,
     heavy: #000,

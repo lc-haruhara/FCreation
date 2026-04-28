@@ -52,8 +52,10 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 .p-top-item {
   position: relative;
+  z-index: 100;
+  @include ContentsPadding(xl, m, section);
+
   &-body {
-    @include ContentsPadding(xl, m, section);
     @include Flex(left, top, 0);
     position: relative;
     z-index: 10;
@@ -122,5 +124,62 @@
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   .c-block-cta {
     margin-top: 2rem;
+  }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 Reason
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.p-top-reason {
+  position: relative;
+  background: color(yellow, weak);
+
+  &-decoration {
+    translate: 0 -50%;
+  }
+
+  &-section {
+    @include ContentsPadding(xl, m, l);
+    position: relative;
+    z-index: 10;
+  }
+
+  &-body {
+  }
+
+  &-heading {
+    width: 100%;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Contents
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-contents {
+    width: 100%;
+    @include Flex(left, none, 4rem);
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Image
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-contents-image {
+    width: 40%;
+    img {
+      width: 400px;
+    }
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Detail
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-contents-detail {
+    flex: 1;
+  }
+  &-contents-detail-section {
+    & + & {
+      margin-top: 12rem;
+    }
   }
 }

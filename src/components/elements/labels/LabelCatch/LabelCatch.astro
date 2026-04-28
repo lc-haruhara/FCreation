@@ -11,12 +11,16 @@ type Props = {
 
 const { text, align = 'left', color = '', size = '', kana = '' } = Astro.props as Props;
 const isEnOnly = /^[A-Za-z0-9\s\-_.,!?'"#]+$/.test(text);
+const isTitle = text.startsWith('#');
 ---
 
-<span class:list={['c-label-catch', `_${align}`, color && `_${color}`, size && `_${size}`]} lang={isEnOnly ? 'en' : undefined}>
+<span
+  class:list={['c-label-catch', `_${align}`, color && `_${color}`, size && `_${size}`, isTitle && 'is-title']}
+  lang={isEnOnly ? 'en' : undefined}
+>
   <span class="c-label-catch-text" data-text={text}>
     <span class="c-label-catch-text-body">
-      {text}
+      {isTitle ? <><span class="c-label-catch-text-mark">{text[0]}</span><span class="c-label-catch-text-body-inner">{text.slice(1)}</span></> : text}
     </span>
   </span>
   {kana && <span class="c-label-catch-kana">{kana}</span>}

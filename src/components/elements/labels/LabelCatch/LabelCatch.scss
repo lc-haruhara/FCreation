@@ -43,6 +43,10 @@
     }
   }
 
+  &-text-mark {
+    color: #fff;
+  }
+
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   // 🍟 English Only
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -50,11 +54,15 @@
     font-weight: 400;
     &::before,
     &::after,
+    .c-label-catch-text-body-inner,
     .c-label-catch-text-body {
       letter-spacing: -0.015em;
     }
     &::before {
       translate: 0.075em 0.075em;
+    }
+    .c-label-catch-text-body-inner {
+      margin-left: -0.4rem;
     }
   }
 
@@ -96,6 +104,9 @@
   }
   &._pink &-text {
     color: color(pink);
+  }
+  &._pink-light &-text {
+    color: color(pink, light);
   }
   &._canvas &-text {
     color: color(canvas, base);

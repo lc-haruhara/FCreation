@@ -3,24 +3,22 @@ import './TextLoop.scss';
 import { LabelCatch } from '@/components/elements/index';
 
 interface Props {
-  text: string;
+  texts: string[];
   color?: string;
   reverse?: boolean;
 }
 
-const { text, color = '', reverse = false } = Astro.props;
+const { texts, color = '', reverse = false } = Astro.props;
 ---
 
 <div class:list={['c-decoration-text-loop', reverse && '_reverse']} aria-hidden="true">
   <div class="c-decoration-text-loop-row">
-    <div class="c-decoration-text-loop-body">
-      <LabelCatch {text} size="copy" color={color} />
-    </div>
-    <div class="c-decoration-text-loop-body">
-      <LabelCatch {text} size="copy" color={color} />
-    </div>
-    <div class="c-decoration-text-loop-body">
-      <LabelCatch {text} size="copy" color={color} />
-    </div>
+    {[0, 1, 2].map(() => (
+      <div class="c-decoration-text-loop-body">
+        {texts.map((text) => (
+          <LabelCatch {text} size="copy" color={color} />
+        ))}
+      </div>
+    ))}
   </div>
 </div>

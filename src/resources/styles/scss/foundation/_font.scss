@@ -57,6 +57,14 @@ $font-family-map: (
     'Titan One',
     $font-fallback-ja,
   ),
+  sub2: (
+    'Oi',
+    $font-fallback-ja,
+  ),
+  sub3: (
+    'Chewy',
+    $font-fallback-ja,
+  ),
 );
 
 @mixin FontFamily($type: base) {
@@ -69,6 +77,12 @@ $font-family-map: (
   }
 
   @if $type == sub {
+    letter-spacing: -0.05em;
+  }
+  @if $type == sub2 {
+    letter-spacing: -0.05em;
+  }
+  @if $type == sub3 {
     letter-spacing: -0.05em;
   }
 }
