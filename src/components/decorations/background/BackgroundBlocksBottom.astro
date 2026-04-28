@@ -1,8 +1,16 @@
 ---
 import './BackgroundBlocks.scss';
+
+type Props = {
+  position: 'top' | 'bottom';
+};
+
+const { position } = Astro.props as Props;
+const isTop = position === 'top';
+const isBottom = position === 'bottom';
 ---
 
-<span class="c-background-blocks _bottom">
+<span class:list={['c-background-blocks', isTop && '_top', isBottom && '_bottom']}>
   <span class="c-background-blocks-row">
     <span class="c-background-blocks-item"></span>
     <span class="c-background-blocks-item"></span>

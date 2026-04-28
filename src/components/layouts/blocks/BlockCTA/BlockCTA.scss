@@ -1,0 +1,62 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-block-cta {
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Bubble
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-bubble {
+    position: relative;
+    z-index: 10;
+    translate: 0 7%;
+    @include Flex(center, none, 0.5rem);
+    .c-label-bubble {
+      &:nth-child(1) .c-label-bubble-body {
+        animation-delay: 0s;
+      }
+      &:nth-child(2) .c-label-bubble-body {
+        animation-delay: 0.5s;
+      }
+      &:nth-child(3) .c-label-bubble-body {
+        animation-delay: -0.2s;
+      }
+    }
+  }
+
+  &:has(.c-block-cta-detail) &-bubble {
+    translate: 0 0;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Detail
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-detail {
+    margin-top: 1.5rem;
+    &-text {
+      font-weight: 900;
+    }
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Buttons
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .c-button-cta {
+    z-index: 1;
+  }
+
+  &:has(.c-block-cta-detail) .c-button-cta {
+    margin-top: 1.25rem;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Center
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &._center {
+    flex-direction: column;
+    width: 100%;
+    @include Flex(center, center);
+  }
+}

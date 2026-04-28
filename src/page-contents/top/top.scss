@@ -11,7 +11,7 @@
   overflow: clip;
 
   &-body {
-    @include ContentsPadding(section, m, xl);
+    @include ContentsPadding(section, m, l);
     @include Flex(left, top, 4rem);
     position: relative;
     z-index: 10;
@@ -42,5 +42,85 @@
       object-fit: cover;
       border-radius: 0.25rem;
     }
+  }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 Item
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.p-top-item {
+  position: relative;
+  &-body {
+    @include ContentsPadding(xl, m, section);
+    @include Flex(left, top, 0);
+    position: relative;
+    z-index: 10;
+  }
+
+  &-heading {
+    width: 100%;
+    @include Flex(center, none);
+    text-align: center;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 List
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-list {
+    width: 100%;
+    @include Flex(left, none, 1rem);
+  }
+  &-list-item {
+    @include FlexItem(4, 1rem);
+    @include CardStyle;
+    @include ContentsPadding(s, s);
+    background: #fff;
+    // &:nth-child(2),
+    // &:nth-child(6),
+    // &:nth-child(10),
+    // &:nth-child(14) {
+    //   translate: 0 2rem;
+    // }
+    // &:nth-child(3),
+    // &:nth-child(7),
+    // &:nth-child(11),
+    // &:nth-child(15) {
+    //   translate: 0 -1rem;
+    // }
+  }
+  &-list-item-image {
+    width: 100%;
+    aspect-ratio: 10/10;
+    img {
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  &-list-item-detail {
+    width: 100%;
+    margin-top: 1rem;
+    &-title {
+      @include FontFamily(sub);
+      @include FontStyle(xl);
+      display: block;
+      text-transform: capitalize;
+      text-box: trim-both cap alphabetic;
+    }
+    &-sub {
+      @include FontStyle(xs);
+      display: block;
+      margin-top: 0.5rem;
+      font-weight: 900;
+      text-box: trim-both cap alphabetic;
+    }
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 BlockCTA
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  .c-block-cta {
+    margin-top: 2rem;
   }
 }

@@ -1,6 +1,7 @@
 ---
-import { ButtonCTA, Image, LabelBubble, LabelCatch } from '@/components/elements/index';
+import { Image, LabelCatch } from '@/components/elements/index';
 import ElementsItemImage from '../../ElementsItemImage.astro';
+import { BlockCTA } from '@/components/layouts/index';
 import './HeroB.scss';
 ---
 
@@ -57,16 +58,8 @@ import './HeroB.scss';
         </div>
       </div>
 
-      {/* Button :::::::::::::::::::::::::::::::::::: */}
-      <span class="p-top-hero-button">
-        {/* Bubble :::::::::::::::::::::::::::::::::::: */}
-        <div class="p-top-hero-detail-bubble">
-          <LabelBubble text="大会用に" color="pink" />
-          <LabelBubble text="卒団記念で" color="pink" />
-          <LabelBubble text="ノベルティに" color="pink" />
-        </div>
-        <ButtonCTA textSub="専門スタッフが完全サポート" textMain="まずは公式LINEで相談する" />
-      </span>
+      {/* BlockCTA :::::::::::::::::::::::::::::::::::: */}
+      <BlockCTA detailText="" />
     </div>
 
     {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}

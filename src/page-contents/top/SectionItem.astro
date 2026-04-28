@@ -1,0 +1,64 @@
+---
+import { HeadingSection, LabelCatch } from '@/components/elements/index';
+import { BackgroundBlocksBottom } from '@/components/decorations/index';
+import { BlockCTA } from '@/components/layouts/index';
+
+type Item = {
+  title: string;
+  sub: string;
+  image: string;
+};
+
+const items: Item[] = [
+  { title: 'Uniform', sub: 'ユニフォーム', image: '/images/item-uniform.png' },
+  { title: 'Jersey', sub: 'ジャージ', image: '/images/item-t-shirt.jpg' },
+  { title: 'Warm Up Wear', sub: 'ウォームアップウェア', image: '/images/item-uniform.png' },
+  { title: 'T-Shirt', sub: 'Tシャツ', image: '/images/item-t-shirt.jpg' },
+  { title: 'Dry T-Shirt', sub: 'ドライTシャツ', image: '/images/item-uniform.png' },
+  { title: 'Sleeveless', sub: 'ノースリーブ', image: '/images/item-t-shirt.jpg' },
+  { title: 'Polo Shirt', sub: 'ポロシャツ', image: '/images/item-uniform.png' },
+  { title: 'Long Sleeve', sub: '長袖シャツ', image: '/images/item-t-shirt.jpg' },
+  { title: 'Hoodie', sub: 'パーカー', image: '/images/item-uniform.png' },
+  { title: 'Sweat', sub: 'スウェット', image: '/images/item-t-shirt.jpg' },
+  { title: 'Outer', sub: 'アウター', image: '/images/item-uniform.png' },
+  { title: 'Pants', sub: 'パンツ', image: '/images/item-t-shirt.jpg' },
+  { title: 'Bag', sub: 'バッグ', image: '/images/item-uniform.png' },
+  { title: 'Cap', sub: '帽子', image: '/images/item-t-shirt.jpg' },
+  { title: 'Towel', sub: 'タオル', image: '/images/item-uniform.png' },
+  { title: 'Others', sub: 'その他アクセサリー', image: '/images/item-t-shirt.jpg' },
+];
+---
+
+<section class="p-top-item">
+  <BackgroundBlocksBottom position="top" />
+  <BackgroundBlocksBottom position="bottom" />
+  <div class="p-top-item-body">
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Heading                                     */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <div class="p-top-item-heading">
+      <HeadingSection level={2} japanese="作れるものは、想像以上！" color="white">
+        <LabelCatch slot="english" text="#ITEM" size="copy" color="yellow-light" />
+      </HeadingSection>
+    </div>
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* List                                               */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <ul class="p-top-item-list">
+      {
+        items.map(({ title, sub, image }) => (
+          <li class="p-top-item-list-item">
+            <div class="p-top-item-list-item-image">
+              <img src={image} alt={title} />
+            </div>
+            <p class="p-top-item-list-item-detail">
+              <span class="p-top-item-list-item-detail-title">{title}</span>
+              <span class="p-top-item-list-item-detail-sub">{sub}</span>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+    <BlockCTA detailText="迷ったら用途から相談OK!" center />
+  </div>
+</section>

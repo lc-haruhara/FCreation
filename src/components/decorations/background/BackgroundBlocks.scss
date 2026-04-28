@@ -23,11 +23,26 @@
   }
 
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Top
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &._top {
+    inset: 0 auto auto 0;
+    height: auto;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   // 🍟 Bottom
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   &._bottom {
-    top: 0;
-    left: 0;
+    inset: auto 0 0 auto;
     height: auto;
+    rotate: 180deg;
+  }
+}
+
+.c-background-blocks._bottom,
+.c-background-blocks._top {
+  .c-background-blocks-row .c-background-blocks-item:last-of-type {
+    border-right: $BorderWidth solid #fff;
   }
 }

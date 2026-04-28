@@ -25,6 +25,10 @@
   border-radius: 0.5rem;
   @include ContentsPadding(xs, xs);
 
+  img {
+    border-radius: 0.25rem;
+  }
+
   @if $shadow {
     box-shadow: 0.25rem 0.25rem 0 0 color(text);
   }

@@ -1,0 +1,44 @@
+---
+import './BlockCTA.scss';
+import { LabelBubble, ButtonCTA, LabelCatch } from '@/components/elements/index';
+
+type Props = {
+  detailText: string;
+  detailColor?: string;
+  center?: boolean;
+  bubble?: boolean;
+};
+
+const { detailText, detailColor = '', center = false, bubble = true } = Astro.props as Props;
+---
+
+<div class:list={['c-block-cta', center && '_center']}>
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/* Bubble                                             */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {
+    bubble ? (
+      <div class="c-block-cta-bubble">
+        <LabelBubble text="大会用に" color="pink" />
+        <LabelBubble text="卒団記念で" color="pink" />
+        <LabelBubble text="ノベルティに" color="pink" />
+      </div>
+    ) : null
+  }
+
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/* Detail                                             */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {
+    detailText ? (
+      <div class="c-block-cta-detail">
+        <LabelCatch text={detailText} size="s" color={detailColor} />
+      </div>
+    ) : null
+  }
+
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/* Button                                             */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <ButtonCTA textSub="専門スタッフが完全サポート" textMain="まずは公式LINEで相談する" />
+</div>

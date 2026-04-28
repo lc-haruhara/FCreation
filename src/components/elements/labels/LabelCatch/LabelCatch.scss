@@ -110,6 +110,9 @@
   &._xs &-text {
     @include FontStyle(l);
   }
+  &._s &-text {
+    @include FontStyle(x2l);
+  }
   &._m &-text {
     @include FontStyle(x3l);
   }
