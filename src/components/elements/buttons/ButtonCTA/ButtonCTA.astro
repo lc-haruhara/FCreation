@@ -18,9 +18,7 @@ const textMainTrim = textMain?.trim() || '';
       <Image imagePath="icon/sns-line-white.svg" altText="" />
     </span>
     <span class="c-button-cta-detail">
-      <span class="c-button-cta-text-sub">
-        {textSub?.trim()}
-      </span>
+      {textSubTrim && <span class="c-button-cta-text-sub">{textSubTrim}</span>}
       <span class="c-button-cta-text-main">
         {textMain?.trim()}
       </span>

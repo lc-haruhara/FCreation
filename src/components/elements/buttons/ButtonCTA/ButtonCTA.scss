@@ -22,7 +22,7 @@
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   // 🍟 Text
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  &-detail {
+  &-detail:has(.c-button-cta-text-sub) {
     @include Flex(left, none);
     flex-direction: column;
   }

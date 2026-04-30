@@ -7,9 +7,18 @@ type Props = {
   detailColor?: string;
   center?: boolean;
   bubble?: boolean;
+  textSub?: string | null;
+  textMain?: string | null;
 };
 
-const { detailText, detailColor = '', center = false, bubble = true } = Astro.props as Props;
+const {
+  detailText,
+  detailColor = '',
+  center = false,
+  bubble = true,
+  textSub = '専門スタッフが完全サポート',
+  textMain = 'まずは公式LINEで相談する',
+} = Astro.props as Props;
 ---
 
 <div class:list={['c-block-cta', center && '_center']}>
@@ -40,5 +49,5 @@ const { detailText, detailColor = '', center = false, bubble = true } = Astro.pr
   {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
   {/* Button                                             */}
   {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
-  <ButtonCTA textSub="専門スタッフが完全サポート" textMain="まずは公式LINEで相談する" />
+  <ButtonCTA textSub={textSub} textMain={textMain} />
 </div>
