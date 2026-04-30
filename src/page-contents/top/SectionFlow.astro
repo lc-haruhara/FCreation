@@ -1,7 +1,81 @@
 ---
+import { HeadingSection, LabelCatch } from '@/components/elements/index';
+import { BackgroundBlocks, BackgroundBlocksBottom } from '@/components/decorations/index';
 import './top.scss';
 ---
 
 <section class="p-top-flow">
-  <div class="p-top-flow-body">TEST</div>
+  <div class="p-top-flow-decoration">
+    <img src="/images/decoration-flow.svg" alt="Decoration Flow" />
+    <BackgroundBlocks position="top" />
+  </div>
+  <div class="p-top-flow-body">
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Heading                                     */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <div class="p-top-item-heading">
+      <HeadingSection level={2} japanese="LINEで丸投げOK!" color="white">
+        <LabelCatch slot="english" text="#Flow" size="copy" color="pink-light" />
+      </HeadingSection>
+    </div>
+
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    {/* Contents   */}
+    {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+    <div class="p-top-flow-contents">
+      <div class="p-top-flow-contents-row _top">
+        <div class="p-top-flow-contents-item">
+          <div class="p-top-flow-contents-item-body">
+            <h3 class="p-top-flow-contents-item-heading">公式LINEからお問い合わせ</h3>
+            <p class="p-top-flow-contents-item-paragraph">
+              まずはLINEの友だち登録をして用途や枚数、希望納期など分かる範囲でメッセージをお送りください。
+            </p>
+          </div>
+        </div>
+        <div class="p-top-flow-contents-item">
+          <div class="p-top-flow-contents-item-body">
+            <h3 class="p-top-flow-contents-item-heading">公式LINEからお問い合わせ</h3>
+            <p class="p-top-flow-contents-item-paragraph">
+              まずはLINEの友だち登録をして用途や枚数、希望納期など分かる範囲でメッセージをお送りください。
+            </p>
+          </div>
+        </div>
+        <div class="p-top-flow-contents-item">
+          <div class="p-top-flow-contents-item-body">
+            <h3 class="p-top-flow-contents-item-heading">公式LINEからお問い合わせ</h3>
+            <p class="p-top-flow-contents-item-paragraph">
+              まずはLINEの友だち登録をして用途や枚数、希望納期など分かる範囲でメッセージをお送りください。
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="p-top-flow-contents-bar"></div>
+      <div class="p-top-flow-contents-row _bottom">
+        <div class="p-top-flow-contents-item">
+          <div class="p-top-flow-contents-item-body">
+            <h3 class="p-top-flow-contents-item-heading">公式LINEからお問い合わせ</h3>
+            <p class="p-top-flow-contents-item-paragraph">
+              まずはLINEの友だち登録をして用途や枚数、希望納期など分かる範囲でメッセージをお送りください。
+            </p>
+          </div>
+        </div>
+        <div class="p-top-flow-contents-item">
+          <div class="p-top-flow-contents-item-body">
+            <h3 class="p-top-flow-contents-item-heading">公式LINEからお問い合わせ</h3>
+            <p class="p-top-flow-contents-item-paragraph">
+              まずはLINEの友だち登録をして用途や枚数、希望納期など分かる範囲でメッセージをお送りください。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p-top-flow-decoration _bottom">
+    <img src="/images/decoration-flow.svg" alt="Decoration Flow" />
+    <BackgroundBlocks position="bottom" />
+  </div>
+</section>
+
+<section class="p-top-faq">
+  <BackgroundBlocks position="bottom" />
 </section>
