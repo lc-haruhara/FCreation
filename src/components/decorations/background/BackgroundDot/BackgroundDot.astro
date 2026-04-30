@@ -1,0 +1,34 @@
+---
+import './BackgroundDot.scss';
+
+interface Props {
+  color?: string;
+  rows?: number;
+  cols?: number;
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+}
+
+const { color, rows = 9, cols = 21, top, right, bottom, left } = Astro.props;
+
+const style = [
+  top !== undefined && `top: ${top}%`,
+  right !== undefined && `right: ${right}%`,
+  bottom !== undefined && `bottom: ${bottom}%`,
+  left !== undefined && `left: ${left}%`,
+]
+  .filter(Boolean)
+  .join('; ');
+---
+
+<span class:list={['c-deco-background-dot', color && `_color-${color}`]} style={style || undefined}>
+  {Array.from({ length: rows }, (_, i) => (
+    <span class="c-deco-background-dot-row">
+      {Array.from({ length: cols }, (_, j) => (
+        <span class="c-deco-background-dot-item" />
+      ))}
+    </span>
+  ))}
+</span>

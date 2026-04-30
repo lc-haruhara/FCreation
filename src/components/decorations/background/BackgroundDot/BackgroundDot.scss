@@ -1,0 +1,24 @@
+@use 'resources/styles/scss/foundation' as *;
+
+.c-deco-background-dot {
+  position: absolute;
+  z-index: 0;
+  margin: auto;
+  pointer-events: none;
+  &-row {
+    @include Flex(left, none, 1rem);
+    & + & {
+      margin-top: 1rem;
+    }
+  }
+  &-item {
+    width: 3px;
+    aspect-ratio: 1/1;
+    background: color(blue);
+  }
+
+  &._color-blue &-item   { background: color(blue); }
+  &._color-pink &-item   { background: color(pink); }
+  &._color-yellow &-item { background: color(yellow); }
+  &._color-main &-item   { background: color(main); }
+}

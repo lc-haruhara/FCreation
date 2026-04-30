@@ -1,6 +1,6 @@
 ---
 import { HeadingSection, LabelCatch } from '@/components/elements/index';
-import { BackgroundBlocksBottom } from '@/components/decorations/index';
+import { BackgroundBlocksBottom, BackgroundDot } from '@/components/decorations/index';
 import { BlockCTA } from '@/components/layouts/index';
 
 type Item = {
@@ -70,4 +70,8 @@ const items: Item[] = [
       center
     />
   </div>
+
+  <BackgroundDot top={8} right={0} rows={14} cols={19} />
+  <BackgroundDot bottom={8} left={0} rows={8} cols={10} />
+  <BackgroundDot bottom={8} right={0} rows={5} cols={10} />
 </section>
