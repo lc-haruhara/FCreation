@@ -1,5 +1,11 @@
 @use 'resources/styles/scss/foundation' as *;
 
+main {
+  position: relative;
+  z-index: 10;
+  background: color(canvas);
+}
+
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 //
 // 🍔 About
@@ -534,12 +540,11 @@
 // 🍔 FAQ
 //
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 .p-top-faq {
   position: relative;
   overflow: clip;
   background: color(blue, weak);
-  @include ContentsPadding(l, m, section);
+  @include ContentsPadding(1rem, m, section);
   &-body {
     position: relative;
     z-index: 10;
@@ -555,6 +560,18 @@
   }
   &-list-item + &-list-item {
     margin-top: 1rem;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Decoration
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-decoration {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    z-index: 1;
+    width: 100%;
   }
 }
 
@@ -638,5 +655,86 @@
     &-answer {
       flex: 1;
     }
+  }
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 Case
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.p-top-case {
+  position: relative;
+  background: color(blue);
+  @include ContentsPadding(l, none, l);
+
+  &-heading {
+    width: 100%;
+    @include ContentsPadding(none, m, none);
+    @include Flex(center, none, 0rem);
+    text-align: center;
+  }
+  &-body {
+    position: relative;
+    z-index: 10;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Loop Image
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-loop-image {
+    @include Flex(left, none, 0rem);
+    flex-wrap: nowrap;
+    width: 300vw;
+  }
+  &-loop-image-group {
+    width: 33.333%;
+    padding-left: 1rem;
+    animation: kfLoopImage 30s linear infinite;
+    will-change: translate;
+    @include Flex(left, none, 1rem);
+  }
+  &-loop-image-group-item {
+    @include FlexItem(4, 1rem);
+    aspect-ratio: 10/13;
+    overflow: clip;
+    background: #fff;
+    @include CardStyle;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  @keyframes kfLoopImage {
+    0% {
+      translate: 0 0;
+    }
+    100% {
+      translate: -100% 0;
+    }
+  }
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Button
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-button {
+    width: 100%;
+    @include Flex(center, center);
+    margin-top: 4rem;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Decoration
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-decoration {
+    position: absolute;
+    right: 0;
+    bottom: 1px;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+    rotate: 180deg;
+    translate: 0 100%;
   }
 }

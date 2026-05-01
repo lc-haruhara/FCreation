@@ -1,0 +1,56 @@
+---
+import { HeadingSection, LabelCatch } from '@/components/elements/index';
+import { BlockCTA } from '@/components/layouts/index';
+import './top.scss';
+
+const caseImages = [
+  { src: '/images/hero-item-image1.jpg', alt: 'Case Image 1' },
+  { src: '/images/hero-item-image2.jpg', alt: 'Case Image 2' },
+  { src: '/images/hero-item-image3.jpg', alt: 'Case Image 3' },
+  { src: '/images/hero-item-image4.jpg', alt: 'Case Image 4' },
+];
+---
+
+<section class="p-top-case">
+  <div class="p-top-case-heading">
+    <HeadingSection level={2} color="white">
+      <LabelCatch slot="english" text="#CASE STUDY" size="copy" color="yellow-light" />
+    </HeadingSection>
+  </div>
+
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/* Loop Image                                        */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <div class="p-top-case-loop-image">
+    {
+      Array.from({ length: 3 }).map(() => (
+        <div class="p-top-case-loop-image-group">
+          {caseImages.map((image) => (
+            <div class="p-top-case-loop-image-group-item">
+              <img src={image.src} alt={image.alt} />
+            </div>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/* BlockCTA                                           */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <div class="p-top-case-button">
+    <BlockCTA
+      detailText="まずはLINEで、気軽に相談・見積もり"
+      textSub=""
+      textMain="公式LINEを追加する"
+      center
+      bubble={false}
+    />
+  </div>
+
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/* Decoration                                         */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <div class="p-top-case-decoration">
+    <img src="/images/decoration-faq.svg" alt="Decoration Case" />
+  </div>
+</section>

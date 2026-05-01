@@ -1,1 +1,49 @@
-<footer class="l-footer">FOOTER</footer>
+---
+import { Image, Link } from '@/components/elements/index';
+---
+
+<div class="l-footer-spacer"></div>
+<footer class="l-footer">
+  <div class="l-footer-contents">
+    <div class="l-footer-body">
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      {/* Logo                                             */}
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      <div class="l-footer-detail">
+        <div class="l-footer-logo">
+          <Image imagePath="logo/logo-main.svg" altText="" />
+        </div>
+        <ul class="l-footer-link">
+          <li class="l-footer-link-item">
+            <Link href="https://www.google.com" showIcon={false}>運営者情報</Link>
+          </li>
+          <li class="l-footer-link-item">
+            <Link href="https://www.google.com" showIcon={false}>特商法</Link>
+          </li>
+          <li class="l-footer-link-item">
+            <Link href="https://www.google.com" showIcon={false}>プライバシーポリシー</Link>
+          </li>
+        </ul>
+      </div>
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      {/* Link                                             */}
+      {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+      <div class="l-footer-banner">
+        <Link href="https://www.google.com" showIcon={false}>
+          <img
+            src="/images/banner-erebos.jpg"
+            alt="キーパーグローブ erebos エレボスのオフィシャルサイト"
+          />
+        </Link>
+      </div>
+    </div>
+  </div>
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  {/* Copyright                                         */}
+  {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
+  <div class="l-footer-copyright">
+    <p class="l-footer-copyright-text">
+      <small>&copy; {new Date().getFullYear()} F-Creation All rights reserved.</small>
+    </p>
+  </div>
+</footer>
