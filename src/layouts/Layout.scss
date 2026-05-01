@@ -55,11 +55,12 @@
   &-contents {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: flex-end;
     width: 100%;
     height: 90svh;
     background: color(canvas);
-    @include ContentsPadding(none, m, l);
+    @include ContentsPadding(none, m, m);
   }
 
   &-body {
@@ -92,11 +93,13 @@
   // 🍟 Copyright
   //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
   &-copyright {
-    width: 100%;
+    @include ContentsPadding(xs, m);
+    display: inline-block;
+    margin-top: 2rem;
     text-align: center;
     background: color(canvas);
-    @include ContentsPadding(s);
-    background: color(canvas, strong);
+    background: color(yellow, light);
+    border-radius: 0.5rem;
   }
   &-copyright-text {
     @include FontStyle(xs);
