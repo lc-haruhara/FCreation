@@ -6,10 +6,15 @@
 //
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 .c-drawer-button {
+  display: none;
   width: 3rem;
   aspect-ratio: 10/10;
   pointer-events: auto;
   background: rgba(0, 0, 0, 0.5);
+
+  @include Breakpoint(inch11) {
+    display: block;
+  }
 }
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

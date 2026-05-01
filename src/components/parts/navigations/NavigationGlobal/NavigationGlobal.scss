@@ -6,7 +6,7 @@
   left: 0;
   z-index: 900000;
   width: 100%;
-  padding: 2rem;
+  @include ContentsPadding(s, s);
   pointer-events: none;
 
   &-body {
@@ -14,8 +14,35 @@
   }
 
   &-logo {
-    width: min(180px, 100%);
+    width: min(80px, 100%);
     pointer-events: auto;
+    opacity: 0;
+    scale: 0.8;
+    transition:
+      scale 0.4s
+        linear(
+          0,
+          0.49 7.4%,
+          0.864 15.3%,
+          1.005 19.4%,
+          1.12 23.7%,
+          1.206 28.1%,
+          1.267 32.8%,
+          1.296 36.4%,
+          1.311 40.2%,
+          1.313 44.2%,
+          1.301 48.6%,
+          1.252 56.9%,
+          1.105 74.4%,
+          1.048 82.5%,
+          1.011 91.1%,
+          1
+        ),
+      opacity 0.25s ease;
+    .is-scrolled & {
+      opacity: 1;
+      scale: 1;
+    }
   }
 }
 
@@ -23,15 +50,56 @@
 // 🍟 Navigation Group
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 .c-global-navigation-group {
-  @include Flex(flex-start, center);
+  @include Flex(flex-start, top);
   gap: 2rem;
+}
+
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+// 🍟 Nav
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+.c-global-navigation-nav {
+  @include Flex(flex-start, top, 1rem);
+  translate: 29% 0%;
+  transition: translate 0.4s cubic-bezier(0.8, -0.4, 0.5, 1);
+  .c-button-cta {
+    pointer-events: auto;
+    &-body {
+      gap: 0.5rem;
+    }
+    &-icon {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+  .c-button-cta-body {
+    padding: 0.25em 0.5em;
+  }
+  .c-button-cta-text-sub {
+    @include FontStyle(xs);
+  }
+  .c-button-cta-text-main {
+    @include FontStyle(m);
+  }
+
+  .is-scrolled & {
+    translate: 0 0%;
+  }
 }
 
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 // 🍟 List
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 .c-global-navigation-list {
-  gap: 2rem;
+  gap: 1rem;
   pointer-events: auto;
   @include Flex(flex-start, center);
+  background: #fff;
+  border-radius: 200px;
+  @include ContentsPadding(none, m);
+  &-item-body {
+    display: inline-block;
+    padding: 0.75em 0.5em;
+    @include FontStyle(s);
+    font-weight: 900;
+  }
 }

@@ -1,7 +1,7 @@
 ---
 import './NavigationGlobal.scss';
 
-import { Image } from '@/components/elements/index';
+import { ButtonCTA, Image } from '@/components/elements/index';
 import { NavigationDrawer } from '@/components/parts/index.ts';
 import { getNavPages } from '@/core/lib/pages';
 
@@ -39,28 +39,46 @@ function isEnglishOnlyText(s: string) {
       {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
       {/* Navigation Global                                  */}
       {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
-      {
-        showNav && (
-          <nav class="c-global-navigation-nav" aria-label="グローバルナビゲーション">
-            <ul class="c-global-navigation-list">
-              {globalPages.map((page) => (
-                <li class="c-global-navigation-list-item">
-                  <a
-                    href={page.href}
-                    class="c-global-navigation-list-item-body"
-                    aria-current={page.href === currentPath ? 'page' : undefined}
-                    data-js-scroll-top={page.href === '/' ? '' : undefined}
-                  >
-                    <span lang={isEnglishOnlyText(page.label) ? 'en' : undefined}>
-                      {page.label}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )
-      }
+      <nav class="c-global-navigation-nav" aria-label="グローバルナビゲーション">
+        <ul class="c-global-navigation-list">
+          <li class="c-global-navigation-list-item">
+            <a href="/" class="c-global-navigation-list-item-body">
+              <span lang="en">Home</span>
+            </a>
+          </li>
+          <li class="c-global-navigation-list-item">
+            <a href="/" class="c-global-navigation-list-item-body">
+              <span lang="en">About</span>
+            </a>
+          </li>
+          <li class="c-global-navigation-list-item">
+            <a href="/" class="c-global-navigation-list-item-body">
+              <span lang="en">Item</span>
+            </a>
+          </li>
+          <li class="c-global-navigation-list-item">
+            <a href="/" class="c-global-navigation-list-item-body">
+              <span lang="en">Reason</span>
+            </a>
+          </li>
+          <li class="c-global-navigation-list-item">
+            <a href="/" class="c-global-navigation-list-item-body">
+              <span lang="en">Flow</span>
+            </a>
+          </li>
+          <li class="c-global-navigation-list-item">
+            <a href="/" class="c-global-navigation-list-item-body">
+              <span lang="en">FAQ</span>
+            </a>
+          </li>
+          <li class="c-global-navigation-list-item">
+            <a href="/" class="c-global-navigation-list-item-body">
+              <span lang="en">Case Study</span>
+            </a>
+          </li>
+        </ul>
+        <ButtonCTA textMain="公式LINEから相談する" textSub="専門スタッフが完全サポート" />
+      </nav>
 
       {/* :::::::::::::::::::::::::::::::::::::::::::::::::: */}
       {/* Navigation Drawer                                   */}
@@ -69,3 +87,14 @@ function isEnglishOnlyText(s: string) {
     </div>
   </div>
 </div>
+
+<script>
+  const nav = document.querySelector('.c-global-navigation');
+  if (nav) {
+    const onScroll = () => {
+      nav.classList.toggle('is-scrolled', window.scrollY >= 100);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+</script>
