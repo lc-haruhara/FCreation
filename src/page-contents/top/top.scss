@@ -388,7 +388,7 @@
       top: auto;
       bottom: 0;
       padding-top: 0;
-      padding-bottom: 4rem;
+      background: color(blue, weak);
       .c-background-blocks {
         align-content: flex-end;
         opacity: 0.5;
@@ -410,6 +410,13 @@
       border-left: 0.75rem solid color(text);
     }
   }
+
+  &-contents-button {
+    width: 100%;
+    @include Flex(center, center);
+    margin-top: 4rem;
+  }
+
   &-contents-row {
     width: 100%;
     @include Flex(center, none, 4rem);
@@ -525,7 +532,7 @@
 .p-top-faq {
   position: relative;
   overflow: clip;
-  background: color(pink, weak);
+  background: color(blue, weak);
   @include ContentsPadding(section, m, section);
   .c-background-blocks {
     align-content: flex-start;
