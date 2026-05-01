@@ -529,13 +529,114 @@
   }
 }
 
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+//
+// 🍔 FAQ
+//
+//::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 .p-top-faq {
   position: relative;
   overflow: clip;
   background: color(blue, weak);
-  @include ContentsPadding(section, m, section);
+  @include ContentsPadding(l, m, section);
+  &-body {
+    position: relative;
+    z-index: 10;
+  }
   .c-background-blocks {
     align-content: flex-start;
     opacity: 0.5;
+  }
+
+  &-list {
+    @include ContentsSize(m);
+    margin: auto;
+  }
+  &-list-item + &-list-item {
+    margin-top: 1rem;
+  }
+}
+
+.p-top-faq-list-item-details {
+  @include CardStyle;
+  padding: 0;
+  background: #fff;
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Summary
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-summary {
+    @include ContentsPadding(s, m);
+    @include Flex(left, center, 1rem);
+  }
+
+  &-summary-title {
+    flex: 1;
+    @include FontStyle(l);
+    font-weight: 900;
+    @include Flex(left, top, 1rem);
+    .text {
+      flex: 1;
+      padding-top: 0.15em;
+    }
+  }
+
+  &-summary-icon {
+    position: relative;
+    display: block;
+    width: 3rem;
+    aspect-ratio: 1/1;
+    background: color(blue, weak);
+    border-radius: 100%;
+    &::before,
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 35%;
+      height: $BorderWidth;
+      margin: auto;
+      content: '';
+      background: color(blue);
+      transition: 0.25s ease-in-out;
+      .p-top-faq-list-item-details[open] & {
+        rotate: 180deg;
+      }
+    }
+    &::after {
+      rotate: 90deg;
+      .p-top-faq-list-item-details[open] & {
+        rotate: 180deg;
+      }
+    }
+  }
+
+  &::details-content {
+    height: 0;
+    overflow: clip;
+    opacity: 0;
+    transition:
+      height 0.25s,
+      opacity 0.25s,
+      content-visibility 0.25s allow-discrete;
+    will-change: height, opacity, content-visibility;
+  }
+  &[open]::details-content {
+    height: auto;
+    opacity: 1;
+  }
+
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  // 🍟 Panel
+  //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+  &-panel {
+    @include ContentsPadding(1rem, m, m);
+    @include Flex(left, top, 1rem);
+    &-answer {
+      flex: 1;
+    }
   }
 }

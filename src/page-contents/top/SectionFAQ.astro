@@ -1,0 +1,69 @@
+---
+import { HeadingSection, LabelCatch } from '@/components/elements/index';
+import { BackgroundBlocks } from '@/components/decorations/index';
+import './top.scss';
+
+const faqs = [
+  {
+    question: '相談だけでも大丈夫ですか？',
+    answer:
+      'もちろん大丈夫です。まずは用途や状況を聞かせてください。必要な情報はやり取りしながら整理できます。',
+  },
+  {
+    question: '手書きラフしかないけど大丈夫ですか？',
+    answer:
+      '問題ありません。手書き・スクショ・参考画像など、何でもOKです。そこから整えてご提案します。',
+  },
+  {
+    question: '何枚から作れますか？',
+    answer: '内容やアイテムにより異なります。ご希望を伺ったうえで最適な方法をご案内します。',
+  },
+  {
+    question: '納期はどれくらいですか？',
+    answer:
+      '数量・時期・仕様により変動します。希望納期がある場合は先にお知らせください。調整しながら進めます。',
+  },
+  {
+    question: '価格はどう決まりますか？',
+    answer:
+      'アイテム、数量、加工、デザイン内容などにより変わるため、都度お見積もりとなります。LINEで見積可能です。',
+  },
+  {
+    question: 'スポーツ以外（イベントや企業）も対応できますか？',
+    answer: 'もちろん対応可能です。イベントT、ノベルティ、スタッフウェアなどもご相談ください。',
+  },
+] satisfies { question: string; answer: string }[];
+---
+
+<section class="p-top-faq">
+  <div class="p-top-faq-body">
+    <div class="p-top-item-heading">
+      <HeadingSection level={2} japanese="よくあるご質問" color="white">
+        <LabelCatch slot="english" text="#FAQ" size="copy" color="blue-light" />
+      </HeadingSection>
+    </div>
+
+    <ul class="p-top-faq-list">
+      {
+        faqs.map(({ question, answer }) => (
+          <li class="p-top-faq-list-item">
+            <details class="p-top-faq-list-item-details">
+              <summary class="p-top-faq-list-item-details-summary">
+                <p class="p-top-faq-list-item-details-summary-title">
+                  <LabelCatch text="Q." size="m" color="blue-light" />
+                  <span class="text">{question}</span>
+                </p>
+                <span class="p-top-faq-list-item-details-summary-icon" />
+              </summary>
+              <div class="p-top-faq-list-item-details-panel">
+                <LabelCatch text="A." size="m" color="yellow" />
+                <p class="p-top-faq-list-item-details-panel-answer">{answer}</p>
+              </div>
+            </details>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <BackgroundBlocks position="bottom" />
+</section>

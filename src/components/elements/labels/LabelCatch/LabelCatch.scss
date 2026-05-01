@@ -102,12 +102,21 @@
   &._yellow-light &-text {
     color: color(yellow, light);
   }
+
   &._pink &-text {
     color: color(pink);
   }
   &._pink-light &-text {
     color: color(pink, light);
   }
+
+  &._blue &-text {
+    color: color(blue);
+  }
+  &._blue-light &-text {
+    color: color(blue, light);
+  }
+
   &._canvas &-text {
     color: color(canvas, base);
   }
