@@ -14,7 +14,7 @@
   }
 
   &-logo {
-    width: min(80px, 100%);
+    width: 5vw;
     pointer-events: auto;
     opacity: 0;
     scale: 0.8;
@@ -59,7 +59,7 @@
 //::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 .c-global-navigation-nav {
   @include Flex(flex-start, top, 1rem);
-  translate: 29% 0%;
+  translate: 31% 0%;
   transition: translate 0.4s cubic-bezier(0.8, -0.4, 0.5, 1);
   .c-button-cta {
     pointer-events: auto;
@@ -99,7 +99,7 @@
   &-item-body {
     display: inline-block;
     padding: 0.75em 0.5em;
-    @include FontStyle(s);
+    @include FontStyle(xs);
     font-weight: 900;
   }
 }

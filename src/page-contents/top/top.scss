@@ -156,7 +156,7 @@ main {
     right: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 130vh;
     margin: auto;
     content: '';
     background: color(canvas);
@@ -167,11 +167,10 @@ main {
   &-decoration {
     position: relative;
     z-index: 10;
-    translate: 0 -50%;
   }
 
   &-section {
-    @include ContentsPadding(xl, none, none);
+    @include ContentsPadding(section, none, none);
     position: relative;
     z-index: 10;
   }
@@ -425,7 +424,7 @@ main {
 
   &-contents-row {
     width: 100%;
-    @include Flex(center, none, 4rem);
+    @include Flex(center, none, 2rem);
     @include Breakpoint(inch11) {
       display: contents;
     }
@@ -442,7 +441,7 @@ main {
   }
 
   &-contents-item {
-    @include FlexItem(3, 4rem);
+    @include FlexItem(3, 2rem);
     position: relative;
     @include Breakpoint(inch11) {
       width: 100%;
